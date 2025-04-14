@@ -1,0 +1,13 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "target": "ES6",
+    "module": "NodeNext",
+    "sourceMap": true
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}

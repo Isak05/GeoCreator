@@ -1,0 +1,31 @@
+{
+  "name": "geocreator",
+  "version": "1.0.0",
+  "description": "Game and creation platform",
+  "license": "MIT",
+  "author": "Isak Johansson Weckstén",
+  "type": "module",
+  "main": "src/server/server.ts",
+  "scripts": {
+    "start": "node --env-file=.env dist/server/server.js",
+    "dev": "nodemon",
+    "build": "shopt -s globstar; esbuild ./src/**/*.ts ./src/**/*.css --outdir=./dist --outbase=./src --minify; copyfiles -u 1 --exclude '**/*.ts' --exclude '**/*.css' 'src/**/*' dist"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.1",
+    "nodemon": "^3.1.9"
+  },
+  "dependencies": {
+    "connect-mongo": "^5.1.0",
+    "copyfiles": "^2.4.1",
+    "ejs": "^3.1.10",
+    "esbuild": "^0.25.2",
+    "express": "^5.1.0",
+    "express-ejs-layouts": "^2.5.1",
+    "express-session": "^1.18.1",
+    "helmet": "^8.1.0",
+    "mongoose": "^8.13.2",
+    "morgan": "^1.10.0",
+    "winston": "^3.17.0"
+  }
+}
