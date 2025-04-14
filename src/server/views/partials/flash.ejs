@@ -1,0 +1,7 @@
+<div id="flash-div" class="fixed-top container p-4">
+  <% if (locals.flash) { %>
+    <my-alert type="<%= locals.flash.type %>">
+      <%= locals.flash.message %>
+    </my-alert>
+  <% } %>
+</div>

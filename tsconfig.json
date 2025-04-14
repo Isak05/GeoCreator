@@ -3,7 +3,7 @@
   "compilerOptions": {
     "rootDir": "./src",
     "outDir": "./dist",
-    "target": "ES6",
+    "target":"ES2024",
     "module": "NodeNext",
     "sourceMap": true
   },
