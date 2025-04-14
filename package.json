@@ -9,7 +9,7 @@
   "scripts": {
     "start": "node --env-file=.env dist/server/server.js",
     "dev": "nodemon",
-    "build": "shopt -s globstar; esbuild ./src/server/**/*.ts --platform=node --outdir=./dist --outbase=./src --minify; esbuild ./src/client/**/*.ts ./src/client/**/*.css --outdir=./dist --outbase=./src --minify; copyfiles -u 1 --exclude '**/*.ts' --exclude '**/*.css' 'src/**/*' dist"
+    "build": "shopt -s globstar; esbuild ./src/server/**/*.ts ./src/server/**/*.js --platform=node --outdir=./dist --outbase=./src --minify; esbuild ./src/client/**/*.ts ./src/server/**/*.js ./src/client/**/*.css --outdir=./dist --outbase=./src --minify; copyfiles -u 1 --exclude '**/*.ts' --exclude '**/*.css' --exclude '**/*.js' 'src/**/*' dist"
   },
   "devDependencies": {
     "@types/node": "^22.14.1",
