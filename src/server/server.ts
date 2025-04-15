@@ -17,7 +17,7 @@ import flash from "./middlewares/flash.js";
 import expressLayouts from "express-ejs-layouts";
 import session from "./config/session.js";
 
-const PORT = process.env.PORT ?? 8080;
+const PORT = process.env.PORT ?? 80;
 const BASE_DIRECTORY = path.dirname(fileURLToPath(import.meta.url));
 const DEVELOPMENT_MODE = process.env.NODE_ENV === "development";
 const BASE_URL = process.env.BASE_URL ?? "/";

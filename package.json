@@ -7,9 +7,9 @@
   "type": "module",
   "main": "src/server/server.ts",
   "scripts": {
-    "start": "node --env-file=.env dist/server/server.js",
+    "start": "node dist/server/server.js",
     "dev": "nodemon",
-    "build": "shopt -s globstar; esbuild ./src/server/**/*.ts ./src/server/**/*.js --platform=node --outdir=./dist --outbase=./src --minify; esbuild ./src/client/**/*.ts ./src/server/**/*.js ./src/client/**/*.css --outdir=./dist --outbase=./src --minify; copyfiles -u 1 --exclude '**/*.ts' --exclude '**/*.css' --exclude '**/*.js' 'src/**/*' dist"
+    "build": "node ./esbuild.config.js"
   },
   "devDependencies": {
     "@types/node": "^22.14.1",
@@ -23,6 +23,7 @@
     "express": "^4.21.2",
     "express-ejs-layouts": "^2.5.1",
     "express-session": "^1.18.1",
+    "glob": "^11.0.1",
     "helmet": "^8.1.0",
     "http-errors": "^2.0.0",
     "http-status-codes": "^2.3.0",

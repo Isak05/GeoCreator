@@ -32,5 +32,6 @@ export async function connectToDatabase (connectionString) {
     })
   }
 
+  logger.silly('Connecting to MongoDB...')
   return mongoose.connect(connectionString)
 }
