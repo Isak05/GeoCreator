@@ -1,0 +1,21 @@
+geocreator-map {
+  height: 30rem;
+  width: 40rem;
+  right: 0;
+  bottom: 0;
+  position: absolute;
+  opacity: 0.5;
+  transition: all 0.1s ease;
+  margin: 1rem;
+}
+
+geocreator-map:hover,
+geocreator-map:active {
+  opacity: 1;
+  width: 50rem;
+  height: 40rem;
+}
+
+body {
+  margin: 0;
+}
