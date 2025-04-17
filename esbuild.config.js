@@ -25,6 +25,7 @@ ctx = await esbuild.context({
   ]),
   outdir: "dist/client",
   outbase: "src/client",
+  sourcemap: process.env.NODE_ENV === "development",
   minify: true,
 });
 
