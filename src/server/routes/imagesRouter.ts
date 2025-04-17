@@ -1,7 +1,7 @@
 /**
  * The images router.
  *
- * @module routes/router
+ * @module routes/imagesRouter
  * @author Isak Johansson Weckstén <ij222pv@student.lnu.se>
  */
 

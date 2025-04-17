@@ -1,8 +1,7 @@
 /**
- * @file The image controller.
- * @module controllers/api/ImageController
+ * @file The images controller.
+ * @module controllers/ImagesController
  * @author Isak Johansson Weckstén <ij222pv@student.lnu.se>
- * @version 1.0.0
  */
 
 import { logger } from '../config/winston.js'
