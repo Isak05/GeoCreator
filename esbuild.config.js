@@ -34,7 +34,7 @@ await ctx.dispose();
 // Copy static files
 copyfiles(
   ["./src/**/*", "dist"],
-  { up: 1, exclude: ["**/*.ts", "**/*.css", "**/*.js"] },
+  { up: 1, verbose: false, exclude: ["./src/**/*.ts", "./src/**/*.js", "./src/**/*.css"] },
   (err) => {
     if (err) {
       console.error("Error copying static files:", err);
