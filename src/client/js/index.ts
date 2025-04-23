@@ -1,25 +1,43 @@
-import { GeocreatorMap } from "./components/geocreator-map/geocreator-map.js";
-
-const url = new URL("./game/6808de1c07e7413eb7388e4a", document.baseURI + "/");
-const response = await fetch(url);
-const data = await response.json();
-console.log(data);
+import GeocreatorMap from "./components/geocreator-map/geocreator-map.js";
+import GeocreatorTimer from "./components/geocreator-timer/geocreator-timer.js";
+import Game from "./game.js";
 
 const map: GeocreatorMap = document.querySelector("#map");
-map.src = data.mapUrl;
+const gameOverDiv: HTMLDivElement = document.querySelector("#game-over");
+const scoreSpan: HTMLSpanElement = document.querySelector("#score");
+const nextButton: HTMLButtonElement = document.querySelector("#next-button");
+const timer: GeocreatorTimer = document.querySelector("#timer");
+const screenshot: HTMLImageElement = document.querySelector("#screenshot");
+const form: HTMLFormElement = document.querySelector("#guess-form");
+
+const url = new URL("./game/6808de1c07e7413eb7388e4a", document.baseURI + "/");
+const game = new Game(url);
+await game.fetchGameData();
+
+gameOverDiv.hidden = true;
 
 map.addEventListener("markerplaced", (event: CustomEvent) => {
   const { x, y } = event.detail;
-  console.log(`Marker placed at x: ${x}, y: ${y}`);
+  game.selectLocation(x, y);
 });
 
-const screenshot: HTMLImageElement = document.querySelector("#screenshot");
-screenshot.src = data.screenshotUrls[0];
+map.src = game.mapSrc;
 
-const form: HTMLFormElement = document.querySelector("#guess-form");
+screenshot.src = game.nextRound().href;
+
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
 
-  map.src = data.mapUrl;
-  console.log("Submitted");
+  const score = game.calculateScore();
+  scoreSpan.innerText = score.toString();
+  gameOverDiv.hidden = false;
+  timer.stopped = true;
+});
+
+nextButton.addEventListener("click", async () => {
+  gameOverDiv.hidden = true;
+  screenshot.src = game.nextRound().href;
+
+  timer.stopped = false;
+  timer.totalTime = 30000;
 });
