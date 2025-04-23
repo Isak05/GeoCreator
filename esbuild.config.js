@@ -9,7 +9,6 @@ let ctx = await esbuild.context({
   entryPoints: await glob(["src/server/**/*.ts", "src/server/**/*.js"]),
   outdir: "dist/server",
   outbase: "src/server",
-  minify: true,
   platform: "node",
 });
 
@@ -26,7 +25,7 @@ ctx = await esbuild.context({
   outdir: "dist/client",
   outbase: "src/client",
   sourcemap: process.env.NODE_ENV === "development",
-  minify: true,
+  minify: process.env.NODE_ENV !== "development",
 });
 
 await ctx.rebuild();
