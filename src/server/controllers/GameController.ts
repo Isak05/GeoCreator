@@ -34,9 +34,6 @@ export default class {
   }
 
   async get(req: Request, res: Response, next: Function) {
-    res.json({
-      mapUrl: req.doc.mapUrl,
-      screenshotUrls: req.doc.screenshotUrls,
-    });
+    res.json(req.doc.toObject());
   }
 }
