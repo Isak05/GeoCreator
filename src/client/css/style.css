@@ -1,21 +1,42 @@
-geocreator-map {
+body {
+  margin: 0;
+}
+
+#game-container {
+  display: flex;
+  flex-direction: column;
+  width: 30rem;
   height: 30rem;
-  width: 40rem;
+  position: absolute;
   right: 0;
   bottom: 0;
-  position: absolute;
+  z-index: 1;
   opacity: 0.5;
   transition: all 0.1s ease;
   margin: 1rem;
 }
 
-geocreator-map:hover,
-geocreator-map:active {
+#game-container:hover,
+#game-container:active {
   opacity: 1;
   width: 50rem;
   height: 40rem;
 }
 
-body {
-  margin: 0;
+#map {
+  width: 100%;
+  height: 100%;
+}
+
+#guess-form input[type="submit"] {
+  width: 100%;
+}
+
+#screenshot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: auto;
+  height: 100vh;
+  z-index: -1;
 }

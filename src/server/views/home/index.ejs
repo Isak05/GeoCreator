@@ -1,4 +1,13 @@
 <link rel="stylesheet" href="<%= baseURL %>/css/style.css" />
+<script type="module" src="<%= baseURL %>/js/index.js"></script>
 
-<geocreator-map src="./geocreator/img/img.webp"></geocreator-map>
 <geocreator-timer></geocreator-timer>
+<img src="" alt="Screenshot" id="screenshot" />
+
+<div id="game-container">
+  <geocreator-map src="./geocreator/img/img.webp" id="map"></geocreator-map>
+  
+  <form action="" id="guess-form">
+    <input type="submit" class="btn btn-primary" value="Submit guess"></button>
+  </form>
+</div>
