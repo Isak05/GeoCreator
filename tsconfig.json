@@ -5,9 +5,13 @@
     "outDir": "./dist",
     "target":"ES2024",
     "module": "NodeNext",
-    "sourceMap": true
+    "sourceMap": true,
+    "typeRoots": [
+      "./types",
+      "./node_modules/@types",
+    ],
   },
   "exclude": [
     "node_modules"
-  ]
+  ],
 }
