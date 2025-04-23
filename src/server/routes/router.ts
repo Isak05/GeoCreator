@@ -7,13 +7,15 @@
 
 import express from "express";
 import createHttpError from "http-errors";
-import imagesRouter from "./imagesRouter.js";
 import homeRouter from "./homeRouter.js";
+import imageRouter from "./imageRouter.js";
+import gameRouter from "./gameRouter.js";
 
 const router = express.Router();
 export default router;
 
-router.use("/images", imagesRouter);
+router.use("/image", imageRouter);
+router.use("/game", gameRouter);
 router.use("/", homeRouter);
 
 router.use("*", (req, res, next) => {

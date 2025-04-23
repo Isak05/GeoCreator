@@ -15,7 +15,7 @@ declare const L: any;
  *
  * @fires markerplaced - Fired when a marker is placed on the map.
  */
-export class GeocreatorMap extends HTMLElement {
+export default class GeocreatorMap extends HTMLElement {
   /**
    * The map div element
    */
