@@ -7,14 +7,14 @@
 
 import express from "express";
 import createHttpError from "http-errors";
-import imagesRouter from "./imagesRouter.js";
+import imageRouter from "./imageRouter.js";
 import homeRouter from "./homeRouter.js";
 
 const router = express.Router();
 export default router;
 
-router.use("/images", imagesRouter);
 router.use("/", homeRouter);
+router.use("/image", imageRouter);
 
 router.use("*", (req, res, next) => {
   return next(createHttpError(404));

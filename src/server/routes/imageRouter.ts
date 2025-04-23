@@ -6,12 +6,12 @@
  */
 
 import express from "express";
-import ImagesController from "../controllers/ImagesController.js";
+import ImageController from "../controllers/ImageController.js";
 
 const router = express.Router();
 export default router;
 
-const controller = new ImagesController()
+const controller = new ImageController()
 
 router.param('id', controller.loadImage)
 router.use("/:id", controller.getImage);
