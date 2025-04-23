@@ -17,6 +17,8 @@ const vec2Schema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+}, {
+  _id: false,
 });
 
 const screenshotSchema = new mongoose.Schema({
@@ -28,6 +30,8 @@ const screenshotSchema = new mongoose.Schema({
     type: vec2Schema,
     required: true,
   },
+}, {
+  _id: false,
 });
 
 const schema = new mongoose.Schema({
@@ -39,6 +43,9 @@ const schema = new mongoose.Schema({
     type: [screenshotSchema],
     required: true,
   },
+}, {
+  _id: false,
+  id: false,
 });
 
 schema.add(BASE_SCHEMA);
