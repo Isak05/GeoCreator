@@ -15,18 +15,9 @@ export default class Vec2 {
    * @param x - The x coordinate.
    * @param y - The y coordinate.
    */
-  constructor(x: number, y: number) {
-    if (
-      typeof x !== "number" ||
-      typeof y !== "number" ||
-      isNaN(x) ||
-      isNaN(y)
-    ) {
-      throw new TypeError("non-number argument");
-    }
-
-    this.#x = x;
-    this.#y = y;
+  constructor(x?: number, y?: number) {
+    this.#x = Number(x) || 0;
+    this.#y = Number(y) || 0;
   }
 
   /**
