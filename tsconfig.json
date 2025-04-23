@@ -3,7 +3,7 @@
   "compilerOptions": {
     "rootDir": "./src",
     "outDir": "./dist",
-    "target":"ES2024",
+    "target":"ESNext",
     "module": "NodeNext",
     "sourceMap": true,
     "typeRoots": [
