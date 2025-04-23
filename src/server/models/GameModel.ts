@@ -1,7 +1,7 @@
 /**
  * The mongoose model for images.
  *
- * @module models/ImageModel
+ * @module models/GameModel
  * @author Isak Johansson Weckstén <ij222pv@student.lnu.se>
  */
 
@@ -9,20 +9,17 @@ import mongoose from "mongoose";
 import BASE_SCHEMA from "./baseSchema.js";
 
 const schema = new mongoose.Schema({
-  content: {
+  mapUrl: {
     type: String,
-    required: false,
+    required: true,
   },
-},
-{
-  methods: {
-    getRaw() {
-      return Buffer.from(this.content, "base64");
-    }
-  }
+  screenshotUrls: {
+    type: [String],
+    required: true,
+  },
 });
 
 schema.add(BASE_SCHEMA);
 
-const ImageModel = mongoose.model("Image", schema);
-export default ImageModel;
+const gameModel = mongoose.model("Game", schema);
+export default gameModel;

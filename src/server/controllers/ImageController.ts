@@ -8,15 +8,6 @@ import { logger } from "../config/winston.js";
 import createHttpError from "http-errors";
 import ImageModel from "../models/ImageModel.js";
 import { Request, Response } from "express";
-import { Document } from "mongoose";
-
-declare global {
-  namespace Express {
-    interface Request {
-      doc: Document;
-    }
-  }
-}
 
 /**
  * Controller for modifying resources via the api.
