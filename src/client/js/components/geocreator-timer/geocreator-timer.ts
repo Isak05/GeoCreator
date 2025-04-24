@@ -47,7 +47,7 @@ export default class GeocreatorTimer extends HTMLElement {
   /**
    * How long the timer should run. Measured in milliseconds.
    */
-  #totalTime: number = 20_000;
+  #totaltime: number = 20_000;
 
   /**
    * Creates an instance of the current type.
@@ -94,7 +94,7 @@ export default class GeocreatorTimer extends HTMLElement {
    * Watches attributes for changes on the element.
    */
   static get observedAttributes(): string[] {
-    return ["totalTime", "stopped"];
+    return ["totaltime", "stopped"];
   }
 
   /**
@@ -119,14 +119,14 @@ export default class GeocreatorTimer extends HTMLElement {
   /**
    * Sets how long the timer should run for measured in milliseconds. Also restarts the timer.
    */
-  set totalTime(value: number) {
+  set totaltime(value: number) {
     const numberValue = Number(value);
 
     if (!Number.isFinite(numberValue)) {
       return;
     }
 
-    this.#totalTime = numberValue;
+    this.#totaltime = numberValue;
     this.#startTime = Date.now();
     this.#timePassed = 0;
   }
@@ -134,15 +134,15 @@ export default class GeocreatorTimer extends HTMLElement {
   /**
    * Gets how long the timer should run for in total, measured in milliseconds.
    */
-  get totalTime(): number {
-    return this.#totalTime;
+  get totaltime(): number {
+    return this.#totaltime;
   }
 
   /**
    * Gets how much time is left on the timer, measured in milliseconds.
    */
-  get timeLeft(): number {
-    return this.#totalTime - this.#timePassed;
+  get timeleft(): number {
+    return this.#totaltime - this.#timePassed;
   }
 
   /**
@@ -154,8 +154,8 @@ export default class GeocreatorTimer extends HTMLElement {
   #update() {
     const previousTimePassed = this.#timePassed;
     this.#timePassed = Date.now() - this.#startTime;
-    const timeLeft = this.timeLeft;
-    const previousTimeLeft = this.#totalTime - previousTimePassed;
+    const timeLeft = this.timeleft;
+    const previousTimeLeft = this.#totaltime - previousTimePassed;
     const seconds = Math.ceil(timeLeft / 1_000);
 
     if (timeLeft > 0) {

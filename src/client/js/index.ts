@@ -47,7 +47,7 @@ async function main() {
     map.src = game.mapSrc;
 
     timer.stopped = false;
-    timer.totalTime = 30000;
+    timer.totaltime = 30000;
   });
 }
 
