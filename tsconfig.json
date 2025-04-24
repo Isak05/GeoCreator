@@ -4,8 +4,10 @@
     "rootDir": "./",
     "outDir": "./dist",
     "target":"ESNext",
-    "module": "Preserve",
+    "module": "ES2022",
     "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
     "sourceMap": true,
     "typeRoots": [
       "./types",
