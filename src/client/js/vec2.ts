@@ -16,8 +16,8 @@ export default class Vec2 {
    * @param y - The y coordinate.
    */
   constructor(x?: number, y?: number) {
-    this.#x = Number(x) || 0;
-    this.#y = Number(y) || 0;
+    this.x = x;
+    this.y = y;
   }
 
   /**
@@ -44,7 +44,7 @@ export default class Vec2 {
    * @param x The new x coordinate.
    */
   set x(x: number) {
-    this.#x = x;
+    this.#x = Number(x) || 0;
   }
 
   /**
@@ -53,6 +53,6 @@ export default class Vec2 {
    * @param y The new y coordinate.
    */
   set y(y: number) {
-    this.#y = y;
+    this.#y = Number(y) || 0;
   }
 }

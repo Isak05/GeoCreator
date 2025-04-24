@@ -1,10 +1,14 @@
 {
   "compileOnSave": true,
   "compilerOptions": {
-    "rootDir": "./src",
+    "rootDir": "./",
     "outDir": "./dist",
     "target":"ESNext",
-    "module": "NodeNext",
+    "module": "ES2022",
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "esModuleInterop": true,
     "sourceMap": true,
     "typeRoots": [
       "./types",

@@ -1,1 +1,1 @@
-import './geocreator-timer.js'
+import './geocreator-timer.ts'
