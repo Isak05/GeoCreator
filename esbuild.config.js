@@ -18,12 +18,11 @@ await ctx.dispose();
 // Client build
 ctx = await esbuild.context({
   entryPoints: await glob([
-    "src/client/**/*.ts",
-    "src/client/**/*.js",
-    "src/client/**/*.css",
+    "src/client/js/index.ts",
   ]),
   outdir: "dist/client",
   outbase: "src/client",
+  bundle: true,
   sourcemap: process.env.NODE_ENV === "development",
   minify: process.env.NODE_ENV !== "development",
 });
