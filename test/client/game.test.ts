@@ -44,7 +44,12 @@ describe("Game", () => {
     });
 
     it("should throw an error if the URL is invalid", () => {
-      expect(() => new Game(null)).toThrow(TypeError);
+      expect(() => new Game(1 as unknown as string)).toThrow(TypeError);
+      expect(() => new Game({} as unknown as string)).toThrow(TypeError);
+      expect(() => new Game(null as unknown as string)).toThrow(TypeError);
+      expect(() => new Game(undefined as unknown as string)).toThrow(TypeError);
+      // @ts-expect-error
+      expect(() => new Game()).toThrow(TypeError);
     });
   });
 
