@@ -30,7 +30,7 @@ async function main() {
 
   map.src = game.mapSrc;
 
-  screenshot.src = game.nextRound().href;
+  screenshot.src = game.nextRound();
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -43,7 +43,7 @@ async function main() {
 
   nextButton.addEventListener("click", async () => {
     gameOverDiv.hidden = true;
-    screenshot.src = game.nextRound().href;
+    screenshot.src = game.nextRound();
 
     timer.stopped = false;
     timer.totalTime = 30000;

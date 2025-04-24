@@ -80,7 +80,7 @@ export default class Game {
   /**
    * Goes to the next round.
    */
-  nextRound(): URL {
+  nextRound(): string {
     if (this.#gameData === null) {
       throw new Error("gameData not set");
     }
@@ -100,7 +100,7 @@ export default class Game {
     this.#currentScreenshot = randomScreenshot;
     this.#playedScreenshots.add(randomScreenshot);
 
-    return new URL(randomScreenshot.url, window.location.origin);
+    return randomScreenshot.url;
   }
 
   /**
