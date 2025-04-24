@@ -44,6 +44,7 @@ async function main() {
   nextButton.addEventListener("click", async () => {
     gameOverDiv.hidden = true;
     screenshot.src = game.nextRound();
+    map.src = game.mapSrc;
 
     timer.stopped = false;
     timer.totalTime = 30000;
