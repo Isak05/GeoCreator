@@ -19,6 +19,7 @@ await ctx.dispose();
 ctx = await esbuild.context({
   entryPoints: await glob([
     "src/client/js/index.ts",
+    "src/client/**/*.css",
   ]),
   outdir: "dist/client",
   outbase: "src/client",
