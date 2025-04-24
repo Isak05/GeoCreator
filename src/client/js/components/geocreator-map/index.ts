@@ -1,1 +1,1 @@
-import './geocreator-map.js'
+import './geocreator-map.ts'

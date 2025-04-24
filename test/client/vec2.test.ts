@@ -4,7 +4,7 @@
  * @author Isak Johansson Weckstén <ij222pv@student.lnu.se>
  */
 
-import Vec2 from "../../src/client/js/vec2";
+import Vec2 from "../../src/client/js/vec2.ts";
 
 describe("Vec2", () => {
   describe("constructor", () => {

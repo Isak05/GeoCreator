@@ -5,7 +5,7 @@
  * @author Isak Johansson Weckstén <ij222pv@student.lnu.se>
  */
 
-import Vec2 from "./vec2.js";
+import Vec2 from "./vec2.ts";
 
 type Screenshot = {
   url: string;
