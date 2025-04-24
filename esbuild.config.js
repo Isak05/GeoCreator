@@ -9,7 +9,6 @@ let ctx = await esbuild.context({
   entryPoints: await glob(["src/server/**/*.ts", "src/server/**/*.js"]),
   outdir: "dist/server",
   outbase: "src/server",
-  minify: true,
   platform: "node",
 });
 
@@ -19,14 +18,14 @@ await ctx.dispose();
 // Client build
 ctx = await esbuild.context({
   entryPoints: await glob([
-    "src/client/**/*.ts",
-    "src/client/**/*.js",
+    "src/client/js/index.ts",
     "src/client/**/*.css",
   ]),
   outdir: "dist/client",
   outbase: "src/client",
+  bundle: true,
   sourcemap: process.env.NODE_ENV === "development",
-  minify: true,
+  minify: process.env.NODE_ENV !== "development",
 });
 
 await ctx.rebuild();

@@ -7,7 +7,6 @@
 
 import mongoose from "mongoose";
 import BASE_SCHEMA from "./baseSchema.js";
-import { get } from "http";
 
 const schema = new mongoose.Schema({
   content: {
@@ -25,5 +24,5 @@ const schema = new mongoose.Schema({
 
 schema.add(BASE_SCHEMA);
 
-const model = mongoose.model("Image", schema);
-export default model;
+const ImageModel = mongoose.model("Image", schema);
+export default ImageModel;

@@ -10,6 +10,10 @@ template.innerHTML = /* css */ `
 />
 
 <style>
+:host {
+  display: block;
+}
+
 #map {
   width: 100%;
   height: 100%;

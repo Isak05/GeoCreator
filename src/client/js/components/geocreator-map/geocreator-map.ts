@@ -5,8 +5,8 @@
  * @author Isak Johansson Weckstén <ij222pv@student.lnu.se>
  */
 
-import htmlTemplate from "./geocreator-map.html.js";
-import cssTemplate from "./geocreator-map.css.js";
+import htmlTemplate from "./geocreator-map.html.ts";
+import cssTemplate from "./geocreator-map.css.ts";
 
 declare const L: any;
 
@@ -15,7 +15,7 @@ declare const L: any;
  *
  * @fires markerplaced - Fired when a marker is placed on the map.
  */
-export class GeocreatorMap extends HTMLElement {
+export default class GeocreatorMap extends HTMLElement {
   /**
    * The map div element
    */

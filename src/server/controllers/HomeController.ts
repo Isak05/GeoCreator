@@ -7,7 +7,7 @@
 /**
  * Controller for accessing the home page
  */
-export default class ImageController {
+export default class HomeController {
   async get (req, res, next) {
     res.render('home/index')
   }
