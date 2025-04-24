@@ -1,0 +1,199 @@
+/**
+ * This file contains the game UI logic for the client-side.
+ * It handles the game map, timer, and user interactions.
+ *
+ * @module gameUI
+ * @author Isak Johansson Weckstén <ij222pv@student.lnu.se>
+ */
+
+import GeocreatorMap from "./components/geocreator-map/geocreator-map.ts";
+import GeocreatorTimer from "./components/geocreator-timer/geocreator-timer";
+import Game from "./game";
+
+export default class GameUI {
+  #mapElement: GeocreatorMap = null;
+  #gameOverDiv: HTMLDivElement = null;
+  #scoreSpan: HTMLSpanElement = null;
+  #nextButton: HTMLButtonElement = null;
+  #timerElement: GeocreatorTimer = null;
+  #screenshotImage: HTMLImageElement = null;
+  #submitForm: HTMLFormElement = null;
+  #game: Game = null;
+  #gameStarted: boolean = false;
+
+  /**
+   * Constructs a new instance of the class.
+   *
+   * @param url - The URL from where to fetch the game data.
+   * @throws {TypeError} Throws an error if the provided `url` is neither a string nor an instance of `URL`.
+   */
+  constructor(url: string | URL) {
+    if (typeof url !== "string" && !(url instanceof URL)) {
+      throw new TypeError("expected a string or URL");
+    }
+
+    this.#game = new Game(url);
+  }
+
+  /**
+   * Sets the map element.
+   *
+   * @param map The map element to be used.
+   * @throws {TypeError} If the argument is not an instance of GeocreatorMap.
+   */
+  set mapElement(map: GeocreatorMap) {
+    if (!(map instanceof GeocreatorMap)) {
+      throw new TypeError("expected a GeocreatorMap");
+    }
+
+    this.#mapElement = map;
+  }
+
+  /**
+   * Sets the game over div element.
+   *
+   * @param div The game over div element to be used.
+   * @throws {TypeError} If the argument is not an HTMLDivElement.
+   */
+  set gameOverDiv(div: HTMLDivElement) {
+    if (!(div instanceof HTMLDivElement)) {
+      throw new TypeError("expected an HTMLDivElement");
+    }
+
+    this.#gameOverDiv = div;
+    this.#gameOverDiv.hidden = true;
+  }
+
+  /**
+   * Sets the score span element.
+   *
+   * @param span The score span element to be used.
+   * @throws {TypeError} If the argument is not an HTMLSpanElement.
+   */
+  set scoreSpan(span: HTMLSpanElement) {
+    if (!(span instanceof HTMLSpanElement)) {
+      throw new TypeError("expected an HTMLSpanElement");
+    }
+
+    this.#scoreSpan = span;
+  }
+
+  /**
+   * Sets the next button element.
+   *
+   * @param button The next button element to be used.
+   * @throws {TypeError} If the argument is not an HTMLButtonElement.
+   */
+  set nextButton(button: HTMLButtonElement) {
+    if (!(button instanceof HTMLButtonElement)) {
+      throw new TypeError("expected an HTMLButtonElement");
+    }
+
+    this.#nextButton = button;
+  }
+
+  /**
+   * Sets the timer element.
+   *
+   * @param timer The timer element to be used.
+   * @throws {TypeError} If the argument is not an instance of GeocreatorTimer.
+   */
+  set timerElement(timer: GeocreatorTimer) {
+    if (!(timer instanceof GeocreatorTimer)) {
+      throw new TypeError("expected a GeocreatorTimer");
+    }
+
+    this.#timerElement = timer;
+  }
+
+  /**
+   * Sets the screenshot image element.
+   *
+   * @param image The screenshot image element to be used.
+   * @throws {TypeError} If the argument is not an HTMLImageElement.
+   */
+  set screenshotImage(image: HTMLImageElement) {
+    if (!(image instanceof HTMLImageElement)) {
+      throw new TypeError("expected an HTMLImageElement");
+    }
+
+    this.#screenshotImage = image;
+  }
+
+  /**
+   * Sets the form used for submitting the answer.
+   *
+   * @param form The form element to be used for submitting the answer.
+   * @throws {TypeError} If the argument is not an HTMLFormElement.
+   */
+  set submitForm(form: HTMLFormElement) {
+    if (!(form instanceof HTMLFormElement)) {
+      throw new TypeError("expected an HTMLFormElement");
+    }
+
+    this.#submitForm = form;
+  }
+
+  /**
+   * Progresses to the next round of the game.
+   * This method updates the game state, including the map and screenshot.
+   * It also resets the timer for the next round.
+   */
+  #nextRound() {
+    this.#gameOverDiv.hidden = true;
+    this.#screenshotImage.src = this.#game.nextRound();
+    this.#mapElement.src = this.#game.mapSrc;
+
+    this.#timerElement.stopped = false;
+    this.#timerElement.totaltime = 30000;
+  }
+
+  /**
+   * Submits the user's guess and calculates the score.
+   * This method prevents the default form submission behavior,
+   * calculates the score based on the user's guess, and updates the UI accordingly.
+   *
+   * @param event The event object representing the form submission.
+   */
+  #submit() {
+    const score = this.#game.calculateScore();
+    this.#scoreSpan.innerText = score.toString();
+    this.#gameOverDiv.hidden = false;
+    this.#timerElement.stopped = true;
+  }
+
+  /**
+   * Starts the game by fetching game data and setting up event listeners.
+   * 
+   * @returns A promise that resolves when the game is started.
+   */
+  async start() {
+    if (this.#gameStarted) {
+      return;
+    }
+    this.#gameStarted = true;
+
+    // Fetch game data
+    await this.#game.fetchGameData();
+
+    // Set up listeners
+    this.#submitForm.addEventListener("submit", async (event: Event) => {
+      event.preventDefault();
+      this.#submit();
+    });
+
+    this.#nextButton.addEventListener("click", this.#nextRound.bind(this));
+
+    this.#mapElement.addEventListener("markerplaced", (event: CustomEvent) => {
+      const { x, y } = event.detail;
+      this.#game.selectLocation(x, y);
+    });
+
+    this.#timerElement.addEventListener("timeout", () => {
+      this.#submit();
+    });
+
+    // Start the first round of the game
+    this.#nextRound();
+  }
+}

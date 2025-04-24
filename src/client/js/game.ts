@@ -22,7 +22,7 @@ const MAXIMUM_ROUND_SCORE = 1000;
 export default class Game {
   #url: URL = null;
   #gameData: GameData = null;
-  #guessPosition: Vec2 = new Vec2();
+  #guessPosition: Vec2 = null;
   #playedScreenshots: Set<Screenshot> = new Set();
   #currentScreenshot: Screenshot = null;
 
@@ -73,8 +73,7 @@ export default class Game {
       throw new TypeError("non-number argument");
     }
 
-    this.#guessPosition.x = x;
-    this.#guessPosition.y = y;
+    this.#guessPosition = new Vec2(x, y);
   }
 
   /**
@@ -84,6 +83,8 @@ export default class Game {
     if (this.#gameData === null) {
       throw new Error("gameData not set");
     }
+
+    this.#guessPosition = null;
 
     const remainingScreenshots = new Set(this.#gameData.screenshots).difference(
       this.#playedScreenshots
@@ -113,7 +114,14 @@ export default class Game {
   calculateScore(): number {
     const position = this.#guessPosition;
     const correctPosition = this.#currentScreenshot.correctAnswer;
-    console.log(this.#currentScreenshot)
+
+    if (position === null) {
+      return 0;
+    }
+
+    if (correctPosition === null) {
+      throw new Error("no correct position");
+    }
 
     if (!Number.isFinite(position.x) || !Number.isFinite(position.y)) {
       throw new Error("bad position");
