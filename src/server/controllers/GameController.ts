@@ -36,4 +36,15 @@ export default class {
   async get(req: Request, res: Response, next: Function) {
     res.json(req.doc.toObject());
   }
+
+  async getAll(req: Request, res: Response, next: Function) {
+    try {
+      const games = await GameModel.find().exec();
+      console.log(req.originalUrl)
+      res.json(games.map((game) => req.originalUrl + "/" + game._id.toString()));
+    } catch (error) {
+      logger.error("Error fetching games", error);
+      return next(createHttpError(500));
+    }
+  }
 }
