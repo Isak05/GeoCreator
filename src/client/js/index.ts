@@ -1,9 +1,6 @@
 import "./components/geocreator-map/index.ts";
 import "./components/geocreator-timer/index.ts";
 
-import GeocreatorMap from "./components/geocreator-map/geocreator-map.ts";
-import GeocreatorTimer from "./components/geocreator-timer/geocreator-timer.ts";
-import Game from "./game.ts";
 import GameUI from "./gameUI.ts";
 
 async function main() {
@@ -15,7 +12,9 @@ async function main() {
 
   gameUI.mapElement = document.querySelector("#map");
   gameUI.gameOverDiv = document.querySelector("#game-over");
+  gameUI.roundOverDiv = document.querySelector("#round-over");
   gameUI.scoreSpan = document.querySelector("#score");
+  gameUI.totalScoreSpan = document.querySelector("#total-score");
   gameUI.nextButton = document.querySelector("#next-button");
   gameUI.timerElement = document.querySelector("#timer");
   gameUI.screenshotImage = document.querySelector("#screenshot");

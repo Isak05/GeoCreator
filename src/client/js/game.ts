@@ -17,14 +17,22 @@ type GameData = {
   screenshots: Screenshot[];
 };
 
-const MAXIMUM_ROUND_SCORE = 1000;
+enum GameState {
+  NOT_STARTED,
+  WAITING_FOR_GUESS,
+  WAITING_FOR_NEXT_ROUND,
+  GAME_OVER,
+}
 
 export default class Game {
+  #maximumRoundScore = 1000;
   #url: URL = null;
   #gameData: GameData = null;
   #guessPosition: Vec2 = null;
   #playedScreenshots: Set<Screenshot> = new Set();
   #currentScreenshot: Screenshot = null;
+  #totalScore = 0;
+  #state: GameState = GameState.NOT_STARTED;
 
   /**
    * Creates a new game instance.
@@ -45,6 +53,10 @@ export default class Game {
    * @returns The game data
    */
   async fetchGameData(): Promise<GameData> {
+    if (this.#state !== GameState.NOT_STARTED) {
+      throw new Error("cannot fetch game data in current state");
+    }
+
     if (this.#url === null) {
       throw new Error("url not set");
     }
@@ -59,6 +71,7 @@ export default class Game {
       throw new Error("no data");
     }
 
+    this.#state = GameState.WAITING_FOR_NEXT_ROUND;
     this.#gameData = data;
     return this.#gameData;
   }
@@ -69,6 +82,10 @@ export default class Game {
    * @param position The position to guess
    */
   selectLocation(x: number, y: number): void {
+    if (this.#state !== GameState.WAITING_FOR_GUESS) {
+      throw new Error("cannot select location in current state");
+    }
+
     if (typeof x !== "number" || typeof y !== "number") {
       throw new TypeError("non-number argument");
     }
@@ -80,18 +97,24 @@ export default class Game {
    * Goes to the next round.
    */
   nextRound(): string {
+    if (this.#state === GameState.WAITING_FOR_GUESS) {
+      this.submitGuess();
+    }
+
+    if (this.#state !== GameState.WAITING_FOR_NEXT_ROUND) {
+      throw new Error("cannot go to next round in current state");
+    }
+
     if (this.#gameData === null) {
       throw new Error("gameData not set");
     }
 
     this.#guessPosition = null;
 
-    const remainingScreenshots = new Set(this.#gameData.screenshots).difference(
-      this.#playedScreenshots
-    );
+    const remainingScreenshots = this.#getRemainingScreenshots();
 
     if (remainingScreenshots.size === 0) {
-      throw new Error("no more screenshots");
+      throw new Error("no more rounds");
     }
 
     const numberRemainingScreenshots = remainingScreenshots.size;
@@ -100,6 +123,7 @@ export default class Game {
 
     this.#currentScreenshot = randomScreenshot;
     this.#playedScreenshots.add(randomScreenshot);
+    this.#state = GameState.WAITING_FOR_GUESS;
 
     return randomScreenshot.url;
   }
@@ -140,9 +164,41 @@ export default class Game {
         (position.y - correctPosition.y) ** 2
     );
     const scoreFactor = Math.min(Math.exp(-10 * distance) * 1.1, 1);
-    const score = Math.round(MAXIMUM_ROUND_SCORE * scoreFactor);
+    const score = Math.round(this.#maximumRoundScore * scoreFactor);
 
     return score;
+  }
+
+  /**
+   * Submits the guess and calculates the score.
+   * This method updates the total score and returns the score for the current round.
+   *
+   * @returns The score for the current round
+   */
+  submitGuess(): number {
+    if (this.#state !== GameState.WAITING_FOR_GUESS) {
+      throw new Error("cannot submit guess in current state");
+    }
+
+    const score = this.calculateScore();
+    this.#totalScore += score;
+
+    if (this.#getRemainingScreenshots().size === 0) {
+      this.#state = GameState.GAME_OVER;
+    } else {
+      this.#state = GameState.WAITING_FOR_NEXT_ROUND;
+    }
+
+    return score;
+  }
+
+  /**
+   * @returns The remaining screenshots that have not been played yet.
+   */
+  #getRemainingScreenshots(): Set<Screenshot> {
+    return new Set(this.#gameData.screenshots).difference(
+      this.#playedScreenshots
+    );
   }
 
   /**
@@ -150,5 +206,16 @@ export default class Game {
    */
   get mapSrc(): string {
     return this.#gameData?.mapUrl;
+  }
+
+  /**
+   * @returns The current total score.
+   */
+  get totalScore(): number {
+    return this.#totalScore;
+  }
+
+  get gameOver(): boolean {
+    return this.#state === GameState.GAME_OVER;
   }
 }
