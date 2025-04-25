@@ -17,3 +17,4 @@ router.param("id", controller.loadGame);
 
 router.get("/", controller.getAll);
 router.get("/:id", controller.get);
+router.get("/:id/data", controller.getData);
