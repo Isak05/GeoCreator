@@ -13,7 +13,9 @@ import Game from "./game";
 export default class GameUI {
   #mapElement: GeocreatorMap = null;
   #gameOverDiv: HTMLDivElement = null;
+  #roundOverDiv: HTMLDivElement = null;
   #scoreSpan: HTMLSpanElement = null;
+  #totalScoreSpan: HTMLSpanElement = null;
   #nextButton: HTMLButtonElement = null;
   #timerElement: GeocreatorTimer = null;
   #screenshotImage: HTMLImageElement = null;
@@ -65,6 +67,20 @@ export default class GameUI {
   }
 
   /**
+   * Sets the round over div element.
+   *
+   * @param div The round over div element to be used.
+   * @throws {TypeError} If the argument is not an HTMLDivElement.
+   */
+  set roundOverDiv(div: HTMLDivElement) {
+    if (!(div instanceof HTMLDivElement)) {
+      throw new TypeError("expected an HTMLDivElement");
+    }
+    this.#roundOverDiv = div;
+    this.#roundOverDiv.hidden = true;
+  }
+
+  /**
    * Sets the score span element.
    *
    * @param span The score span element to be used.
@@ -76,6 +92,20 @@ export default class GameUI {
     }
 
     this.#scoreSpan = span;
+  }
+
+  /**
+   * Sets the total score span element.
+   *
+   * @param span The total score span element to be used.
+   * @throws {TypeError} If the argument is not an HTMLSpanElement.
+   */
+  set totalScoreSpan(span: HTMLSpanElement) {
+    if (!(span instanceof HTMLSpanElement)) {
+      throw new TypeError("expected an HTMLSpanElement");
+    }
+
+    this.#totalScoreSpan = span;
   }
 
   /**
@@ -140,7 +170,13 @@ export default class GameUI {
    * It also resets the timer for the next round.
    */
   #nextRound() {
-    this.#gameOverDiv.hidden = true;
+    this.#roundOverDiv.hidden = true;
+    if (this.#game.gameOver) {
+      this.#gameOverDiv.hidden = false;
+      this.#totalScoreSpan.innerText = this.#game.totalScore.toString();
+      return;
+    }
+
     this.#screenshotImage.src = this.#game.nextRound();
     this.#mapElement.src = this.#game.mapSrc;
 
@@ -156,15 +192,15 @@ export default class GameUI {
    * @param event The event object representing the form submission.
    */
   #submit() {
-    const score = this.#game.calculateScore();
+    const score = this.#game.submitGuess();
     this.#scoreSpan.innerText = score.toString();
-    this.#gameOverDiv.hidden = false;
+    this.#roundOverDiv.hidden = false;
     this.#timerElement.stopped = true;
   }
 
   /**
    * Starts the game by fetching game data and setting up event listeners.
-   * 
+   *
    * @returns A promise that resolves when the game is started.
    */
   async start() {
