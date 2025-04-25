@@ -85,4 +85,20 @@ describe("Game", () => {
       expect(() => game.nextRound()).toThrow(Error);
     });
   });
+
+  describe("totalScore", () => {
+    it("should return the total score", async () => {
+      const game = new Game("https://example.com/game");
+      await game.fetchGameData();
+      expect(game.totalScore).toBe(0);
+
+      for (let i = 0; i < gameData.screenshots.length; i++) {
+        game.nextRound();
+        game.selectLocation(0.5, 0.5);
+        game.submitGuess();
+      }
+
+      expect(game.totalScore).toBe(125);
+    });
+  });
 });
