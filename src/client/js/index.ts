@@ -4,10 +4,7 @@ import "./components/geocreator-timer/index.ts";
 import GameUI from "./gameUI.ts";
 
 async function main() {
-  const url = new URL(
-    "./game/6808de1c07e7413eb7388e4a",
-    document.baseURI + "/"
-  );
+  const url = new URL("./data", document.location.href + "/");
   const gameUI = new GameUI(url);
 
   gameUI.mapElement = document.querySelector("#map");
