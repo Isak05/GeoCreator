@@ -1,0 +1,9 @@
+FROM node:23.11.0-bookworm-slim AS base
+
+WORKDIR /usr/src/app
+
+ARG PORT=80
+EXPOSE $PORT
+ENV PORT=$PORT
+
+CMD ["npm", "run", "dev"]
