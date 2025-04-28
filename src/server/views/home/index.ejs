@@ -1,6 +1,6 @@
 <% for(const game of games) { %>
   <div class="game">
     <p><%= game.title %></p>
-    <a href="<%= baseURL %>/game/<%= game._id %>" class="btn btn-primary">Play</a>
+    <a href="./game/<%= game._id %>" class="btn btn-primary">Play</a>
   </div>
 <% } %>

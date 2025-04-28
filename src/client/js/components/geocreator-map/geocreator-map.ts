@@ -5,8 +5,8 @@
  * @author Isak Johansson Weckstén <ij222pv@student.lnu.se>
  */
 
-import htmlTemplate from "./geocreator-map.html.ts";
-import cssTemplate from "./geocreator-map.css.ts";
+import htmlTemplate from "./geocreator-map.html.js";
+import cssTemplate from "./geocreator-map.css.js";
 
 declare const L: any;
 

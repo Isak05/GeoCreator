@@ -9,6 +9,13 @@
           <li class="nav-item">
             <a href="./" class="nav-link">Home</a>
           </li>
+        </ul>
+        <% if (locals?.loggedInUser) { %>
+          <a href="./auth/logout" class="nav-link navbar-nav mb-2 mb-lg-0 me-4">Logout</a>
+        <% } else { %>
+          <a href="./auth/signup" class="nav-link navbar-nav mb-2 mb-lg-0 me-4">Sign up</a>
+          <a href="./auth/login" class="nav-link navbar-nav mb-2 mb-lg-0 me-4">Log in</a>
+        <% } %>
       </div>
     </div>
   </nav>
