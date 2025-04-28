@@ -27,8 +27,9 @@ try {
   const app = express();
 
   app.use(helmet());
-  app.use(flash());
   app.use(session());
+  app.use(flash());
+
   app.use(BASE_URL, express.static(path.join(BASE_DIRECTORY, "../client")));
 
   app.set("view engine", "ejs");
@@ -46,6 +47,7 @@ try {
   });
 
   app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
   app.use(BASE_URL, router);
   app.use(errorHandler());
 

@@ -1,6 +1,5 @@
 import "./components/geocreator-map/index.js";
 import "./components/geocreator-timer/index.js";
-import "./components/my-alert/index.js";
 
 import GameUI from "./gameUI.js";
 
