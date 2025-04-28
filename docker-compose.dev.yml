@@ -1,0 +1,29 @@
+networks:
+  geocreatornet:
+
+services:
+  mongodb:
+    container_name: geocreator_mongodb
+    image: mongo:latest
+    volumes:
+      - ./.volumes/mongodb:/data/db
+    restart: unless-stopped
+
+  geocreator:
+    container_name: geocreator_dev
+    build:
+      context: ./
+      dockerfile: Dockerfile.dev
+    ports:
+      - "8080:80"
+    depends_on:
+      - mongodb
+    env_file:
+      - ./.env
+    environment:
+      MONGODB_URI: "mongodb://mongodb:27017/geocreator"
+      PORT: "80"
+      NODE_ENV: "development"
+    volumes:
+      - ./:/usr/src/app
+    restart: unless-stopped
