@@ -42,6 +42,7 @@ try {
   app.use((req, res, next) => {
     // Pass the base URL to the views.
     res.locals.baseURL = process.env.BASE_URL ?? "/";
+    res.locals.loggedInUser = req.session.loggedInUser;
 
     next();
   });
