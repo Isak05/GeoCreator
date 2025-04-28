@@ -5,7 +5,7 @@
  * @author Isak Johansson Weckstén <ij222pv@student.lnu.se>
  */
 
-import mongoose from 'mongoose'
+import mongoose, { HydratedDocument } from 'mongoose'
 import * as argon2 from 'argon2'
 import BASE_SCHEMA from './baseSchema.js'
 
@@ -24,11 +24,11 @@ const schema = new mongoose.Schema({
     /**
      * Tries to log in a user.
      *
-     * @param {string} username - The username of the user.
-     * @param {string} password - The password of the user.
-     * @returns {Promise<mongoose.Document|null>} - Returns a promise that resolves to the user document if the credentials are correct, otherwise null.
+     * @param username - The username of the user.
+     * @param password - The password of the user.
+     * @returns Returns a promise that resolves to the user document if the credentials are correct, otherwise null.
      */
-    async authenticate (username: string, password: string): Promise<mongoose.Document | null> {
+    async authenticate (username: string, password: string): Promise<HydratedDocument<any> | null> {
       const user = await this.findOne({ username })
 
       if (!user || !await argon2.verify(user.password, password)) {
