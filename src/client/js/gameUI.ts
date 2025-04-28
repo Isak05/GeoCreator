@@ -6,9 +6,9 @@
  * @author Isak Johansson Weckstén <ij222pv@student.lnu.se>
  */
 
-import GeocreatorMap from "./components/geocreator-map/geocreator-map.ts";
-import GeocreatorTimer from "./components/geocreator-timer/geocreator-timer";
-import Game from "./game";
+import GeocreatorMap from "./components/geocreator-map/index.js";
+import GeocreatorTimer from "./components/geocreator-timer/geocreator-timer.js";
+import Game from "./game.js";
 
 export default class GameUI {
   #mapElement: GeocreatorMap = null;

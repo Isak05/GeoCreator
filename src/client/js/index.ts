@@ -1,7 +1,8 @@
-import "./components/geocreator-map/index.ts";
-import "./components/geocreator-timer/index.ts";
+import "./components/geocreator-map/index.js";
+import "./components/geocreator-timer/index.js";
+import "./components/my-alert/index.js";
 
-import GameUI from "./gameUI.ts";
+import GameUI from "./gameUI.js";
 
 async function main() {
   const url = new URL("./data", document.location.href + "/");
