@@ -40,7 +40,7 @@ export default class {
   async getAll(req: Request, res: Response, next: Function) {
     try {
       const games = await GameModel.find().exec();
-      res.json(games.map((game) => req.originalUrl + "/" + game._id.toString()));
+      res.json(games.map((game) => "./" + game._id.toString()));
     } catch (error) {
       return next(createHttpError(500));
     }
