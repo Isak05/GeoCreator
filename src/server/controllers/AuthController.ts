@@ -45,6 +45,7 @@ export default class {
       if (!user) {
         throw createHttpError(401, "Invalid username or password");
       }
+
       req.session.flash = {
         type: "success",
         message: "Logged in as " + user.username,
@@ -52,8 +53,11 @@ export default class {
       req.session.loggedInUser = user;
       res.redirect("..");
     } catch (error) {
-      logger.error(error);
-      next(error);
+      req.session.flash = {
+        type: "danger",
+        message: "Invalid username or password",
+      };
+      res.redirect("./login");
     }
   }
 
@@ -80,6 +84,17 @@ export default class {
     const { username, password } = req.body;
 
     try {
+      // Check if user already exists
+      if (await UserModel.isUsernameTaken(username)) {
+        req.session.flash = {
+          type: "danger",
+          message: "Username already taken",
+        };
+        res.redirect("./signup");
+        return;
+      }
+
+      // Create user
       const user = new UserModel({ username, password });
       await user.save();
 
@@ -90,8 +105,11 @@ export default class {
       };
       res.redirect("..");
     } catch (error) {
-      logger.error(error);
-      next(error);
+      req.session.flash = {
+        type: "danger",
+        message: "An error occured. Please try again.",
+      };
+      res.redirect("./signup");
     }
   }
 
