@@ -36,7 +36,17 @@ const schema = new mongoose.Schema({
       }
 
       return user
-    }
+    },
+
+    /**
+     * Checks if a username is already taken in the database.
+     *
+     * @param username - The username to check for existence.
+     * @returns A promise that resolves to `true` if the username exists, otherwise `false`.
+     */
+    async isUsernameTaken(username: string): Promise<boolean> {
+      return (await this.exists({ username })) !== null;
+    },
   }
 })
 
