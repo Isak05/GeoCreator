@@ -35,6 +35,10 @@ const screenshotSchema = new mongoose.Schema({
 });
 
 const schema = new mongoose.Schema({
+  title: {
+    type: String,
+    required: true,
+  },
   mapUrl: {
     type: String,
     required: true,

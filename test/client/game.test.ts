@@ -44,7 +44,12 @@ describe("Game", () => {
     });
 
     it("should throw an error if the URL is invalid", () => {
-      expect(() => new Game(null)).toThrow(TypeError);
+      expect(() => new Game(1 as unknown as string)).toThrow(TypeError);
+      expect(() => new Game({} as unknown as string)).toThrow(TypeError);
+      expect(() => new Game(null as unknown as string)).toThrow(TypeError);
+      expect(() => new Game(undefined as unknown as string)).toThrow(TypeError);
+      // @ts-expect-error
+      expect(() => new Game()).toThrow(TypeError);
     });
   });
 
@@ -78,6 +83,22 @@ describe("Game", () => {
       game.nextRound();
       game.nextRound();
       expect(() => game.nextRound()).toThrow(Error);
+    });
+  });
+
+  describe("totalScore", () => {
+    it("should return the total score", async () => {
+      const game = new Game("https://example.com/game");
+      await game.fetchGameData();
+      expect(game.totalScore).toBe(0);
+
+      for (let i = 0; i < gameData.screenshots.length; i++) {
+        game.nextRound();
+        game.selectLocation(0.5, 0.5);
+        game.submitGuess();
+      }
+
+      expect(game.totalScore).toBe(125);
     });
   });
 });

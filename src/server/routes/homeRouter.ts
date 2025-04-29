@@ -13,4 +13,4 @@ export default router;
 
 const controller = new HomeController()
 
-router.use("/", controller.get);
+router.get("/", controller.get);
