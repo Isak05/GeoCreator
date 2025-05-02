@@ -1,7 +1,7 @@
 /**
- * The home router.
+ * The game router.
  *
- * @module routes/homeRouter
+ * @module routes/gameRouter
  * @author Isak Johansson Weckstén <ij222pv@student.lnu.se>
  */
 
