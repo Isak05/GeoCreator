@@ -16,12 +16,12 @@ import ImageModel from "../models/ImageModel.js";
 export default class {
   /**
    * Middleware to load a game document by its ID and attach it to the request object.
-   * 
+   *
    * @param req - The Express request object.
    * @param res - The Express response object.
    * @param next - The next middleware function in the stack.
    * @param id - The ID of the game to load.
-   * 
+   *
    * @throws Will call the next middleware with a 404 HTTP error if the game is not found.
    */
   async loadGame(
@@ -58,16 +58,16 @@ export default class {
 
   /**
    * Handles the creation of a new game.
-   * 
+   *
    * This method creates a new game entry in the database with default values
    * and redirects the client to the newly created game's page. If an error
    * occurs during the creation process, it responds with a 500 status code
    * and an error message.
-   * 
+   *
    * @param req - The HTTP request object.
    * @param res - The HTTP response object.
    * @param next - The next middleware function in the stack.
-   * 
+   *
    * @returns A Promise that resolves when the response is sent.
    */
   async post(req: Request, res: Response, next: Function) {
@@ -78,7 +78,7 @@ export default class {
         mapUrl: req.body.mapUrl ?? "./placeholder_map.webp",
         screenshots: [],
       });
-  
+
       res.redirect(`./game/${game._id.toString()}/edit`);
     } catch (error) {
       res.status(500).json({
@@ -107,10 +107,10 @@ export default class {
 
   /**
    * Handles the HTTP PUT request to update a game document.
-   * 
+   *
    * This method updates the properties of an existing game document
    * with the data provided in the request body.
-   * 
+   *
    * @param req - The HTTP request object.
    * @param res - The HTTP response object.
    * @param next - The next middleware function.
@@ -151,5 +151,23 @@ export default class {
     } catch (error) {
       return next(createHttpError(500));
     }
+  }
+
+  async getEdit(req: Request, res: Response, next: Function) {
+    res.render("game/edit", {
+      game: req.doc,
+    });
+  }
+
+  /**
+   * Handles the GET request for the upload page.
+   * Renders the "game/upload" view to display the upload interface.
+   *
+   * @param req - The HTTP request object.
+   * @param res - The HTTP response object.
+   * @param next - The next middleware function in the stack.
+   */
+  async uploadGet(req: Request, res: Response, next: Function) {
+    res.render("game/upload");
   }
 }
