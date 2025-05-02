@@ -39,6 +39,10 @@ const schema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  description: {
+    type: String,
+    required: false,
+  },
   mapUrl: {
     type: String,
     required: true,
