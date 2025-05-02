@@ -1,0 +1,10 @@
+<script type="module" src="./js/editForm.js"></script>
+
+Editing "<%= game.title %>" (ID: <%= game._id %>)
+
+<form action="./game/<%= game._id %>" id="edit-form" enctype="multipart/form-data" class="form">
+  <input type="text" name="title" placeholder="Title" value="<%= game.title %>" class="form-control mb-3" required>
+  <input type="text" name="description" placeholder="Description" value="<%= game.description %>" class="form-control mb-3">
+  <input type="file" name="mapUrl" placeholder="Map URL" class="form-control mb-3">
+  <input type="submit" value="Save changes" class="btn btn-primary">
+</form>
