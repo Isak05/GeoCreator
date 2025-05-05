@@ -27,6 +27,7 @@ stages:
   - test
   - deploy
 
+# Modified version of job taken from https://docs.gitlab.com/user/project/releases/release_cicd_examples/
 prepare_job:
   image: alpine:3.21.3
   stage: .pre                                              # This stage must run before the release stage
@@ -49,8 +50,9 @@ unit-test-job:
     - echo "Running unit tests..."
     - npm test
 
+# Modified version of job taken from https://docs.gitlab.com/user/project/releases/release_cicd_examples/
 release-job:
-  image: registry.gitlab.com/gitlab-org/cli:latest
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
   stage: deploy
   needs:
     - job: prepare_job
