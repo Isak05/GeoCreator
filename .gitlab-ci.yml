@@ -21,7 +21,7 @@
   - ssh-keyscan -H $REMOTE_HOST >> ~/.ssh/known_hosts
   - chmod 644 ~/.ssh/known_hosts
 
-image: docker:28.1.1-cli
+image: node:23.11.0-bookworm-slim
 
 stages:
   - build
@@ -32,14 +32,13 @@ build-job:
   stage: build
   script:
     - echo "Building the application..."
-    - docker build -t geocreator:latest -f Dockerfile.prod .
+    - npm ci
 
 unit-test-job:
   stage: test
   script:
-    - echo "Running unit tests... This will take about 10 seconds."
-    - sleep 10
-    - echo "Code coverage is 90%"
+    - echo "Running unit tests..."
+    - npm test
 
 manual-approval:
   stage: deploy
@@ -50,6 +49,7 @@ manual-approval:
     - main
 
 deploy-job:
+  image: docker:28.1.1-cli
   stage: deploy
   environment:
     name: production
