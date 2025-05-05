@@ -24,19 +24,14 @@
 image: node:23.11.0-bookworm-slim
 
 stages:
-  - build
   - test
   - deploy
-
-build-job:
-  stage: build
-  script:
-    - echo "Building the application..."
-    - npm ci
 
 unit-test-job:
   stage: test
   script:
+    - echo "Installing dependencies..."
+    - npm ci
     - echo "Running unit tests..."
     - npm test
 
