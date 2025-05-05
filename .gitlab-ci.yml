@@ -62,7 +62,8 @@ release-job:
   script:
     - echo "Creating release..."
   release:
-    name: "Release $VERSION"
+    name: $VERSION
+    description: "Release $VERSION"
     tag_name: $VERSION
 
 deploy-job:
