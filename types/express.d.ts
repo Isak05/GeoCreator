@@ -1,4 +1,5 @@
 import "express";
+import { File } from "node:buffer";
 
 declare module "express-serve-static-core" {
   interface Request {
@@ -10,5 +11,13 @@ declare module "express-serve-static-core" {
       };
       loggedInUser: any;
     };
+    file: {
+      fieldname: string;
+      originalname: string;
+      encoding: string;
+      mimetype: string;
+      buffer: Buffer;
+      size: number;
+    }
   }
 }
