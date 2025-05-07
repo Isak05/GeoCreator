@@ -229,5 +229,23 @@ export default class GeocreatorMap extends HTMLElement {
       this.removeAttribute("allowplacingmarker");
     }
   }
+
+  /**
+   * Retrieves the current position of the map marker.
+   * If no marker is present on the map, returns `null`.
+   *
+   * @returns An object containing the `x` (longitude) and `y` (latitude) coordinates of the marker,
+   *          or `null` if the marker is not set.
+   */
+  get markerPosition() {
+    if (!this.#mapMarker) {
+      return null;
+    }
+
+    return {
+      x: this.#mapMarker.getLatLng().lng,
+      y: this.#mapMarker.getLatLng().lat,
+    };
+  }
 }
 customElements.define("geocreator-map", GeocreatorMap);
