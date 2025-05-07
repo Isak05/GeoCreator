@@ -113,6 +113,16 @@ export default class GeocreatorMap extends HTMLElement {
     return ["src", "allowplacingmarker"];
   }
 
+  placeMarkerLink(x: number, y: number, callback?: Function) {
+    L.marker([y, x]).addTo(this.#leafletMap).on("click", (event: L.LeafletMouseEvent) => {
+      if (!callback) {
+        return;
+      }
+
+      callback();
+    });
+  }
+
   /**
    * Loads the specified URL as a map image.
    *
