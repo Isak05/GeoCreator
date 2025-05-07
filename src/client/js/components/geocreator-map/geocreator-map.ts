@@ -113,8 +113,15 @@ export default class GeocreatorMap extends HTMLElement {
     return ["src", "allowplacingmarker"];
   }
 
+  /**
+   * Places a marker on the map at the specified coordinates and optionally attaches a click event callback.
+   *
+   * @param x - The longitude of the marker's position.
+   * @param y - The latitude of the marker's position.
+   * @param callback - An optional function to be executed when the marker is clicked.
+   */
   placeMarkerLink(x: number, y: number, callback?: Function) {
-    L.marker([y, x]).addTo(this.#leafletMap).on("click", (event: L.LeafletMouseEvent) => {
+    L.marker([y, x]).addTo(this.#mapLayerGroup).on("click", (event: L.LeafletMouseEvent) => {
       if (!callback) {
         return;
       }
@@ -123,13 +130,25 @@ export default class GeocreatorMap extends HTMLElement {
     });
   }
 
+
+  /**
+   * Clears the map or resets its state.
+   * This method is intended to remove all markers, layers, or other elements
+   * from the map, effectively resetting it to an empty state.
+   */
+  clear() {
+    this.#mapLayerGroup.clearLayers();
+    this.#mapMarker?.remove();
+    this.#mapMarker = null;
+  }
+
   /**
    * Loads the specified URL as a map image.
    *
    * @param url The url of the map image to load.
    */
   #loadMap(url: string): L.ImageOverlay {
-    this.#mapLayerGroup.clearLayers();
+    this.clear()
 
     const overlay = L.imageOverlay(
       url,
@@ -140,7 +159,7 @@ export default class GeocreatorMap extends HTMLElement {
       {
         interactive: true,
       }
-    ).addTo(this.#mapLayerGroup);
+    ).addTo(this.#leafletMap);
 
     // Handle click events on the overlay to place a marker.
     overlay.addEventListener("click", this.#handlePlaceMarker.bind(this));
@@ -168,7 +187,7 @@ export default class GeocreatorMap extends HTMLElement {
     }
 
     if (this.#mapMarker) {
-      this.#mapLayerGroup.removeLayer(this.#mapMarker);
+      this.#mapMarker?.remove();
     }
 
     this.#mapMarker = L.marker(event.latlng);
