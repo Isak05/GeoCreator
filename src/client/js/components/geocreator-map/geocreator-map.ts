@@ -110,7 +110,7 @@ export default class GeocreatorMap extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ["src"];
+    return ["src", "allowplacingmarker"];
   }
 
   /**
@@ -153,6 +153,10 @@ export default class GeocreatorMap extends HTMLElement {
   }
 
   #handlePlaceMarker(event: L.LeafletMouseEvent) {
+    if (!this.hasAttribute("allowplacingmarker")) {
+      return;
+    }
+
     if (this.#mapMarker) {
       this.#mapLayerGroup.removeLayer(this.#mapMarker);
     }
@@ -187,6 +191,32 @@ export default class GeocreatorMap extends HTMLElement {
       this.#loadMap(value);
     } else {
       this.removeAttribute("src");
+    }
+  }
+
+  /**
+   * Gets the value of the `allowplacingmarker` attribute.
+   * This attribute determines whether placing markers on the map is allowed.
+   * 
+   * @returns The value of the `allowplacingmarker` attribute, or `null` if the attribute is not set.
+   */
+  get allowplacingmarker(): boolean {
+    return this.getAttribute("allowplacingmarker") !== null;
+  }
+
+  /**
+   * Sets the `allowplacingmarker` attribute on the element.
+   * If a non-null value is provided, the attribute is set to the given value.
+   * If `null` is provided, the attribute is removed from the element.
+   *
+   * @param value - The value to set for the `allowplacingmarker` attribute. 
+   *                If `null`, the attribute will be removed.
+   */
+  set allowplacingmarker(value: string | boolean) {
+    if (value !== null && value !== false) {
+      this.setAttribute("allowplacingmarker", value.toString());
+    } else {
+      this.removeAttribute("allowplacingmarker");
     }
   }
 }
