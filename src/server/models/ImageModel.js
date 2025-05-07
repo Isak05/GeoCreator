@@ -9,7 +9,13 @@ import mongoose from "mongoose";
 import BASE_SCHEMA from "./baseSchema.js";
 import crypto from "node:crypto";
 
-function sha256HashFromBuffer(buffer) {
+/**
+ * Generates a SHA-256 hash from a binarylike argument.
+ *
+ * @param {crypto.BinaryLike} buffer 
+ * @returns {String}
+ */
+function getSha256Sum(buffer) {
   const hash = crypto.createHash("sha256");
   hash.update(buffer);
   return hash.digest("hex");
@@ -38,12 +44,21 @@ const schema = new mongoose.Schema({
      * to the database.
      *
      * @async
-     * @param {Object} file - The file object to be uploaded.
+     * @param {Object | String} file - The file object to be uploaded.
      * @param {Buffer} file.buffer - The buffer containing the file's binary data.
      * @returns {Promise<Object>} The uploaded image document or the existing image document if it already exists.
      */
     async upload(file) {
-      const sha256 = sha256HashFromBuffer(file.buffer);
+      let base64 = null;
+      if (typeof file === "string") {
+        base64 = file;
+      } else if (file && file.buffer) {
+        base64 = file.buffer.toString("base64");
+      } else {
+        throw new Error("Invalid file object");
+      }
+
+      const sha256 = getSha256Sum(base64);
       const existingImage = await this.findOne({ sha256 });
       
       if (existingImage) {
@@ -51,7 +66,7 @@ const schema = new mongoose.Schema({
       }
 
       const image = new this();
-      image.content = file.buffer.toString("base64");
+      image.content = base64;
       image.sha256 = sha256;
 
       await image.save();
