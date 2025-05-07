@@ -44,6 +44,29 @@ export default class {
     }
   }
 
+  async loadScreenshot(
+    req: Request,
+    res: Response,
+    next: Function,
+    id: string
+  ): Promise<void> {
+    try {
+      req.screenshot = req.doc.screenshots.find((screenshot: any) => {
+        return screenshot.id === id;
+      });
+      
+      if (!req.screenshot) {
+        throw new Error();
+      }
+    } catch (error) {
+      res.status(404).json({
+        message: "Screenshot not found",
+      });
+    }
+
+    next();
+  }
+
   /**
    * Handles the GET request to render the game index page.
    *
