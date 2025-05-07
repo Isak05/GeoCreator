@@ -228,12 +228,10 @@ export default class {
       game.screenshots.push(screenshot);
       await game.save();
 
-      const screenshotId =
-        game.screenshots[game.screenshots.length - 1]._id.toString();
+      const newScreenshot = game.screenshots[game.screenshots.length - 1];
+      const screenshotId = newScreenshot._id.toString();
       const location = `./game/${game._id.toString()}/screenshot/${screenshotId}`;
-      res.status(201).location(location).json({
-        url: location,
-      });
+      res.status(201).location(location).json(newScreenshot);
     } catch (error) {
       res.status(500).json({
         message: "Internal server error",
