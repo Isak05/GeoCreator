@@ -35,3 +35,5 @@ router.put("/:gameId/screenshot/:screenshotId", upload.single("screenshot"), con
 router.delete("/:gameId/screenshot/:screenshotId", controller.deleteScreenshot);
 
 router.get("/:gameId/edit", controller.getEdit);
+
+router.get("/:gameId/edit/location", controller.getEditLocation);

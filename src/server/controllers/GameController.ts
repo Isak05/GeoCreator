@@ -182,6 +182,12 @@ export default class {
     });
   }
 
+  async getEditLocation(req: Request, res: Response, next: Function) {
+    res.render("game/editLocation", {
+      game: req.doc,
+    });
+  }
+
   /**
    * Handles the GET request for the upload page.
    * Renders the "game/upload" view to display the upload interface.
