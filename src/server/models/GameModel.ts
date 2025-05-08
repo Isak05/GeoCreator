@@ -22,6 +22,10 @@ const vec2Schema = new mongoose.Schema({
 });
 
 const screenshotSchema = new mongoose.Schema({
+  _id: {
+    type: mongoose.Types.ObjectId,
+    auto: true,
+  },
   url: {
     type: String,
     required: true,
@@ -31,7 +35,7 @@ const screenshotSchema = new mongoose.Schema({
     required: true,
   },
 }, {
-  _id: false,
+  _id: true,
 });
 
 const schema = new mongoose.Schema({

@@ -1,0 +1,26 @@
+<link rel="stylesheet" href="./css/editLocation.css">
+<script type="module" src="./js/components/geocreator-map/index.js"></script>
+<script type="module" src="./js/editLocation.js"></script>
+
+<form action="./game/<%= game._id %>/screenshot" method="post" id="add-screenshot-form" enctype="multipart/form-data">
+  <fieldset>
+    <legend>Add new screenshot</legend>
+    <input type="file" name="image" class="form-control mb-3" accept="image/*" required>
+    <input type="hidden" name="x" id="x-input" required>
+    <input type="hidden" name="y" id="y-input" required>
+    <input type="button" class="btn btn-primary" value="Pick location" id="pick-location-button">
+    <input type="submit" class="btn btn-primary" value="Add">
+  </fieldset>
+</form>
+
+<geocreator-map src="./img/placeholder_map.webp" class="w-100" id="map"></geocreator-map>
+
+<div class="fullscreen shadow fluid-container d-flex justify-content-center align-items-center" hidden id="pick-location-container">
+  <div class="d-flex flex-column w-75 h-75">
+    <geocreator-map src="./img/placeholder_map.webp" allowplacingmarker class="w-100 h-100" id="pick-location-map"></geocreator-map>
+    <form action="" class="d-flex flex-row spacing gap-2" id="pick-location-form">
+      <input type="submit" class="btn btn-primary w-100" value="Cancel" id="cancel-pick-location">
+      <input type="submit" class="btn btn-primary w-100" value="Pick location" id="submit-pick-location">
+    </form>
+  </div>
+</div>

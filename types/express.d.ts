@@ -4,6 +4,7 @@ import { File } from "node:buffer";
 declare module "express-serve-static-core" {
   interface Request {
     doc: any;
+    screenshot: any;
     session: {
       flash: {
         message: string;

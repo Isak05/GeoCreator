@@ -17,13 +17,23 @@ const upload = multer({
 });
 const controller = new GameController();
 
-router.param("id", controller.loadGame);
+router.param("gameId", controller.loadGame);
+router.param("screenshotId", controller.loadScreenshot);
 
 router.get("/", controller.getAll);
 router.post("/", controller.post);
 
-router.get("/:id", controller.get);
-router.put("/:id", upload.single("mapUrl"), controller.put);
-router.get("/:id/data", controller.getData);
+router.get("/:gameId", controller.get);
+router.put("/:gameId", upload.single("mapUrl"), controller.put);
 
-router.get("/:id/edit", controller.getEdit);
+router.get("/:gameId/data", controller.getData);
+
+router.post("/:gameId/screenshot", upload.single("image"), controller.postScreenshot);
+
+router.get("/:gameId/screenshot/:screenshotId", controller.getScreenshot);
+router.put("/:gameId/screenshot/:screenshotId", upload.single("screenshot"), controller.putScreenshot);
+router.delete("/:gameId/screenshot/:screenshotId", controller.deleteScreenshot);
+
+router.get("/:gameId/edit", controller.getEdit);
+
+router.get("/:gameId/edit/location", controller.getEditLocation);

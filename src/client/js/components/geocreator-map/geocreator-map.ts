@@ -110,7 +110,36 @@ export default class GeocreatorMap extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ["src"];
+    return ["src", "allowplacingmarker"];
+  }
+
+  /**
+   * Places a marker on the map at the specified coordinates and optionally attaches a click event callback.
+   *
+   * @param x - The longitude of the marker's position.
+   * @param y - The latitude of the marker's position.
+   * @param callback - An optional function to be executed when the marker is clicked.
+   */
+  placeMarkerLink(x: number, y: number, callback?: Function) {
+    L.marker([y, x]).addTo(this.#mapLayerGroup).on("click", (event: L.LeafletMouseEvent) => {
+      if (!callback) {
+        return;
+      }
+
+      callback();
+    });
+  }
+
+
+  /**
+   * Clears the map or resets its state.
+   * This method is intended to remove all markers, layers, or other elements
+   * from the map, effectively resetting it to an empty state.
+   */
+  clear() {
+    this.#mapLayerGroup.clearLayers();
+    this.#mapMarker?.remove();
+    this.#mapMarker = null;
   }
 
   /**
@@ -119,7 +148,7 @@ export default class GeocreatorMap extends HTMLElement {
    * @param url The url of the map image to load.
    */
   #loadMap(url: string): L.ImageOverlay {
-    this.#mapLayerGroup.clearLayers();
+    this.clear()
 
     const overlay = L.imageOverlay(
       url,
@@ -130,7 +159,7 @@ export default class GeocreatorMap extends HTMLElement {
       {
         interactive: true,
       }
-    ).addTo(this.#mapLayerGroup);
+    ).addTo(this.#leafletMap);
 
     // Handle click events on the overlay to place a marker.
     overlay.addEventListener("click", this.#handlePlaceMarker.bind(this));
@@ -153,8 +182,12 @@ export default class GeocreatorMap extends HTMLElement {
   }
 
   #handlePlaceMarker(event: L.LeafletMouseEvent) {
+    if (!this.hasAttribute("allowplacingmarker")) {
+      return;
+    }
+
     if (this.#mapMarker) {
-      this.#mapLayerGroup.removeLayer(this.#mapMarker);
+      this.#mapMarker?.remove();
     }
 
     this.#mapMarker = L.marker(event.latlng);
@@ -188,6 +221,50 @@ export default class GeocreatorMap extends HTMLElement {
     } else {
       this.removeAttribute("src");
     }
+  }
+
+  /**
+   * Gets the value of the `allowplacingmarker` attribute.
+   * This attribute determines whether placing markers on the map is allowed.
+   * 
+   * @returns The value of the `allowplacingmarker` attribute, or `null` if the attribute is not set.
+   */
+  get allowplacingmarker(): boolean {
+    return this.getAttribute("allowplacingmarker") !== null;
+  }
+
+  /**
+   * Sets the `allowplacingmarker` attribute on the element.
+   * If a non-null value is provided, the attribute is set to the given value.
+   * If `null` is provided, the attribute is removed from the element.
+   *
+   * @param value - The value to set for the `allowplacingmarker` attribute. 
+   *                If `null`, the attribute will be removed.
+   */
+  set allowplacingmarker(value: string | boolean) {
+    if (value !== null && value !== false) {
+      this.setAttribute("allowplacingmarker", value.toString());
+    } else {
+      this.removeAttribute("allowplacingmarker");
+    }
+  }
+
+  /**
+   * Retrieves the current position of the map marker.
+   * If no marker is present on the map, returns `null`.
+   *
+   * @returns An object containing the `x` (longitude) and `y` (latitude) coordinates of the marker,
+   *          or `null` if the marker is not set.
+   */
+  get markerPosition() {
+    if (!this.#mapMarker) {
+      return null;
+    }
+
+    return {
+      x: this.#mapMarker.getLatLng().lng,
+      y: this.#mapMarker.getLatLng().lat,
+    };
   }
 }
 customElements.define("geocreator-map", GeocreatorMap);
