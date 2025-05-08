@@ -7,6 +7,7 @@
 
 import express from "express";
 import GameController from "../controllers/GameController.js";
+import GameModel from "../models/GameModel.js";
 import multer from "multer";
 
 const router = express.Router();
@@ -24,16 +25,16 @@ router.get("/", controller.getAll);
 router.post("/", controller.post);
 
 router.get("/:gameId", controller.get);
-router.put("/:gameId", upload.single("mapUrl"), controller.put);
+router.put("/:gameId", GameModel.checkIfAllowedToEdit, upload.single("mapUrl"), controller.put);
 
 router.get("/:gameId/data", controller.getData);
 
-router.post("/:gameId/screenshot", upload.single("image"), controller.postScreenshot);
+router.post("/:gameId/screenshot", GameModel.checkIfAllowedToEdit, upload.single("image"), controller.postScreenshot);
 
 router.get("/:gameId/screenshot/:screenshotId", controller.getScreenshot);
-router.put("/:gameId/screenshot/:screenshotId", upload.single("screenshot"), controller.putScreenshot);
-router.delete("/:gameId/screenshot/:screenshotId", controller.deleteScreenshot);
+router.put("/:gameId/screenshot/:screenshotId", GameModel.checkIfAllowedToEdit, upload.single("screenshot"), controller.putScreenshot);
+router.delete("/:gameId/screenshot/:screenshotId", GameModel.checkIfAllowedToEdit, controller.deleteScreenshot);
 
-router.get("/:gameId/edit", controller.getEdit);
+router.get("/:gameId/edit", GameModel.checkIfAllowedToEdit, controller.getEdit);
 
-router.get("/:gameId/edit/location", controller.getEditLocation);
+router.get("/:gameId/edit/location", GameModel.checkIfAllowedToEdit, controller.getEditLocation);

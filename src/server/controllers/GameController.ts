@@ -104,6 +104,7 @@ export default class {
         description: req.body.description ?? "",
         mapUrl: req.body.mapUrl ?? "./placeholder_map.webp",
         screenshots: [],
+        creator: req.session.loggedInUser.id,
       });
 
       res.redirect(`./game/${game._id.toString()}/edit`);
