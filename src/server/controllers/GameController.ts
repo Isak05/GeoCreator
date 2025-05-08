@@ -40,7 +40,10 @@ export default class {
       logger.silly(`Game with id ${id} found`);
       next();
     } catch (error) {
-      return next(createHttpError(404));
+      res.status(404).json({
+        message: "Game not found",
+      });
+      return;
     }
   }
 
@@ -62,6 +65,7 @@ export default class {
       res.status(404).json({
         message: "Screenshot not found",
       });
+      return;
     }
 
     next();

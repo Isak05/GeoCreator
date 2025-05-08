@@ -3,7 +3,7 @@ import MyAlert from "./components/my-alert/my-alert.js";
 import Modal from "./utils/modal/modal.js";
 
 type Screenshot = {
-  id: string;
+  _id: string;
   url: string;
   correctAnswer: {
     x: number;
@@ -65,7 +65,7 @@ async function deleteScreenshot(id: string) {
   }
 
   gameData.screenshots = gameData.screenshots.filter(
-    (screenshot: Screenshot) => screenshot.id !== id
+    (screenshot: Screenshot) => screenshot._id !== id
   );
 
   const alert = new MyAlert("success", "Screenshot deleted successfully.");
@@ -118,7 +118,7 @@ async function handleMarkerClick(screenshot: Screenshot) {
     return;
   }
 
-  return deleteScreenshot(screenshot.id);
+  return deleteScreenshot(screenshot._id);
 }
 
 // Event listeners
@@ -176,6 +176,12 @@ addScreenshotForm?.addEventListener("submit", async (event) => {
   gameData.screenshots.push(data);
   map.clear();
   markScreenshots(gameData.screenshots);
+
+  const alert = new MyAlert(
+    "success",
+    "Screenshot added successfully.",
+  );
+  document.querySelector("#flash-div").appendChild(alert);
 });
 
 (async () => {
