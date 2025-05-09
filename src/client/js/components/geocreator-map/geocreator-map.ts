@@ -68,13 +68,13 @@ export default class GeocreatorMap extends HTMLElement {
    */
   async connectedCallback() {
     this.#leafletMap = L.map(this.#mapElement, {
-      center: [0.5, 0.5],
+      center: [0, 0],
       zoom: 10,
       zoomSnap: 0,
       wheelPxPerZoomLevel: 80,
       maxBounds: [
-        [-0.5, -0.5],
-        [1.5, 1.5],
+        [-1, -1],
+        [1, 1],
       ],
       minZoom: 8,
       maxBoundsViscosity: 0.5,
@@ -147,14 +147,19 @@ export default class GeocreatorMap extends HTMLElement {
    *
    * @param url The url of the map image to load.
    */
-  #loadMap(url: string): L.ImageOverlay {
+  async #loadMap(url: string): Promise<L.ImageOverlay> {
     this.clear()
 
+    const { width, height } = await this.#getImageResolutionFromUrl(url);
+    const average = (width + height) / 2;
+    const normalizedWidth = width / average;
+    const normalizedHeight = height / average;
+    
     const overlay = L.imageOverlay(
       url,
       [
-        [0, 0],
-        [1, 1],
+        [-normalizedHeight / 2, -normalizedWidth / 2],
+        [normalizedHeight / 2, normalizedWidth / 2],
       ],
       {
         interactive: true,
@@ -181,6 +186,12 @@ export default class GeocreatorMap extends HTMLElement {
     );
   }
 
+  /**
+   * Handles the placement of a marker on the map when a Leaflet mouse event occurs.
+   * 
+   * @param event - The Leaflet mouse event containing the latitude and longitude of the click location.
+   * @fires markerplaced - A custom event dispatched when a marker is placed on the map.
+   */
   #handlePlaceMarker(event: L.LeafletMouseEvent) {
     if (!this.hasAttribute("allowplacingmarker")) {
       return;
@@ -202,6 +213,23 @@ export default class GeocreatorMap extends HTMLElement {
       })
       
     );
+  }
+  
+  /**
+   * Retrieves the resolution (width and height) of an image from a given URL.
+   *
+   * @param url - The URL of the image to retrieve the resolution for.
+   * @returns A promise that resolves to an object containing the width and height of the image.
+   */
+  async #getImageResolutionFromUrl(url: string): Promise<{ width: number; height: number }> {
+    const image = document.createElement("img");
+    image.src = url;
+
+    return new Promise((resolve) => {
+      image.onload = () => {
+        resolve({ width: image.width, height: image.height });
+      };
+    });
   }
 
   /**
