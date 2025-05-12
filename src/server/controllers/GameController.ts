@@ -31,7 +31,7 @@ export default class {
     id: string
   ): Promise<void> {
     try {
-      req.doc = await GameModel.findById(id).exec();
+      req.doc = await GameModel.findById(id).populate("creator").exec();
 
       if (!req.doc) {
         throw new Error();
@@ -80,7 +80,11 @@ export default class {
    * @returns A rendered view of the "game/index" page.
    */
   async get(req: Request, res: Response, next: Function) {
-    res.render("game/index");
+    res.render("game/index", {
+      layout: "layouts/game",
+      game: req.doc,
+      editable: req.doc.creator?._id?.toString() === req.session.loggedInUser?.id,
+    });
   }
 
   /**

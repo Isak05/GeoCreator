@@ -1,22 +1,34 @@
 <link rel="stylesheet" href="./css/game.css" />
 <script type="module" src="./js/index.js"></script>
 
-<geocreator-timer id="timer"></geocreator-timer>
-<img src="" alt="Screenshot" id="screenshot" />
+<div id="pre-start-div" class="container">
+  <h1 class="mt-4"><%= game.title %> <span class="h5 text-muted">by <%= game.creator?.username %></span></h1>
+  <div class="d-flex gap-2 mt-3">
+    <a href="" class="btn btn-success" id="play-button">Play</a>
+    <% if (editable) { %>
+      <a href="./game/<%= game._id %>/edit" class="btn btn-secondary">Edit</a>
+    <% } %>
+  </div>
+</div>
 
-<div id="map-container">
-  <geocreator-map src="./img/placeholder_map.webp" id="map" allowplacingmarker></geocreator-map>
+<div id="game-div" class="position-relative h-100 w-100" hidden>
+  <geocreator-timer id="timer" class="position-absolute"></geocreator-timer>
+  <img src="" alt="Screenshot" id="screenshot" class="mw-100 mh-100" />
   
-  <form action="" id="guess-form">
-    <input type="submit" class="btn btn-primary" value="Submit guess"></button>
-  </form>
-</div>
-
-<div id="round-over">
-  <p>Score: <span id="score"></span></p>
-  <button id="next-button">Next round</button>
-</div>
-
-<div id="game-over">
-  <p>Game over! Your score: <span id="total-score"></span></p>
+  <div id="map-container">
+    <geocreator-map src="<%= game.mapUrl %>" id="map" allowplacingmarker class="w-100 h-100"></geocreator-map>
+  
+    <form action="" id="guess-form">
+      <input type="submit" class="btn btn-primary" value="Submit guess"></button>
+    </form>
+  </div>
+  
+  <div id="round-over" hidden>
+    <p>Score: <span id="score"></span></p>
+    <button id="next-button">Next round</button>
+  </div>
+  
+  <div id="game-over" hidden>
+    <p>Game over! Your score: <span id="total-score"></span></p>
+  </div>
 </div>
