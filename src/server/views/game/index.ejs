@@ -1,8 +1,9 @@
 <link rel="stylesheet" href="./css/game.css" />
 <script type="module" src="./js/index.js"></script>
 
-<div id="pre-start-div" class="container">
+<div id="pre-start-div" class="container-sm">
   <h1 class="mt-4"><%= game.title %> <span class="h5 text-muted">by <%= game.creator?.username %></span></h1>
+  <p class="text-muted" style="white-space: pre-wrap;"><%= game.description %></p>
   <div class="d-flex gap-2 mt-3">
     <a href="" class="btn btn-success" id="play-button">Play</a>
     <% if (editable) { %>
