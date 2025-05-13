@@ -15,6 +15,7 @@ gameUI.nextButton = document.querySelector("#next-button");
 gameUI.timerElement = document.querySelector("#timer");
 gameUI.screenshotImage = document.querySelector("#screenshot");
 gameUI.submitForm = document.querySelector("#guess-form");
+gameUI.highscoreTableBody = document.querySelector("#highscore-table > tbody");
 
 async function play() {
   document.querySelector("#pre-start-div").setAttribute("hidden", "");

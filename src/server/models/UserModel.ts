@@ -9,6 +9,17 @@ import mongoose, { HydratedDocument } from 'mongoose'
 import * as argon2 from 'argon2'
 import BASE_SCHEMA from './baseSchema.js'
 
+const convertObject = Object.freeze({
+  getters: true,
+  versionKey: false,
+  transform: (doc: HydratedDocument<any>, ret: any) => {
+    // Remove the password and _id fields from the returned object
+    delete ret.password;
+    delete ret._id;
+    return ret;
+  },
+});
+
 const schema = new mongoose.Schema({
   username: {
     type: String,
@@ -47,7 +58,9 @@ const schema = new mongoose.Schema({
     async isUsernameTaken(username: string): Promise<boolean> {
       return (await this.exists({ username })) !== null;
     },
-  }
+  },
+  toObject: convertObject,
+  toJSON: convertObject,
 })
 
 schema.add(BASE_SCHEMA)

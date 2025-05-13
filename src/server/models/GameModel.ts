@@ -46,6 +46,26 @@ const screenshotSchema = new mongoose.Schema(
   }
 );
 
+const highscoreSchema = new mongoose.Schema({
+  _id: {
+    type: mongoose.Types.ObjectId,
+    auto: true,
+  },
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: UserModel,
+    required: true,
+  },
+  score: {
+    type: Number,
+    required: true,
+  },
+  time: {
+    type: Number,
+    required: true,
+  },
+});
+
 const schema = new mongoose.Schema(
   {
     title: {
@@ -68,6 +88,10 @@ const schema = new mongoose.Schema(
       type: Schema.Types.ObjectId,
       ref: UserModel,
       required: true,
+    },
+    highscoreList: {
+      type: [highscoreSchema],
+      required: false,
     },
   },
   {

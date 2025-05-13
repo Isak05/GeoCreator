@@ -38,3 +38,6 @@ router.delete("/:gameId/screenshot/:screenshotId", GameModel.checkIfAllowedToEdi
 router.get("/:gameId/edit", GameModel.checkIfAllowedToEdit, controller.getEdit);
 
 router.get("/:gameId/edit/location", GameModel.checkIfAllowedToEdit, controller.getEditLocation);
+
+router.get("/:gameId/highscore", controller.getHighscore);
+router.post("/:gameId/highscore", controller.postHighscore);

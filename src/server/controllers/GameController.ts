@@ -31,7 +31,9 @@ export default class {
     id: string
   ): Promise<void> {
     try {
-      req.doc = await GameModel.findById(id).populate("creator").exec();
+      req.doc = await GameModel.findById(id)
+        .populate(["creator", "highscoreList.user"])
+        .exec();
 
       if (!req.doc) {
         throw new Error();
@@ -83,7 +85,8 @@ export default class {
     res.render("game/index", {
       layout: "layouts/game",
       game: req.doc,
-      editable: req.doc.creator?._id?.toString() === req.session.loggedInUser?.id,
+      editable:
+        req.doc.creator?._id?.toString() === req.session.loggedInUser?.id,
     });
   }
 
@@ -267,11 +270,11 @@ export default class {
 
   /**
    * Handles the updating of a screenshot for a game.
-   * 
+   *
    * This method processes a request to update a screenshot associated with a game.
    * It supports uploading a new image file, updating the screenshot's URL, and
    * modifying the correct answer coordinates (x and y).
-   * 
+   *
    * @param req - The HTTP request object.
    * @param res - The HTTP response object used to send the response back to the client.
    * @param next - The next middleware function in the request-response cycle.
@@ -325,5 +328,74 @@ export default class {
         message: "Internal server error",
       });
     }
+  }
+
+  /**
+   * Handles the submission of a high score for a game.
+   *
+   * This method checks if the logged-in user already has a high score in the game's high score list.
+   * If a high score exists, it updates the score and time if the new score is higher or if the score
+   * is the same but the time is better. If no high score exists for the user, it adds a new entry
+   * to the high score list.
+   *
+   * @param req - The HTTP request object.
+   * @param res - The HTTP response object used to send the response back to the client.
+   * @param next - The next middleware function in the Express.js request-response cycle.
+   * @returns A JSON response with a status code and a message indicating the result.
+   */
+  async postHighscore(req: Request, res: Response, next: Function) {
+    try {
+      if (!req.session.loggedInUser) {
+        return res.status(401).json({
+          message: "Unauthorized",
+        });
+      }
+
+      const game = req.doc;
+      game.highscoreList ??= [];
+
+      const existingHighscore = game.highscoreList.find((highscore: any) => {
+        return highscore.user.id === req.session.loggedInUser?.id;
+      });
+
+      if (existingHighscore) {
+        if (
+          req.body?.score > existingHighscore.score ||
+          (req.body?.score === existingHighscore.score &&
+            req.body?.time < existingHighscore.time)
+        ) {
+          existingHighscore.score = req.body?.score;
+          existingHighscore.time = req.body?.time;
+          await game.save();
+        }
+
+        res.status(200).json(game.highscoreList);
+      } else {
+        game.highscoreList.push({
+          user: req.session.loggedInUser?.id,
+          score: req.body?.score,
+          time: req.body?.time,
+        });
+        await game.save();
+        await game.populate("highscoreList.user");
+
+        res.status(201).json(game.highscoreList);
+      }
+    } catch (error) {
+      res.status(500).json({
+        message: "Internal server error",
+      });
+    }
+  }
+
+  /**
+   * Handles the retrieval of the highscore list for a game.
+   *
+   * @param req - The HTTP request object.
+   * @param res - The HTTP response object used to send the highscore list as a JSON response.
+   * @param next - The next middleware function in the request-response cycle.
+   */
+  async getHighscore(req: Request, res: Response, next: Function) {
+    res.json(req.doc?.highscoreList.toObject());
   }
 }
