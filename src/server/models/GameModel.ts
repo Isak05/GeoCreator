@@ -76,9 +76,9 @@ const schema = new mongoose.Schema(
     statics: {
       checkIfAllowedToEdit(req: Request, res: Response, next: Function) {
         if (
-          req.doc.creator?.toString() === undefined ||
+          req.doc.creator?.id === undefined ||
           req.session.loggedInUser?.id === undefined ||
-          req.doc.creator?.toString() !== req.session.loggedInUser.id
+          req.doc.creator?.id !== req.session.loggedInUser.id
         ) {
           res.status(403).json({
             message: "Forbidden",
