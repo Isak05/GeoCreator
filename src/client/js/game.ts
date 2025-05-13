@@ -12,9 +12,20 @@ type Screenshot = {
   correctAnswer: Vec2;
 };
 
+type User = {
+  username: string;
+}
+
+export type Highscore = {
+  user: User;
+  score: number;
+  time: number;
+};
+
 type GameData = {
   mapUrl: string;
   screenshots: Screenshot[];
+  highscoreList: Highscore[];
 };
 
 enum GameState {
@@ -201,6 +212,29 @@ export default class Game {
     );
   }
 
+  async postHighscore(score: number, time: number): Promise<void> {
+    const highscore = {
+      score,
+      time,
+    };
+
+    const url = new URL("../highscore", this.#url + "/");
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(highscore),
+    });
+
+    if (!response.ok) {
+      throw new Error("failed to post highscore");
+    }
+    const data = await response.json();
+
+    this.#gameData.highscoreList = data;
+  }
+
   /**
    * @returns The URL of the map image
    */
@@ -217,5 +251,9 @@ export default class Game {
 
   get gameOver(): boolean {
     return this.#state === GameState.GAME_OVER;
+  }
+
+  get highscores(): Highscore[] {
+    return this.#gameData?.highscoreList;
   }
 }

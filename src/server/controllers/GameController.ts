@@ -31,7 +31,9 @@ export default class {
     id: string
   ): Promise<void> {
     try {
-      req.doc = await GameModel.findById(id).populate("creator").exec();
+      req.doc = await GameModel.findById(id)
+        .populate(["creator", "highscoreList.user"])
+        .exec();
 
       if (!req.doc) {
         throw new Error();
@@ -330,12 +332,12 @@ export default class {
 
   /**
    * Handles the submission of a high score for a game.
-   * 
+   *
    * This method checks if the logged-in user already has a high score in the game's high score list.
    * If a high score exists, it updates the score and time if the new score is higher or if the score
    * is the same but the time is better. If no high score exists for the user, it adds a new entry
    * to the high score list.
-   * 
+   *
    * @param req - The HTTP request object.
    * @param res - The HTTP response object used to send the response back to the client.
    * @param next - The next middleware function in the Express.js request-response cycle.
@@ -343,11 +345,17 @@ export default class {
    */
   async postHighscore(req: Request, res: Response, next: Function) {
     try {
+      if (!req.session.loggedInUser) {
+        return res.status(401).json({
+          message: "Unauthorized",
+        });
+      }
+
       const game = req.doc;
       game.highscoreList ??= [];
 
       const existingHighscore = game.highscoreList.find((highscore: any) => {
-        return highscore.user.toString() === req.session.loggedInUser?.id;
+        return highscore.user.id === req.session.loggedInUser?.id;
       });
 
       if (existingHighscore) {
@@ -359,16 +367,9 @@ export default class {
           existingHighscore.score = req.body?.score;
           existingHighscore.time = req.body?.time;
           await game.save();
-
-          res.status(200).json({
-            message: "Highscore updated",
-          });
-          return;
         }
 
-        res.status(200).json({
-          message: "Highscore not updated",
-        });
+        res.status(200).json(game.highscoreList);
       } else {
         game.highscoreList.push({
           user: req.session.loggedInUser?.id,
@@ -376,10 +377,9 @@ export default class {
           time: req.body?.time,
         });
         await game.save();
+        await game.populate("highscoreList.user");
 
-        res.status(201).json({
-          message: "Highscore added",
-        });
+        res.status(201).json(game.highscoreList);
       }
     } catch (error) {
       res.status(500).json({
@@ -396,6 +396,6 @@ export default class {
    * @param next - The next middleware function in the request-response cycle.
    */
   async getHighscore(req: Request, res: Response, next: Function) {
-    res.json(req.doc?.highscoreList);
+    res.json(req.doc?.highscoreList.toObject());
   }
 }

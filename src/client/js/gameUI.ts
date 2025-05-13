@@ -8,7 +8,8 @@
 
 import GeocreatorMap from "./components/geocreator-map/index.js";
 import GeocreatorTimer from "./components/geocreator-timer/geocreator-timer.js";
-import Game from "./game.js";
+import Game, { Highscore } from "./game.js";
+import highscoreTableRowTemplate from "./highscoreTableRow.html.js";
 
 export default class GameUI {
   #mapElement: GeocreatorMap = null;
@@ -20,8 +21,10 @@ export default class GameUI {
   #timerElement: GeocreatorTimer = null;
   #screenshotImage: HTMLImageElement = null;
   #submitForm: HTMLFormElement = null;
+  #highscoreTableBody: HTMLTableSectionElement = null;
   #game: Game = null;
   #gameStarted: boolean = false;
+  #totalTimePassed = 0;
 
   /**
    * Constructs a new instance of the class.
@@ -165,15 +168,37 @@ export default class GameUI {
   }
 
   /**
+   * Sets the highscore table body element.
+   *
+   * @param tableBody - The HTMLTableSectionElement to be used as the highscore table.
+   * @throws {TypeError} If the provided table is not an instance of HTMLTableSectionElement.
+   */
+  set highscoreTableBody(tableBody: HTMLTableSectionElement) {
+    if (!(tableBody instanceof HTMLTableSectionElement)) {
+      throw new TypeError("expected an HTMLTableSectionElement");
+    }
+
+    this.#highscoreTableBody = tableBody;
+  }
+
+  /**
    * Progresses to the next round of the game.
    * This method updates the game state, including the map and screenshot.
    * It also resets the timer for the next round.
    */
-  #nextRound() {
+  async #nextRound() {
+    this.#totalTimePassed +=
+      this.#timerElement.totaltime - this.#timerElement.timeleft;
     this.#roundOverDiv.hidden = true;
     if (this.#game.gameOver) {
       this.#gameOverDiv.hidden = false;
       this.#totalScoreSpan.innerText = this.#game.totalScore.toString();
+
+      await this.#game.postHighscore(
+        this.#game.totalScore,
+        this.#totalTimePassed / 1000
+      );
+      this.#renderHighscoreTable();
       return;
     }
 
@@ -196,6 +221,35 @@ export default class GameUI {
     this.#scoreSpan.innerText = score.toString();
     this.#roundOverDiv.hidden = false;
     this.#timerElement.stopped = true;
+  }
+
+  #renderHighscoreTable() {
+    // Clear the table body before rendering
+    this.#highscoreTableBody.innerHTML = "";
+
+    // Sort highscores according to score and time.
+    const sortedHighscores = this.#game.highscores.sort(
+      (a: Highscore, b: Highscore) => {
+        if (a.score === b.score) {
+          return a.time - b.time;
+        }
+        return b.score - a.score;
+      }
+    );
+
+    // Create a new row for each highscore and append it to the table body.
+    for (const [index, highscore] of sortedHighscores.entries()) {
+      const row = highscoreTableRowTemplate.content.cloneNode(
+        true
+      ) as HTMLTableRowElement;
+
+      row.querySelector(".rank").textContent = `${index + 1}.`;
+      row.querySelector(".name").textContent = highscore.user.username;
+      row.querySelector(".score").textContent = highscore.score.toString();
+      row.querySelector(".time").textContent = highscore.time.toString();
+
+      this.#highscoreTableBody.appendChild(row);
+    }
   }
 
   /**
