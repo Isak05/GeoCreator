@@ -43,9 +43,6 @@ export default class Game {
     if (typeof url !== "string" && !(url instanceof URL)) {
       throw new TypeError("non-url argument");
     }
-    history.replaceState({
-      game: this,
-    }, "GeoCreator");
 
     this.#url = new URL(url);
   }
