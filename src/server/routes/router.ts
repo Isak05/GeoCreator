@@ -23,6 +23,12 @@ router.use("/game", gameRouter);
 router.use("/auth", authRouter);
 router.use("/upload", uploadRouter);
 router.use("/my-games", myGamesRouter);
+router.get("/privacy-policy", (req, res) => {
+  res.render("legal/privacy-policy");
+});
+router.get("/contact", (req, res) => {
+  res.render("legal/contact");
+});
 
 router.use("*", (req, res, next) => {
   return next(createHttpError(404));

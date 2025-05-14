@@ -36,10 +36,12 @@
     <%- script %> <%- style %>
   </head>
 
-  <body>
+  <body class="vh-100 d-flex flex-column">
     <%- include("../partials/header") %>
-    <main role="main" class="container">
-      <%- include("../partials/flash") %> <%- body %>
+    <main role="main" class="mx-5">
+      <%- include("../partials/flash") %>
+      <%- body %>
     </main>
+    <%- include("../partials/footer") %>
   </body>
 </html>
