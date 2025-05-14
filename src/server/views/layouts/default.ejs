@@ -33,7 +33,9 @@
     ></script>
     <script type="module" src="./js/components/my-alert/index.js"></script>
     <link rel="stylesheet" href="./css/global.css">
-    <%- script %> <%- style %>
+    <%- include("../partials/cookie-consent") %>
+    <%- script %>
+    <%- style %>
   </head>
 
   <body class="vh-100 d-flex flex-column">
