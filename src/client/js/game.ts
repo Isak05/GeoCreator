@@ -212,6 +212,14 @@ export default class Game {
     );
   }
 
+  /**
+   * Sends a highscore to the server and updates the local highscore list.
+   *
+   * @param score - The player's score to be posted.
+   * @param time - The time associated with the score.
+   * @returns A promise that resolves when the highscore is successfully posted.
+   * @throws An error if the request to post the highscore fails.
+   */
   async postHighscore(score: number, time: number): Promise<void> {
     const highscore = {
       score,

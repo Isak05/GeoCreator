@@ -194,10 +194,14 @@ export default class GameUI {
       this.#gameOverDiv.hidden = false;
       this.#totalScoreSpan.innerText = this.#game.totalScore.toString();
 
-      await this.#game.postHighscore(
-        this.#game.totalScore,
-        this.#totalTimePassed / 1000
-      );
+      try {
+        await this.#game.postHighscore(
+          this.#game.totalScore,
+          this.#totalTimePassed / 1000
+        );
+      } catch {
+        console.error("Couldn't post highscore")
+      }
       this.#renderHighscoreTable();
       return;
     }
