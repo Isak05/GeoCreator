@@ -26,6 +26,7 @@ router.post("/", controller.post);
 
 router.get("/:gameId", controller.get);
 router.put("/:gameId", GameModel.checkIfAllowedToEdit, upload.single("mapUrl"), controller.put);
+router.delete("/:gameId", GameModel.checkIfAllowedToEdit, controller.delete);
 
 router.get("/:gameId/data", controller.getData);
 
