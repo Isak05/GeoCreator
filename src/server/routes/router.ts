@@ -29,6 +29,9 @@ router.get("/privacy-policy", (req, res) => {
 router.get("/contact", (req, res) => {
   res.render("legal/contact");
 });
+router.get("/license", (req, res) => {
+  res.render("legal/license");
+});
 
 router.use("*", (req, res, next) => {
   return next(createHttpError(404));
