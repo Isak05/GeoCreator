@@ -173,6 +173,25 @@ export default class {
     }
   }
 
+  async delete(req: Request, res: Response, next: Function) {
+    try {
+      const game = req.doc;
+      await GameModel.findByIdAndDelete(game._id.toString()).exec();
+
+      req.session.flash = {
+        type: "success",
+        message: "Game deleted",
+      };
+      res.json({
+        message: "Game deleted",
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: "Internal server error",
+      });
+    }
+  }
+
   /**
    * Handles the retrieval of data and sends it as a JSON response.
    *
