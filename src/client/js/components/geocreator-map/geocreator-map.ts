@@ -140,6 +140,13 @@ export default class GeocreatorMap extends HTMLElement {
     this.#mapLayerGroup.clearLayers();
     this.#mapMarker?.remove();
     this.#mapMarker = null;
+
+    // Clear any image overlays from the map
+    this.#leafletMap.eachLayer((layer) => {
+      if (layer instanceof L.ImageOverlay) {
+        this.#leafletMap.removeLayer(layer);
+      }
+    });
   }
 
   /**
