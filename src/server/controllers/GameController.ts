@@ -86,6 +86,7 @@ export default class {
       layout: "layouts/game",
       game: req.doc,
       editable:
+        req.session.loggedInUser &&
         req.doc.creator?._id?.toString() === req.session.loggedInUser?.id,
     });
   }
