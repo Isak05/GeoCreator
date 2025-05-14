@@ -243,9 +243,10 @@ export default class {
     try {
       const game = req.doc;
       if (req.file === undefined && req.body.image === undefined) {
-        return res.status(400).json({
+        res.status(400).json({
           message: "No image provided",
         });
+        return;
       }
 
       const image = await ImageModel.upload(req.file ?? req.body.image);
@@ -366,9 +367,10 @@ export default class {
   async postHighscore(req: Request, res: Response, next: Function) {
     try {
       if (!req.session.loggedInUser) {
-        return res.status(401).json({
+        res.status(401).json({
           message: "Unauthorized",
         });
+        return;
       }
 
       const game = req.doc;
