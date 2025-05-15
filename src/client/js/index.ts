@@ -12,7 +12,6 @@ gameUI.gameOverDiv = document.querySelector("#game-over");
 gameUI.roundOverDiv = document.querySelector("#round-over");
 gameUI.scoreSpan = document.querySelector("#score");
 gameUI.totalScoreSpan = document.querySelector("#total-score");
-gameUI.nextButton = document.querySelector("#next-button");
 gameUI.timerElement = document.querySelector("#timer");
 gameUI.screenshotImage = document.querySelector("#screenshot");
 gameUI.submitForm = document.querySelector("#guess-form");

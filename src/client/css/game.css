@@ -17,7 +17,7 @@ body {
   position: absolute;
   right: 0;
   bottom: 0;
-  z-index: 3;
+  z-index: 2;
   opacity: 0.5;
   transition: all 0.1s ease;
   margin: var(--margin);
@@ -46,10 +46,10 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  z-index: 2;
+  z-index: 1;
 }
 
-#timer {
+#game-overlay {
   font-size: 3rem;
   color: white;
   text-shadow: 0px 0px 0.5rem black;

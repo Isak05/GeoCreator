@@ -14,7 +14,10 @@
 </div>
 
 <div id="game-div" class="position-relative h-100 w-100" hidden>
-  <geocreator-timer id="timer" class="position-absolute" stopped></geocreator-timer>
+  <div id="game-overlay" class="position-absolute z-3">
+    <geocreator-timer id="timer" stopped></geocreator-timer>
+    <p class="h4">Score : <span id="score">0</span></p>
+  </div>
   <img src="" alt="Screenshot" id="screenshot" class="mw-100 mh-100" />
   
   <div id="map-container">
@@ -25,14 +28,13 @@
     </form>
   </div>
   
-  <div id="round-over" hidden>
-    <p>Score: <span id="score"></span></p>
-    <button id="next-button">Next round</button>
+  <div id="round-over" class="pt-5" hidden>
+    
   </div>
   
-  <div id="game-over" hidden>
-    <p>Game over! Your score: <span id="total-score"></span></p>
-    <div class="mx-auto">
+  <div id="game-over" class="pt-5" hidden>
+    <p class="h4">Game over! Your score: <span id="total-score"></span></p>
+    <div class="mx-auto mt-3">
       <table id="highscore-table" class="table table-striped table-bordered">
         <thead class="thead-dark">
           <tr>
