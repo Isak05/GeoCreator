@@ -1,0 +1,9 @@
+/* Allow clicking buttons underneath the div */
+#flash-div {
+  pointer-events: none;
+}
+
+/* Allow clicking on the alert inside the flash div */
+#flash-div my-alert {
+  pointer-events: auto;
+}

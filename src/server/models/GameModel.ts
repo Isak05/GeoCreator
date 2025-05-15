@@ -46,6 +46,26 @@ const screenshotSchema = new mongoose.Schema(
   }
 );
 
+const highscoreSchema = new mongoose.Schema({
+  _id: {
+    type: mongoose.Types.ObjectId,
+    auto: true,
+  },
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: UserModel,
+    required: true,
+  },
+  score: {
+    type: Number,
+    required: true,
+  },
+  time: {
+    type: Number,
+    required: true,
+  },
+});
+
 const schema = new mongoose.Schema(
   {
     title: {
@@ -58,7 +78,7 @@ const schema = new mongoose.Schema(
     },
     mapUrl: {
       type: String,
-      required: true,
+      required: false,
     },
     screenshots: {
       type: [screenshotSchema],
@@ -69,6 +89,10 @@ const schema = new mongoose.Schema(
       ref: UserModel,
       required: true,
     },
+    highscoreList: {
+      type: [highscoreSchema],
+      required: false,
+    },
   },
   {
     _id: false,
@@ -76,9 +100,9 @@ const schema = new mongoose.Schema(
     statics: {
       checkIfAllowedToEdit(req: Request, res: Response, next: Function) {
         if (
-          req.doc.creator?.toString() === undefined ||
+          req.doc.creator?.id === undefined ||
           req.session.loggedInUser?.id === undefined ||
-          req.doc.creator?.toString() !== req.session.loggedInUser.id
+          req.doc.creator?.id !== req.session.loggedInUser.id
         ) {
           res.status(403).json({
             message: "Forbidden",

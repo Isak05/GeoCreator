@@ -26,6 +26,7 @@ router.post("/", controller.post);
 
 router.get("/:gameId", controller.get);
 router.put("/:gameId", GameModel.checkIfAllowedToEdit, upload.single("mapUrl"), controller.put);
+router.delete("/:gameId", GameModel.checkIfAllowedToEdit, controller.delete);
 
 router.get("/:gameId/data", controller.getData);
 
@@ -38,3 +39,6 @@ router.delete("/:gameId/screenshot/:screenshotId", GameModel.checkIfAllowedToEdi
 router.get("/:gameId/edit", GameModel.checkIfAllowedToEdit, controller.getEdit);
 
 router.get("/:gameId/edit/location", GameModel.checkIfAllowedToEdit, controller.getEditLocation);
+
+router.get("/:gameId/highscore", controller.getHighscore);
+router.post("/:gameId/highscore", controller.postHighscore);

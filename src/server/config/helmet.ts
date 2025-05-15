@@ -20,6 +20,7 @@ export default function (): (
           "'self'",
           "'sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz'",
           "https://unpkg.com/",
+          "https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@3.1.0/dist/cookieconsent.umd.js",
         ],
         "img-src": ["'self'", "data:", "https://unpkg.com/"],
       },

@@ -12,7 +12,7 @@ import GameModel from "../models/GameModel.js";
  */
 export default class HomeController {
   async get(req: Request, res: Response, next: Function) {
-    const games = await GameModel.find({}).exec();
+    const games = await GameModel.find({}).populate("creator").exec();
     res.render("home/index", { games });
   }
 }

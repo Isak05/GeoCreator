@@ -34,16 +34,14 @@
     <script type="module" src="./js/components/my-alert/index.js"></script>
     <link rel="stylesheet" href="./css/global.css">
     <%- include("../partials/cookie-consent") %>
-    <%- script %>
-    <%- style %>
+    <%- script %> <%- style %>
   </head>
 
-  <body class="vh-100 d-flex flex-column">
+  <body>
     <%- include("../partials/header") %>
-    <main role="main" class="mx-5">
+    <main role="main" class="overflow-auto w-100 h-100">
       <%- include("../partials/flash") %>
       <%- body %>
     </main>
-    <%- include("../partials/footer") %>
   </body>
 </html>

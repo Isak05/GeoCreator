@@ -17,7 +17,7 @@ export default class {
       return next(createHttpError(404));
     }
 
-    const games = await GameModel.find({ creator: req.session.loggedInUser?.id }).exec();
+    const games = await GameModel.find({ creator: req.session.loggedInUser?.id }).populate("creator").exec();
     res.render("my-games", {
       games,
     });

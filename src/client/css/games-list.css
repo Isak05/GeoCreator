@@ -1,0 +1,12 @@
+.game {
+  width: 17.5rem;
+  height: 17.5rem;
+  display: flow-root;
+  box-shadow: 0.25rem 0.5rem 0.75rem rgba(0, 0, 0, 0.5);
+  transition: ease 0.2s;
+}
+
+a:hover > .game {
+  transform: translate(-0.5rem, -0.5rem);
+  box-shadow: 0.5rem 1rem 1.5rem rgba(0, 0, 0, 0.5);
+}

@@ -12,12 +12,23 @@ type Screenshot = {
   correctAnswer: Vec2;
 };
 
+type User = {
+  username: string;
+}
+
+export type Highscore = {
+  user: User;
+  score: number;
+  time: number;
+};
+
 type GameData = {
   mapUrl: string;
   screenshots: Screenshot[];
+  highscoreList: Highscore[];
 };
 
-enum GameState {
+export enum GameState {
   NOT_STARTED,
   WAITING_FOR_GUESS,
   WAITING_FOR_NEXT_ROUND,
@@ -202,6 +213,37 @@ export default class Game {
   }
 
   /**
+   * Sends a highscore to the server and updates the local highscore list.
+   *
+   * @param score - The player's score to be posted.
+   * @param time - The time associated with the score.
+   * @returns A promise that resolves when the highscore is successfully posted.
+   * @throws An error if the request to post the highscore fails.
+   */
+  async postHighscore(score: number, time: number): Promise<void> {
+    const highscore = {
+      score,
+      time,
+    };
+
+    const url = new URL("../highscore", this.#url + "/");
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(highscore),
+    });
+
+    if (!response.ok) {
+      throw new Error("failed to post highscore");
+    }
+    const data = await response.json();
+
+    this.#gameData.highscoreList = data;
+  }
+
+  /**
    * @returns The URL of the map image
    */
   get mapSrc(): string {
@@ -217,5 +259,21 @@ export default class Game {
 
   get gameOver(): boolean {
     return this.#state === GameState.GAME_OVER;
+  }
+
+  get highscores(): Highscore[] {
+    return this.#gameData?.highscoreList;
+  }
+
+  get correctAnswer(): Vec2 {
+    return this.#currentScreenshot?.correctAnswer;
+  }
+
+  get guessPosition(): Vec2 {
+    return this.#guessPosition;
+  }
+
+  get state(): GameState {
+    return this.#state;
   }
 }
