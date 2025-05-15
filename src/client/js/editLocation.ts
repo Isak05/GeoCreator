@@ -85,6 +85,7 @@ function markScreenshots(screenshots: Screenshot[]) {
     map.placeMarkerLink(
       screenshot.correctAnswer.x,
       screenshot.correctAnswer.y,
+      null,
       async () => {
         handleMarkerClick(screenshot);
       }

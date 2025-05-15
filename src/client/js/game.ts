@@ -264,4 +264,12 @@ export default class Game {
   get highscores(): Highscore[] {
     return this.#gameData?.highscoreList;
   }
+
+  get correctAnswer(): Vec2 {
+    return this.#currentScreenshot?.correctAnswer;
+  }
+
+  get guessPosition(): Vec2 {
+    return this.#guessPosition;
+  }
 }

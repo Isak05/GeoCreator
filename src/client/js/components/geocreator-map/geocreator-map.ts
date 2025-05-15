@@ -7,6 +7,7 @@
 
 import htmlTemplate from "./geocreator-map.html.js";
 import cssTemplate from "./geocreator-map.css.js";
+import Vec2 from "../../vec2.js";
 
 declare const L: any;
 
@@ -120,16 +121,58 @@ export default class GeocreatorMap extends HTMLElement {
    * @param y - The latitude of the marker's position.
    * @param callback - An optional function to be executed when the marker is clicked.
    */
-  placeMarkerLink(x: number, y: number, callback?: Function) {
-    L.marker([y, x]).addTo(this.#mapLayerGroup).on("click", (event: L.LeafletMouseEvent) => {
-      if (!callback) {
-        return;
-      }
-
-      callback();
+  placeMarkerLink(
+    x: number,
+    y: number,
+    options?: L.IconOptions,
+    callback?: Function
+  ) {
+    const markerIcon = L.icon({
+      iconAnchor: options?.iconAnchor ?? [12, 41],
+      iconRetinaUrl: options?.iconRetinaUrl ?? "marker-icon-2x.png",
+      iconSize: options?.iconSize ?? [25, 41],
+      iconUrl: options?.iconUrl ?? "./img/marker-icon-blue.png",
+      popupAnchor: options?.popupAnchor ?? [1, -34],
+      shadowSize: options?.shadowSize ?? [41, 41],
+      shadowUrl: options?.shadowUrl ?? "./img/marker-shadow.png",
+      tooltipAnchor: options?.tooltipAnchor ?? [16, -28],
     });
+
+    L.marker([y, x], { icon: markerIcon })
+      .addTo(this.#mapLayerGroup)
+      .on("click", (event: L.LeafletMouseEvent) => {
+        if (!callback) {
+          return;
+        }
+
+        callback();
+      });
   }
 
+  /**
+   * Draws a line on the map between two points specified by their coordinates.
+   *
+   * @param x1 - The x-coordinate of the starting point.
+   * @param y1 - The y-coordinate of the starting point.
+   * @param x2 - The x-coordinate of the ending point.
+   * @param y2 - The y-coordinate of the ending point.
+   * @param options - Optional polyline options to customize the appearance of the line.
+   */
+  drawLine(
+    x1: number,
+    y1: number,
+    x2: number,
+    y2: number,
+    options?: L.PolylineOptions
+  ) {
+    L.polyline(
+      [
+        [y1, x1],
+        [y2, x2],
+      ],
+      options
+    ).addTo(this.#mapLayerGroup);
+  }
 
   /**
    * Clears the map or resets its state.
@@ -155,13 +198,13 @@ export default class GeocreatorMap extends HTMLElement {
    * @param url The url of the map image to load.
    */
   async #loadMap(url: string): Promise<L.ImageOverlay> {
-    this.clear()
+    this.clear();
 
     const { width, height } = await this.#getImageResolutionFromUrl(url);
     const average = (width + height) / 2;
     const normalizedWidth = width / average;
     const normalizedHeight = height / average;
-    
+
     const overlay = L.imageOverlay(
       url,
       [
@@ -195,7 +238,7 @@ export default class GeocreatorMap extends HTMLElement {
 
   /**
    * Handles the placement of a marker on the map when a Leaflet mouse event occurs.
-   * 
+   *
    * @param event - The Leaflet mouse event containing the latitude and longitude of the click location.
    * @fires markerplaced - A custom event dispatched when a marker is placed on the map.
    */
@@ -210,7 +253,7 @@ export default class GeocreatorMap extends HTMLElement {
 
     this.#mapMarker = L.marker(event.latlng);
     this.#mapLayerGroup.addLayer(this.#mapMarker);
-    
+
     this.dispatchEvent(
       new CustomEvent("markerplaced", {
         detail: {
@@ -218,17 +261,18 @@ export default class GeocreatorMap extends HTMLElement {
           x: event.latlng.lng,
         },
       })
-      
     );
   }
-  
+
   /**
    * Retrieves the resolution (width and height) of an image from a given URL.
    *
    * @param url - The URL of the image to retrieve the resolution for.
    * @returns A promise that resolves to an object containing the width and height of the image.
    */
-  async #getImageResolutionFromUrl(url: string): Promise<{ width: number; height: number }> {
+  async #getImageResolutionFromUrl(
+    url: string
+  ): Promise<{ width: number; height: number }> {
     const image = document.createElement("img");
     image.src = url;
 
@@ -261,7 +305,7 @@ export default class GeocreatorMap extends HTMLElement {
   /**
    * Gets the value of the `allowplacingmarker` attribute.
    * This attribute determines whether placing markers on the map is allowed.
-   * 
+   *
    * @returns The value of the `allowplacingmarker` attribute, or `null` if the attribute is not set.
    */
   get allowplacingmarker(): boolean {
@@ -273,7 +317,7 @@ export default class GeocreatorMap extends HTMLElement {
    * If a non-null value is provided, the attribute is set to the given value.
    * If `null` is provided, the attribute is removed from the element.
    *
-   * @param value - The value to set for the `allowplacingmarker` attribute. 
+   * @param value - The value to set for the `allowplacingmarker` attribute.
    *                If `null`, the attribute will be removed.
    */
   set allowplacingmarker(value: string | boolean) {
@@ -291,15 +335,15 @@ export default class GeocreatorMap extends HTMLElement {
    * @returns An object containing the `x` (longitude) and `y` (latitude) coordinates of the marker,
    *          or `null` if the marker is not set.
    */
-  get markerPosition() {
+  get markerPosition(): Vec2 {
     if (!this.#mapMarker) {
       return null;
     }
 
-    return {
-      x: this.#mapMarker.getLatLng().lng,
-      y: this.#mapMarker.getLatLng().lat,
-    };
+    return new Vec2(
+      this.#mapMarker.getLatLng().lng,
+      this.#mapMarker.getLatLng().lat,
+  );
   }
 }
 customElements.define("geocreator-map", GeocreatorMap);
