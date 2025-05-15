@@ -120,16 +120,42 @@ export default class GeocreatorMap extends HTMLElement {
    * @param y - The latitude of the marker's position.
    * @param callback - An optional function to be executed when the marker is clicked.
    */
-  placeMarkerLink(x: number, y: number, callback?: Function) {
-    L.marker([y, x]).addTo(this.#mapLayerGroup).on("click", (event: L.LeafletMouseEvent) => {
-      if (!callback) {
-        return;
-      }
-
-      callback();
+  placeMarkerLink(
+    x: number,
+    y: number,
+    options?: {
+      iconAnchor?: [number, number];
+      iconRetinaUrl?: String;
+      iconSize?: [number, number];
+      iconUrl?: String;
+      popupAnchor?: [number, number];
+      shadowSize?: [number, number];
+      shadowUrl?: String;
+      tooltipAnchor?: [number, number];
+    },
+    callback?: Function
+  ) {
+    const markerIcon = L.icon({
+      iconAnchor: options?.iconAnchor ?? [12, 41],
+      iconRetinaUrl: options?.iconRetinaUrl ?? "marker-icon-2x.png",
+      iconSize: options?.iconSize ?? [25, 41],
+      iconUrl: options?.iconUrl ?? "./img/marker-icon-blue.png",
+      popupAnchor: options?.popupAnchor ?? [1, -34],
+      shadowSize: options?.shadowSize ?? [41, 41],
+      shadowUrl: options?.shadowUrl ?? "./img/marker-shadow.png",
+      tooltipAnchor: options?.tooltipAnchor ?? [16, -28],
     });
-  }
 
+    L.marker([y, x], { icon: markerIcon })
+      .addTo(this.#mapLayerGroup)
+      .on("click", (event: L.LeafletMouseEvent) => {
+        if (!callback) {
+          return;
+        }
+
+        callback();
+      });
+  }
 
   /**
    * Clears the map or resets its state.
@@ -155,13 +181,13 @@ export default class GeocreatorMap extends HTMLElement {
    * @param url The url of the map image to load.
    */
   async #loadMap(url: string): Promise<L.ImageOverlay> {
-    this.clear()
+    this.clear();
 
     const { width, height } = await this.#getImageResolutionFromUrl(url);
     const average = (width + height) / 2;
     const normalizedWidth = width / average;
     const normalizedHeight = height / average;
-    
+
     const overlay = L.imageOverlay(
       url,
       [
@@ -195,7 +221,7 @@ export default class GeocreatorMap extends HTMLElement {
 
   /**
    * Handles the placement of a marker on the map when a Leaflet mouse event occurs.
-   * 
+   *
    * @param event - The Leaflet mouse event containing the latitude and longitude of the click location.
    * @fires markerplaced - A custom event dispatched when a marker is placed on the map.
    */
@@ -210,7 +236,7 @@ export default class GeocreatorMap extends HTMLElement {
 
     this.#mapMarker = L.marker(event.latlng);
     this.#mapLayerGroup.addLayer(this.#mapMarker);
-    
+
     this.dispatchEvent(
       new CustomEvent("markerplaced", {
         detail: {
@@ -218,17 +244,18 @@ export default class GeocreatorMap extends HTMLElement {
           x: event.latlng.lng,
         },
       })
-      
     );
   }
-  
+
   /**
    * Retrieves the resolution (width and height) of an image from a given URL.
    *
    * @param url - The URL of the image to retrieve the resolution for.
    * @returns A promise that resolves to an object containing the width and height of the image.
    */
-  async #getImageResolutionFromUrl(url: string): Promise<{ width: number; height: number }> {
+  async #getImageResolutionFromUrl(
+    url: string
+  ): Promise<{ width: number; height: number }> {
     const image = document.createElement("img");
     image.src = url;
 
@@ -261,7 +288,7 @@ export default class GeocreatorMap extends HTMLElement {
   /**
    * Gets the value of the `allowplacingmarker` attribute.
    * This attribute determines whether placing markers on the map is allowed.
-   * 
+   *
    * @returns The value of the `allowplacingmarker` attribute, or `null` if the attribute is not set.
    */
   get allowplacingmarker(): boolean {
@@ -273,7 +300,7 @@ export default class GeocreatorMap extends HTMLElement {
    * If a non-null value is provided, the attribute is set to the given value.
    * If `null` is provided, the attribute is removed from the element.
    *
-   * @param value - The value to set for the `allowplacingmarker` attribute. 
+   * @param value - The value to set for the `allowplacingmarker` attribute.
    *                If `null`, the attribute will be removed.
    */
   set allowplacingmarker(value: string | boolean) {
