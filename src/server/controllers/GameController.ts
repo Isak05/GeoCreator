@@ -111,7 +111,7 @@ export default class {
       const game = await GameModel.create({
         title: req.body.title ?? "",
         description: req.body.description ?? "",
-        mapUrl: req.body.mapUrl ?? "./placeholder_map.webp",
+        mapUrl: req.body.mapUrl ?? "",
         screenshots: [],
         creator: req.session.loggedInUser.id,
       });
