@@ -7,6 +7,7 @@
 
 import htmlTemplate from "./geocreator-map.html.js";
 import cssTemplate from "./geocreator-map.css.js";
+import Vec2 from "../../vec2.js";
 
 declare const L: any;
 
@@ -123,16 +124,7 @@ export default class GeocreatorMap extends HTMLElement {
   placeMarkerLink(
     x: number,
     y: number,
-    options?: {
-      iconAnchor?: [number, number];
-      iconRetinaUrl?: String;
-      iconSize?: [number, number];
-      iconUrl?: String;
-      popupAnchor?: [number, number];
-      shadowSize?: [number, number];
-      shadowUrl?: String;
-      tooltipAnchor?: [number, number];
-    },
+    options?: L.IconOptions,
     callback?: Function
   ) {
     const markerIcon = L.icon({
@@ -155,6 +147,31 @@ export default class GeocreatorMap extends HTMLElement {
 
         callback();
       });
+  }
+
+  /**
+   * Draws a line on the map between two points specified by their coordinates.
+   *
+   * @param x1 - The x-coordinate of the starting point.
+   * @param y1 - The y-coordinate of the starting point.
+   * @param x2 - The x-coordinate of the ending point.
+   * @param y2 - The y-coordinate of the ending point.
+   * @param options - Optional polyline options to customize the appearance of the line.
+   */
+  drawLine(
+    x1: number,
+    y1: number,
+    x2: number,
+    y2: number,
+    options?: L.PolylineOptions
+  ) {
+    L.polyline(
+      [
+        [y1, x1],
+        [y2, x2],
+      ],
+      options
+    ).addTo(this.#mapLayerGroup);
   }
 
   /**
@@ -318,15 +335,15 @@ export default class GeocreatorMap extends HTMLElement {
    * @returns An object containing the `x` (longitude) and `y` (latitude) coordinates of the marker,
    *          or `null` if the marker is not set.
    */
-  get markerPosition() {
+  get markerPosition(): Vec2 {
     if (!this.#mapMarker) {
       return null;
     }
 
-    return {
-      x: this.#mapMarker.getLatLng().lng,
-      y: this.#mapMarker.getLatLng().lat,
-    };
+    return new Vec2(
+      this.#mapMarker.getLatLng().lng,
+      this.#mapMarker.getLatLng().lat,
+  );
   }
 }
 customElements.define("geocreator-map", GeocreatorMap);
