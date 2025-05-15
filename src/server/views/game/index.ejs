@@ -5,7 +5,9 @@
   <h1 class="mt-4"><%= game.title %> <span class="h5 text-muted">by <%= game.creator?.username %></span></h1>
   <p class="text-muted" style="white-space: pre-wrap;"><%= game.description %></p>
   <div class="d-flex gap-2 mt-3">
-    <a href="" class="btn btn-success" id="play-button">Play</a>
+    <% if (playable) { %>
+      <a href="" class="btn btn-success" id="play-button">Play</a>
+    <% } %>
     <% if (editable) { %>
       <a href="./game/<%= game._id %>/edit" class="btn btn-secondary">Edit</a>
       <a href="" class="btn btn-danger" id="delete-button">Delete</a>

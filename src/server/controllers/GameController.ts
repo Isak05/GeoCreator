@@ -85,6 +85,7 @@ export default class {
     res.render("game/index", {
       layout: "layouts/game",
       game: req.doc,
+      playable: req.doc.screenshots.length > 0 && req.doc.mapUrl,
       editable:
         req.session.loggedInUser &&
         req.doc.creator?._id?.toString() === req.session.loggedInUser?.id,
