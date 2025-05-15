@@ -25,13 +25,13 @@ async function play() {
   requestAnimationFrame(gameUI.start.bind(gameUI));
 }
 
-document.querySelector("#play-button").addEventListener("click", async (event) => {
+document.querySelector("#play-button")?.addEventListener("click", async (event) => {
   event.preventDefault();
   
   play();
 });
 
-document.querySelector("#delete-button").addEventListener("click", async (event) => {
+document.querySelector("#delete-button")?.addEventListener("click", async (event) => {
   event.preventDefault();
   
   const confirmationModal = new Modal(
