@@ -71,7 +71,7 @@ async function deleteScreenshot(id: string) {
   const alert = new MyAlert("success", "Screenshot deleted successfully.");
   document.querySelector("#flash-div").appendChild(alert);
 
-  map.clear();
+  map.reset();
   markScreenshots(gameData.screenshots);
 }
 
@@ -175,7 +175,7 @@ addScreenshotForm?.addEventListener("submit", async (event) => {
   const data = await response.json();
 
   gameData.screenshots.push(data);
-  map.clear();
+  map.reset();
   markScreenshots(gameData.screenshots);
 
   const alert = new MyAlert(

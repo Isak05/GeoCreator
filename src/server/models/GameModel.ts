@@ -78,7 +78,7 @@ const schema = new mongoose.Schema(
     },
     mapUrl: {
       type: String,
-      required: true,
+      required: false,
     },
     screenshots: {
       type: [screenshotSchema],

@@ -28,7 +28,7 @@ type GameData = {
   highscoreList: Highscore[];
 };
 
-enum GameState {
+export enum GameState {
   NOT_STARTED,
   WAITING_FOR_GUESS,
   WAITING_FOR_NEXT_ROUND,
@@ -271,5 +271,9 @@ export default class Game {
 
   get guessPosition(): Vec2 {
     return this.#guessPosition;
+  }
+
+  get state(): GameState {
+    return this.#state;
   }
 }

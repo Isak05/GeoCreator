@@ -1,12 +1,25 @@
 <script type="module" src="./js/editForm.js"></script>
+<link rel="stylesheet" href="./css/edit.css">
 
-Editing "<%= game.title %>" (ID: <%= game._id %>)
-
-<form action="./game/<%= game._id %>" id="edit-form" enctype="multipart/form-data" class="form">
-  <input type="text" name="title" placeholder="Title" value="<%= game.title %>" class="form-control mb-3" required>
-  <input type="text" name="description" placeholder="Description" value="<%= game.description %>" class="form-control mb-3">
-  <input type="file" name="mapUrl" placeholder="Map URL" class="form-control mb-3">
-  <input type="submit" value="Save changes" class="btn btn-primary">
-</form>
-
-<a href="./game/<%= game._id %>/edit/location">Edit locations</a>
+<div class="container">
+  <form action="./game/<%= game._id %>" id="edit-form" enctype="multipart/form-data" class="form">
+    <label class="my-3">
+      <p class="h5">Title</p>
+      <input type="text" name="title" placeholder="Title" value="<%= game.title %>" class="form-control w-auto" required>
+    </label>
+    <br>
+    <label class="mb-3">
+      <p class="h5">Description</p>
+      <textarea type="text" name="description" placeholder="Description" class="form-control" rows="5" autocomplete="off" style="width: 30rem;"><%= game.description %></textarea>
+    </label>
+    <br>
+    <label class="mb-4">
+      <p class="h5">Map image</p>
+      <input type="file" name="mapUrl" placeholder="Map URL" class="form-control w-auto">
+    </label>
+    <br>
+    <input type="submit" value="Save changes" class="btn btn-primary mb-3">
+    <br>
+    <a href="./game/<%= game._id %>/edit/location">Edit locations</a>
+  </form>
+</div>

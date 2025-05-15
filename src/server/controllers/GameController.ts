@@ -85,6 +85,7 @@ export default class {
     res.render("game/index", {
       layout: "layouts/game",
       game: req.doc,
+      playable: req.doc.screenshots.length > 0 && req.doc.mapUrl,
       editable:
         req.session.loggedInUser &&
         req.doc.creator?._id?.toString() === req.session.loggedInUser?.id,
@@ -110,7 +111,7 @@ export default class {
       const game = await GameModel.create({
         title: req.body.title ?? "",
         description: req.body.description ?? "",
-        mapUrl: req.body.mapUrl ?? "./placeholder_map.webp",
+        mapUrl: req.body.mapUrl ?? "",
         screenshots: [],
         creator: req.session.loggedInUser.id,
       });

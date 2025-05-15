@@ -193,6 +193,13 @@ export default class GeocreatorMap extends HTMLElement {
   }
 
   /**
+   * Resets the map to its initial state by reloading it using the provided source URL.
+   */
+  reset() {
+    this.#loadMap(this.src);
+  }
+
+  /**
    * Loads the specified URL as a map image.
    *
    * @param url The url of the map image to load.
