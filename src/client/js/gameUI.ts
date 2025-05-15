@@ -200,14 +200,17 @@ export default class GameUI {
           this.#totalTimePassed / 1000
         );
       } catch {
-        console.error("Couldn't post highscore")
+        console.error("Couldn't post highscore");
       }
       this.#renderHighscoreTable();
       return;
     }
 
     this.#screenshotImage.src = this.#game.nextRound();
+    this.#submitForm.querySelector("input[type=submit]").removeAttribute("disabled");
     this.#mapElement.src = this.#game.mapSrc;
+    this.#mapElement.classList.remove("expanded");
+    this.#mapElement.allowplacingmarker = true;
 
     this.#timerElement.stopped = false;
     this.#timerElement.totaltime = 30000;
@@ -221,10 +224,49 @@ export default class GameUI {
    * @param event The event object representing the form submission.
    */
   #submit() {
+    // Display the score
     const score = this.#game.submitGuess();
     this.#scoreSpan.innerText = score.toString();
     this.#roundOverDiv.hidden = false;
+    
+    // Stop the timer
     this.#timerElement.stopped = true;
+
+    // Disable the submit button
+    this.#submitForm.querySelector("input[type=submit]").setAttribute("disabled", "");
+    
+    // Show the correct answer on the map
+    this.#mapElement.allowplacingmarker = false;
+    this.#mapElement.classList.add("expanded");
+    this.#mapElement.placeMarkerLink(
+      this.#game.correctAnswer.x,
+      this.#game.correctAnswer.y,
+      { iconUrl: "./img/marker-icon-red.png" }
+    );
+
+    // Draw a line between the guess and the correct answer.
+    // The line is a red dashed line with a white outline.
+    this.#mapElement.drawLine(
+      this.#game.correctAnswer.x,
+      this.#game.correctAnswer.y,
+      this.#game.guessPosition.x,
+      this.#game.guessPosition.y,
+      {
+        color: "white",
+        weight: 6,
+        dashArray: "5, 10",
+      }
+    );
+    this.#mapElement.drawLine(
+      this.#game.correctAnswer.x,
+      this.#game.correctAnswer.y,
+      this.#game.guessPosition.x,
+      this.#game.guessPosition.y,
+      {
+        color: "#cc3040",
+        dashArray: "5, 10",
+      }
+    );
   }
 
   #renderHighscoreTable() {
