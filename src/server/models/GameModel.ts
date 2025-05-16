@@ -12,16 +12,7 @@ import ScreenshotSchema from "./ScreenshotSchema.js";
 import HighscoreSchema from "./HighscoreSchema.js";
 import { NextFunction, Request, Response } from "express";
 
-interface Game {
-  title: string;
-  description?: string;
-  mapUrl?: string;
-  screenshots: mongoose.Types.Array<typeof ScreenshotSchema>;
-  creator: mongoose.Types.ObjectId;
-  highscoreList?: mongoose.Types.Array<typeof HighscoreSchema>;
-}
-
-const schema = new mongoose.Schema<Game>(
+const schema = new mongoose.Schema(
   {
     title: {
       type: String,
@@ -72,5 +63,5 @@ const schema = new mongoose.Schema<Game>(
 
 schema.add(BASE_SCHEMA);
 
-const GameModel = mongoose.model<Game>("Game", schema);
+const GameModel = mongoose.model("Game", schema);
 export default GameModel;

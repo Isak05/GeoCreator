@@ -11,6 +11,7 @@ import GameModel from "../models/GameModel.js";
 import ImageModel from "../models/ImageModel.js";
 import { Screenshot } from "../models/ScreenshotSchema.js";
 import { Highscore } from "../models/HighscoreSchema.js";
+import mongoose from "mongoose";
 
 /**
  * Controller for accessing the home page
@@ -259,7 +260,7 @@ export default class {
           x: parseFloat(req.body.x),
           y: parseFloat(req.body.y),
         },
-      };
+      } as Screenshot;
 
       game.screenshots.push(screenshot);
       await game.save();
@@ -343,7 +344,7 @@ export default class {
 
       game.screenshots = game.screenshots.filter((s: Screenshot) => {
         return s.id !== screenshot.id;
-      });
+      }) as mongoose.HydratedDocument<Screenshot[]>;
 
       await game.save();
       res.status(200).json({});
@@ -377,7 +378,7 @@ export default class {
       }
 
       const game = req.doc;
-      game.highscoreList ??= [];
+      game.highscoreList ??= [] as mongoose.HydratedDocument<Highscore[]>;
 
       const existingHighscore = game.highscoreList.find(
         (highscore: Highscore) => {
