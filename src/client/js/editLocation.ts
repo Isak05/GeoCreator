@@ -48,16 +48,9 @@ if (getView() === "editLocation") {
   let gameData: GameData = null;
 
   /**
-   * Deletes a screenshot by its ID and updates the application state accordingly.
-   *
-   * @param id - The unique identifier of the screenshot to be deleted.
+   * Deletes a screenshot by its id.
+   * @param id - The id of the screenshot to be deleted.
    * @returns A promise that resolves when the operation is complete.
-   *
-   * @remarks
-   * - Sends a DELETE request to the server to remove the screenshot.
-   * - Updates the `gameData.screenshots` array to exclude the deleted screenshot.
-   * - Displays a success or error alert based on the outcome of the operation.
-   * - Clears and re-renders the map with the updated screenshots.
    */
   async function deleteScreenshot(id: string) {
     const url = new URL(
@@ -90,7 +83,6 @@ if (getView() === "editLocation") {
 
   /**
    * Place markers on the map for each screenshot in the game data.
-   *
    * @param screenshots - An array of screenshot objects containing the coordinates and URL.
    */
   function markScreenshots(screenshots: Screenshot[]) {
@@ -110,7 +102,6 @@ if (getView() === "editLocation") {
    * Handles the click event on a marker by displaying a modal with the screenshot
    * and providing options to delete it. If the user confirms deletion, the screenshot
    * is removed.
-   *
    * @param screenshot - The screenshot object containing the details of the image to display.
    * @returns A promise that resolves when the operation is complete.
    */

@@ -1,6 +1,5 @@
 /**
  * The mongoose model for games.
- *
  * @module models/GameModel
  * @author Isak Johansson Weckstén <ij222pv@student.lnu.se>
  */
@@ -44,6 +43,12 @@ const schema = new mongoose.Schema(
     _id: false,
     id: false,
     statics: {
+      /**
+       * Middleware that checks if the user is allowed to edit the game. If the user is not allowed to edit, a 403 Forbidden response is sent.
+       * @param req - The HTTP request object.
+       * @param res - The HTTP response object.
+       * @param next - The next middleware function in the stack.
+       */
       checkIfAllowedToEdit(req: Request, res: Response, next: NextFunction) {
         if (
           req.doc.creator?.id === undefined ||

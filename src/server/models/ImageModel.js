@@ -1,6 +1,5 @@
 /**
  * The mongoose model for images.
- *
  * @module models/ImageModel
  * @author Isak Johansson Weckstén <ij222pv@student.lnu.se>
  */
@@ -12,9 +11,8 @@ import { Buffer } from "node:buffer";
 
 /**
  * Generates a SHA-256 hash from a binarylike argument.
- *
- * @param {crypto.BinaryLike} buffer
- * @returns {String}
+ * @param buffer - The binarylike argument to hash.
+ * @returns The SHA-256 hash as a hexadecimal string.
  */
 function getSha256Sum(buffer) {
   const hash = crypto.createHash("sha256");
@@ -35,6 +33,10 @@ const schema = new mongoose.Schema(
   },
   {
     methods: {
+      /**
+       * Returns the raw image content as a buffer object.
+       * @returns The raw image content as a buffer object.
+       */
       getRaw() {
         return Buffer.from(this.content, "base64");
       },
@@ -44,11 +46,10 @@ const schema = new mongoose.Schema(
        * Uploads an image file to the database. If an image with the same SHA-256 hash
        * already exists, it returns the existing image. Otherwise, it saves the new image
        * to the database.
-       *
        * @async
-       * @param {Object | String} file - The file object to be uploaded.
-       * @param {Buffer} file.buffer - The buffer containing the file's binary data.
-       * @returns {Promise<Object>} The uploaded image document or the existing image document if it already exists.
+       * @param file - The file object to be uploaded.
+       * @param file.buffer - The buffer containing the file's binary data.
+       * @returns The uploaded image document or the existing image document if it already exists.
        */
       async upload(file) {
         let base64 = null;

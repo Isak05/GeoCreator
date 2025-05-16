@@ -1,7 +1,7 @@
 /**
- * Configures Helmet for security headers.
- *
- * @module config/helmet
+ * Configures the session middleware for the application.
+ * This middleware uses MongoDB as the session store and sets various options for the session.
+ * @module config/session
  * @author Isak Johansson Weckstén <ij222pv.student.lnu.se>
  */
 
@@ -10,6 +10,10 @@ import session from "express-session";
 import mongoose from "mongoose";
 import type { IncomingMessage, ServerResponse } from "node:http";
 
+/**
+ * Configures the session middleware for the application.
+ * @returns A middleware function that sets up the session.
+ */
 export default function (): (
   req: IncomingMessage,
   res: ServerResponse,

@@ -1,6 +1,5 @@
 /**
  * This is the main entry point for the server.
- *
  * @author Isak Johansson Weckstén <ij222pv@student.lnu.se>
  */
 

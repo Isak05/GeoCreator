@@ -12,6 +12,13 @@ import { Screenshot } from "../models/ScreenshotSchema.js";
  * Controller for accessing the home page
  */
 export default class ScreenshotController {
+  /**
+   * Middleware to load a screenshot by ID and attach it to the request object.
+   * @param req - The HTTP request object.
+   * @param res - The HTTP response object.
+   * @param next - The next middleware function in the stack.
+   * @param id - The ID of the screenshot to load.
+   */
   async loadScreenshot(
     req: Request,
     res: Response,
@@ -38,10 +45,8 @@ export default class ScreenshotController {
 
   /**
    * Handles the POST request to upload a screenshot for a game. Accepts an image file either as a form-data upload or as a base64-encoded string in the request body.
-   *
    * @param req - The HTTP request object containing the uploaded file and game information.
    * @param res - The HTTP response object used to send the response.
-   * @param next - The next middleware function in the stack.
    */
   async post(req: Request, res: Response) {
     try {
@@ -78,10 +83,8 @@ export default class ScreenshotController {
 
   /**
    * Handles the retrieval of a screenshot and sends it as a JSON response.
-   *
    * @param req - The HTTP request object.
    * @param res - The HTTP response object used to send the JSON response.
-   * @param next - The next middleware function in the request-response cycle.
    */
   async get(req: Request, res: Response) {
     try {
@@ -99,10 +102,8 @@ export default class ScreenshotController {
    * This method processes a request to update a screenshot associated with a game.
    * It supports uploading a new image file, updating the screenshot's URL, and
    * modifying the correct answer coordinates (x and y).
-   *
    * @param req - The HTTP request object.
    * @param res - The HTTP response object used to send the response back to the client.
-   * @param next - The next middleware function in the request-response cycle.
    */
   async put(req: Request, res: Response) {
     try {
@@ -132,10 +133,8 @@ export default class ScreenshotController {
 
   /**
    * Deletes a screenshot from the game's screenshots array and saves the updated game document.
-   *
    * @param req - The HTTP request object.
    * @param res - The HTTP response object used to send the response back to the client.
-   * @param next - The next middleware function in the request-response cycle.
    */
   async delete(req: Request, res: Response) {
     try {

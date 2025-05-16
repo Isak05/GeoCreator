@@ -1,6 +1,5 @@
 /**
  * The main router.
- *
  * @module routes/router
  * @author Isak Johansson Weckstén <ij222pv@student.lnu.se>
  */

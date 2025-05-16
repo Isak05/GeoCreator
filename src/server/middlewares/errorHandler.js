@@ -1,6 +1,5 @@
 /**
  * Error handling middleware.
- *
  * @module middlewares/errorHandler
  * @author Isak Johansson Weckstén <ij222pv@student.lnu.se>
  */
@@ -10,11 +9,7 @@ import process from "node:process";
 
 /**
  * Error handling middleware for Express.js applications.
- *
- * @param {Error} err - The error object.
- * @param {object} req - The Express request object.
- * @param {object} res - The Express response object.
- * @param {Function} next - The next middleware function in the stack.
+ * @returns The error handling middleware function.
  */
 export default function () {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

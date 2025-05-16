@@ -24,8 +24,6 @@ const alertTypes = Object.freeze([
 export default class MyAlert extends HTMLElement {
   /**
    * Used to abort eventlisteners when the element is removed from the DOM.
-   *
-   * @type {AbortController}
    */
   #abortController = new AbortController();
 
@@ -36,9 +34,8 @@ export default class MyAlert extends HTMLElement {
 
   /**
    * Creates an instance of the my-alert component.
-   *
-   * @param {string} type - The type of the alert.
-   * @param {string} message - The message of the alert.
+   * @param type - The type of the alert.
+   * @param message - The message of the alert.
    */
   constructor(type = "info", message = "") {
     super();
@@ -75,10 +72,9 @@ export default class MyAlert extends HTMLElement {
 
   /**
    * Called when an attribute has been added, removed, updated, or replaced.
-   *
-   * @param {string} name - The name of the attribute that has been changed.
-   * @param {string} oldValue - The old value of the attribute.
-   * @param {string} newValue - The new value of the attribute.
+   * @param name - The name of the attribute that has been changed.
+   * @param oldValue - The old value of the attribute.
+   * @param newValue - The new value of the attribute.
    */
   attributeChangedCallback(name, oldValue, newValue) {
     if (oldValue === newValue) {
@@ -101,8 +97,7 @@ export default class MyAlert extends HTMLElement {
 
   /**
    * Describes which attributes the element observes.
-   *
-   * @returns {string[]} - An array of attribute names.
+   * @returns - An array of attribute names.
    */
   static get observedAttributes() {
     return ["type"];

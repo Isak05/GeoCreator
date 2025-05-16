@@ -12,9 +12,16 @@ import createHttpError from "http-errors";
  * Controller for accessing the my games page
  */
 export default class {
+  /**
+   * Renders the my games page.
+   * @param req - The HTTP request object.
+   * @param res - The HTTP response object.
+   * @param next - The next middleware function in the stack.
+   */
   async get(req: Request, res: Response, next: NextFunction) {
     if (!req.session.loggedInUser) {
-      return next(createHttpError(404));
+      next(createHttpError(404));
+      return;
     }
 
     const games = await GameModel.find({

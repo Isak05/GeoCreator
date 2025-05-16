@@ -8,6 +8,9 @@ import { Request, Response } from "express";
 import { Highscore } from "../models/HighscoreSchema.js";
 import mongoose from "mongoose";
 
+/**
+ *
+ */
 export default class HighscoreController {
   /**
    * Handles the submission of a high score for a game.
@@ -16,10 +19,8 @@ export default class HighscoreController {
    * If a high score exists, it updates the score and time if the new score is higher or if the score
    * is the same but the time is better. If no high score exists for the user, it adds a new entry
    * to the high score list.
-   *
    * @param req - The HTTP request object.
    * @param res - The HTTP response object used to send the response back to the client.
-   * @param next - The next middleware function in the Express.js request-response cycle.
    * @returns A JSON response with a status code and a message indicating the result.
    */
   async post(req: Request, res: Response) {
@@ -80,10 +81,8 @@ export default class HighscoreController {
 
   /**
    * Handles the retrieval of the highscore list for a game.
-   *
    * @param req - The HTTP request object.
    * @param res - The HTTP response object used to send the highscore list as a JSON response.
-   * @param next - The next middleware function in the request-response cycle.
    */
   async get(req: Request, res: Response) {
     res.json(req.doc?.highscoreList.toObject());

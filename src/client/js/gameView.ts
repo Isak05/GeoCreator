@@ -19,6 +19,9 @@ if (getView() === "game") {
     "#highscore-table > tbody",
   );
 
+  /**
+   *
+   */
   async function play() {
     document.querySelector("#pre-start-div").setAttribute("hidden", "");
     document.querySelector("#game-div").removeAttribute("hidden");

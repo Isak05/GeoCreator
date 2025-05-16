@@ -1,7 +1,6 @@
 /**
  * This file contains the game UI logic for the client-side.
  * It handles the game map, timer, and user interactions.
- *
  * @module gameUI
  * @author Isak Johansson Weckstén <ij222pv@student.lnu.se>
  */
@@ -14,6 +13,9 @@ import highscoreTableRowTemplate from "./highscoreTableRow.html.js";
 const NEXT_ROUND_BUTTON_TEXT = "Next round";
 const SUBMIT_BUTTON_TEXT = "Submit guess";
 
+/**
+ *
+ */
 export default class GameUI {
   #mapElement: GeocreatorMap = null;
   #gameOverDiv: HTMLDivElement = null;
@@ -30,7 +32,6 @@ export default class GameUI {
 
   /**
    * Constructs a new instance of the class.
-   *
    * @param url - The URL from where to fetch the game data.
    * @throws {TypeError} Throws an error if the provided `url` is neither a string nor an instance of `URL`.
    */
@@ -44,7 +45,6 @@ export default class GameUI {
 
   /**
    * Sets the map element.
-   *
    * @param map The map element to be used.
    * @throws {TypeError} If the argument is not an instance of GeocreatorMap.
    */
@@ -58,7 +58,6 @@ export default class GameUI {
 
   /**
    * Sets the game over div element.
-   *
    * @param div The game over div element to be used.
    * @throws {TypeError} If the argument is not an HTMLDivElement.
    */
@@ -73,7 +72,6 @@ export default class GameUI {
 
   /**
    * Sets the round over div element.
-   *
    * @param div The round over div element to be used.
    * @throws {TypeError} If the argument is not an HTMLDivElement.
    */
@@ -87,7 +85,6 @@ export default class GameUI {
 
   /**
    * Sets the score span element.
-   *
    * @param span The score span element to be used.
    * @throws {TypeError} If the argument is not an HTMLSpanElement.
    */
@@ -101,7 +98,6 @@ export default class GameUI {
 
   /**
    * Sets the total score span element.
-   *
    * @param span The total score span element to be used.
    * @throws {TypeError} If the argument is not an HTMLSpanElement.
    */
@@ -115,7 +111,6 @@ export default class GameUI {
 
   /**
    * Sets the timer element.
-   *
    * @param timer The timer element to be used.
    * @throws {TypeError} If the argument is not an instance of GeocreatorTimer.
    */
@@ -129,7 +124,6 @@ export default class GameUI {
 
   /**
    * Sets the screenshot image element.
-   *
    * @param image The screenshot image element to be used.
    * @throws {TypeError} If the argument is not an HTMLImageElement.
    */
@@ -143,7 +137,6 @@ export default class GameUI {
 
   /**
    * Sets the form used for submitting the answer.
-   *
    * @param form The form element to be used for submitting the answer.
    * @throws {TypeError} If the argument is not an HTMLFormElement.
    */
@@ -157,7 +150,6 @@ export default class GameUI {
 
   /**
    * Sets the highscore table body element.
-   *
    * @param tableBody - The HTMLTableSectionElement to be used as the highscore table.
    * @throws {TypeError} If the provided table is not an instance of HTMLTableSectionElement.
    */
@@ -212,8 +204,6 @@ export default class GameUI {
    * Submits the user's guess and calculates the score.
    * This method prevents the default form submission behavior,
    * calculates the score based on the user's guess, and updates the UI accordingly.
-   *
-   * @param event The event object representing the form submission.
    */
   #submit() {
     // Display the score
@@ -268,6 +258,9 @@ export default class GameUI {
     );
   }
 
+  /**
+   *
+   */
   #renderHighscoreTable() {
     // Clear the table body before rendering
     this.#highscoreTableBody.innerHTML = "";
@@ -299,7 +292,6 @@ export default class GameUI {
 
   /**
    * Starts the game by fetching game data and setting up event listeners.
-   *
    * @returns A promise that resolves when the game is started.
    */
   async start() {

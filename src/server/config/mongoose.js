@@ -1,6 +1,5 @@
 /**
  * Provides a function for connecting to the MongoDB database.
- *
  * @module config/mongoose
  * @author Isak Johansson Weckstén <ij222pv@student.lnu.se>
  */
@@ -14,9 +13,8 @@ import process from "node:process";
  *
  * This function sets up Mongoose configurations.
  * It also handles graceful shutdown on 'SIGINT' and 'SIGTERM' signals.
- *
- * @param {string} connectionString - The connection URI for the MongoDB database.
- * @returns {Promise} - A promise that resolves when the connection is successfully established.
+ * @param connectionString - The connection URI for the MongoDB database.
+ * @returns - A promise that resolves when the connection is successfully established.
  */
 export async function connectToDatabase(connectionString) {
   mongoose.set("strict", "throw");

@@ -1,6 +1,5 @@
 /**
  * The mongoose model for users.
- *
  * @module models/UserModel
  * @author Isak Johansson Weckstén <ij222pv@student.lnu.se>
  */
@@ -13,6 +12,12 @@ import { NextFunction } from "express";
 const convertObject = Object.freeze({
   getters: true,
   versionKey: false,
+  /**
+   * Transforms the returned object by removing the password and _id fields.
+   * @param doc - The document being transformed.
+   * @param ret - The plain object representation of the document.
+   * @returns The transformed object without the password and _id fields.
+   */
   transform: (
     doc: HydratedDocument<{ password: string; _id: string }>,
     ret: HydratedDocument<{ password: string; _id: string }>,
@@ -40,7 +45,6 @@ const schema = new mongoose.Schema(
     statics: {
       /**
        * Tries to log in a user.
-       *
        * @param username - The username of the user.
        * @param password - The password of the user.
        * @returns Returns a promise that resolves to the user document if the credentials are correct, otherwise null.
@@ -57,7 +61,6 @@ const schema = new mongoose.Schema(
 
       /**
        * Checks if a username is already taken in the database.
-       *
        * @param username - The username to check for existence.
        * @returns A promise that resolves to `true` if the username exists, otherwise `false`.
        */
