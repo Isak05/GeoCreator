@@ -10,7 +10,8 @@
     "start": "node dist/server/server.js",
     "dev": "nodemon",
     "build": "node ./esbuild.config.js",
-    "test": "npx jest"
+    "test": "npx jest",
+    "lint": "eslint src"
   },
   "devDependencies": {
     "@types/express": "^5.0.1",
