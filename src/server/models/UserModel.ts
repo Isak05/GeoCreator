@@ -45,13 +45,7 @@ const schema = new mongoose.Schema(
        * @param password - The password of the user.
        * @returns Returns a promise that resolves to the user document if the credentials are correct, otherwise null.
        */
-      async authenticate(
-        username: string,
-        password: string,
-      ): Promise<HydratedDocument<{
-        username: string;
-        password: string;
-      }> | null> {
+      async authenticate(username: string, password: string) {
         const user = await this.findOne({ username });
 
         if (!user || !(await argon2.verify(user.password, password))) {
