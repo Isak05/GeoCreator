@@ -11,7 +11,8 @@
     "dev": "nodemon",
     "build": "node ./esbuild.config.js",
     "test": "npx jest",
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix"
   },
   "devDependencies": {
     "@types/express": "^5.0.1",
