@@ -17,8 +17,10 @@ import process from "node:process";
  * @param {Function} next - The next middleware function in the stack.
  */
 export default function () {
-  return (err, req, res) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  return (err, req, res, next) => {
     const status = err.status ?? 500;
+
     res.locals.title = `${status} ${getReasonPhrase(status)}`;
 
     if (process.env.NODE_ENV === "development") {
