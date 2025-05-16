@@ -6,7 +6,7 @@
  */
 
 import modalTemplate from "./modal.html.js";
-import bootstrap from "bootstrap";
+import * as bootstrap from "bootstrap";
 
 /**
  * A class representing a modal dialog.

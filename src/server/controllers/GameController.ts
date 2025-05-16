@@ -9,6 +9,8 @@ import { logger } from "../config/winston.js";
 import createHttpError from "http-errors";
 import GameModel from "../models/GameModel.js";
 import ImageModel from "../models/ImageModel.js";
+import { Screenshot } from "../models/ScreenshotSchema.js";
+import { Highscore } from "../models/HighscoreSchema.js";
 
 /**
  * Controller for accessing the home page
@@ -56,7 +58,7 @@ export default class {
     id: string,
   ): Promise<void> {
     try {
-      req.screenshot = req.doc.screenshots.find((screenshot: any) => {
+      req.screenshot = req.doc.screenshots.find((screenshot: Screenshot) => {
         return screenshot.id === id;
       });
 
@@ -339,7 +341,7 @@ export default class {
       const game = req.doc;
       const screenshot = req.screenshot;
 
-      game.screenshots = game.screenshots.filter((s: any) => {
+      game.screenshots = game.screenshots.filter((s: Screenshot) => {
         return s.id !== screenshot.id;
       });
 
@@ -377,9 +379,11 @@ export default class {
       const game = req.doc;
       game.highscoreList ??= [];
 
-      const existingHighscore = game.highscoreList.find((highscore: any) => {
-        return highscore.user.id === req.session.loggedInUser?.id;
-      });
+      const existingHighscore = game.highscoreList.find(
+        (highscore: Highscore) => {
+          return highscore.user.id === req.session.loggedInUser?.id;
+        },
+      );
 
       if (existingHighscore) {
         if (

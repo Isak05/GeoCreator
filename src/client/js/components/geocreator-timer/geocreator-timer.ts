@@ -82,7 +82,7 @@ export default class GeocreatorTimer extends HTMLElement {
   /**
    * Called by the browser engine when an attribute changes.
    */
-  attributeChangedCallback(name: string, oldValue: any, newValue: any) {
+  attributeChangedCallback(name: string, oldValue: string, newValue: string) {
     if (oldValue === newValue) {
       return;
     }

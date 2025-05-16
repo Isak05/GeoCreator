@@ -1,3 +1,5 @@
+import "bootstrap";
+import "leaflet";
 import "./components/geocreator-map/index.js";
 import "./components/geocreator-timer/index.js";
 import "./components/my-alert/my-alert.js";

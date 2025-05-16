@@ -8,8 +8,7 @@
 import htmlTemplate from "./geocreator-map.html.js";
 import cssTemplate from "./geocreator-map.css.js";
 import Vec2 from "../../vec2.js";
-
-declare const L: any;
+import L from "leaflet";
 
 /**
  * Represents a map element.
