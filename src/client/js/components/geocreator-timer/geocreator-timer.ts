@@ -171,4 +171,6 @@ export default class GeocreatorTimer extends HTMLElement {
   }
 }
 
-customElements.define("geocreator-timer", GeocreatorTimer);
+if (!customElements.get("geocreator-timer")) {
+  customElements.define("geocreator-timer", GeocreatorTimer);
+}

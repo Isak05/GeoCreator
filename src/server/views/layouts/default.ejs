@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
-  <head>
+  <head itemscope>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <% if (locals?._csrf) { %>
@@ -31,11 +31,12 @@
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"
     ></script>
-    <script type="module" src="./js/components/my-alert/index.js"></script>
+    <script type="module" src="./js/index.js"></script>
     <link rel="stylesheet" href="./css/global.css">
     <%- include("../partials/cookie-consent") %>
     <%- script %>
     <%- style %>
+    <%- meta %>
   </head>
 
   <body class="vh-100 d-flex flex-column">

@@ -109,4 +109,6 @@ export default class MyAlert extends HTMLElement {
   }
 }
 
-customElements.define("my-alert", MyAlert);
+if (!customElements.get("my-alert")) {
+  customElements.define("my-alert", MyAlert);
+}

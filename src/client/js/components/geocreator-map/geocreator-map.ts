@@ -353,4 +353,7 @@ export default class GeocreatorMap extends HTMLElement {
     );
   }
 }
-customElements.define("geocreator-map", GeocreatorMap);
+
+if (!customElements.get("geocreator-map")) {
+  customElements.define("geocreator-map", GeocreatorMap);
+}

@@ -1,7 +1,4 @@
-import "https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@3.1.0/dist/cookieconsent.umd.js";
-
-// Declare CookieConsent to avoid TypeScript errors
-declare const CookieConsent: any;
+import * as CookieConsent from "vanilla-cookieconsent";
 
 document.documentElement.classList.add("cc--darkmode");
 

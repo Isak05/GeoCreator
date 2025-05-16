@@ -38,6 +38,7 @@ try {
   app.set("layout", path.join(BASE_DIRECTORY, "views", "layouts", "default"));
   app.set("layout extractScripts", true);
   app.set("layout extractStyles", true);
+  app.set("layout extractMetas", true);
 
   app.use((req, res, next) => {
     // Pass the base URL to the views.
