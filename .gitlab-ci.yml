@@ -53,6 +53,8 @@ unit-test-job:
 lint-job:
   stage: test
   script:
+    - echo "Installing dependencies..."
+    - npm ci
     - echo "Running linter..."
     - npm run lint
 
