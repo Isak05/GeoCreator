@@ -8,7 +8,7 @@
 import mongoose, { Schema } from "mongoose";
 import BASE_SCHEMA from "./baseSchema.js";
 import UserModel from "./UserModel.js";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 
 const vec2Schema = new mongoose.Schema(
   {
@@ -23,7 +23,7 @@ const vec2Schema = new mongoose.Schema(
   },
   {
     _id: false,
-  }
+  },
 );
 
 const screenshotSchema = new mongoose.Schema(
@@ -43,7 +43,7 @@ const screenshotSchema = new mongoose.Schema(
   },
   {
     _id: true,
-  }
+  },
 );
 
 const highscoreSchema = new mongoose.Schema({
@@ -98,7 +98,7 @@ const schema = new mongoose.Schema(
     _id: false,
     id: false,
     statics: {
-      checkIfAllowedToEdit(req: Request, res: Response, next: Function) {
+      checkIfAllowedToEdit(req: Request, res: Response, next: NextFunction) {
         if (
           req.doc.creator?.id === undefined ||
           req.session.loggedInUser?.id === undefined ||
@@ -112,10 +112,11 @@ const schema = new mongoose.Schema(
         next();
       },
     },
-  }
+  },
 );
 
 schema.add(BASE_SCHEMA);
 
 const GameModel = mongoose.model("Game", schema);
+type GameModel = mongoose.InferSchemaType<typeof schema>;
 export default GameModel;

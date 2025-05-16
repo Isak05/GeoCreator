@@ -11,31 +11,38 @@ type Screenshot = {
   };
 };
 
+type GameData = {
+  _id: string;
+  name: string;
+  description: string;
+  screenshots: Screenshot[];
+};
+
 // Elements
 const map: GeocreatorMap = document.querySelector("#map");
 const pickLocationMap: GeocreatorMap =
   document.querySelector("#pick-location-map");
 const pickLocationContainer: HTMLDivElement = document.querySelector(
-  "#pick-location-container"
+  "#pick-location-container",
 );
 const pickLocationButton: HTMLInputElement = document.querySelector(
-  "#pick-location-button"
+  "#pick-location-button",
 );
 const cancelPickLocationButton: HTMLInputElement = document.querySelector(
-  "#cancel-pick-location"
+  "#cancel-pick-location",
 );
 const submitPickLocationButton: HTMLInputElement = document.querySelector(
-  "#submit-pick-location"
+  "#submit-pick-location",
 );
 const pickLocationForm: HTMLFormElement = document.querySelector(
-  "#pick-location-form"
+  "#pick-location-form",
 );
 const addScreenshotForm: HTMLFormElement = document.querySelector(
-  "#add-screenshot-form"
+  "#add-screenshot-form",
 );
 
 const gameUrl: URL = new URL("../data", location.href.replace(/\/+$/, ""));
-let gameData: any = null;
+let gameData: GameData = null;
 
 /**
  * Deletes a screenshot by its ID and updates the application state accordingly.
@@ -58,14 +65,14 @@ async function deleteScreenshot(id: string) {
   if (!response.ok) {
     const alert = new MyAlert(
       "danger",
-      "Failed to delete screenshot. Please try again."
+      "Failed to delete screenshot. Please try again.",
     );
     document.querySelector("#flash-div").appendChild(alert);
     return;
   }
 
   gameData.screenshots = gameData.screenshots.filter(
-    (screenshot: Screenshot) => screenshot._id !== id
+    (screenshot: Screenshot) => screenshot._id !== id,
   );
 
   const alert = new MyAlert("success", "Screenshot deleted successfully.");
@@ -88,7 +95,7 @@ function markScreenshots(screenshots: Screenshot[]) {
       null,
       async () => {
         handleMarkerClick(screenshot);
-      }
+      },
     );
   }
 }
@@ -113,7 +120,7 @@ async function handleMarkerClick(screenshot: Screenshot) {
   const confirmationModal = new Modal(
     "Delete Screenshot",
     "Are you sure you want to delete this screenshot?",
-    Modal.PromptType.YESNO
+    Modal.PromptType.YESNO,
   );
   if (!(await confirmationModal.show())) {
     return;
@@ -134,7 +141,7 @@ pickLocationForm?.addEventListener("submit", (event) => {
     case cancelPickLocationButton:
       pickLocationContainer?.setAttribute("hidden", "true");
       break;
-    case submitPickLocationButton:
+    case submitPickLocationButton: {
       const { x, y } = pickLocationMap.markerPosition;
       (document.querySelector("#x-input") as HTMLInputElement).value =
         x.toString();
@@ -142,6 +149,7 @@ pickLocationForm?.addEventListener("submit", (event) => {
         y.toString();
       pickLocationContainer?.setAttribute("hidden", "true");
       break;
+    }
   }
 });
 
@@ -149,11 +157,8 @@ addScreenshotForm?.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   const formData = new FormData(addScreenshotForm);
-  if(formData.get("x") === "" || formData.get("y") === "") {
-    const alert = new MyAlert(
-      "danger",
-      "Please pick a location.",
-    );
+  if (formData.get("x") === "" || formData.get("y") === "") {
+    const alert = new MyAlert("danger", "Please pick a location.");
     document.querySelector("#flash-div").appendChild(alert);
     return;
   }
@@ -166,7 +171,7 @@ addScreenshotForm?.addEventListener("submit", async (event) => {
   if (!response.ok) {
     const alert = new MyAlert(
       "danger",
-      "Failed to add screenshot. Please try again."
+      "Failed to add screenshot. Please try again.",
     );
     document.querySelector("#flash-div").appendChild(alert);
     return;
@@ -178,10 +183,7 @@ addScreenshotForm?.addEventListener("submit", async (event) => {
   map.reset();
   markScreenshots(gameData.screenshots);
 
-  const alert = new MyAlert(
-    "success",
-    "Screenshot added successfully.",
-  );
+  const alert = new MyAlert("success", "Screenshot added successfully.");
   document.querySelector("#flash-div").appendChild(alert);
 });
 
@@ -193,10 +195,10 @@ addScreenshotForm?.addEventListener("submit", async (event) => {
       throw new Error();
     }
     gameData = await response.json();
-  } catch (error) {
+  } catch {
     const alert = new MyAlert(
       "danger",
-      "Failed to get game data. Please try again."
+      "Failed to get game data. Please try again.",
     );
     document.querySelector("#flash-div").appendChild(alert);
     return;

@@ -6,6 +6,7 @@
  */
 
 import { getReasonPhrase } from "http-status-codes";
+import process from "node:process";
 
 /**
  * Error handling middleware for Express.js applications.
@@ -16,7 +17,7 @@ import { getReasonPhrase } from "http-status-codes";
  * @param {Function} next - The next middleware function in the stack.
  */
 export default function () {
-  return (err, req, res, next) => {
+  return (err, req, res) => {
     const status = err.status ?? 500;
     res.locals.title = `${status} ${getReasonPhrase(status)}`;
 

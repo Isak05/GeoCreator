@@ -1,8 +1,8 @@
 import "./components/geocreator-map/index.js";
 import "./components/geocreator-timer/index.js";
 import GameUI from "./gameUI.js";
-import Modal from "./utils/modal/modal.js"
-import MyAlert from "./components/my-alert/my-alert.js"
+import Modal from "./utils/modal/modal.js";
+import MyAlert from "./components/my-alert/my-alert.js";
 
 const url = new URL("./data", document.location.href + "/");
 const gameUI = new GameUI(url);
@@ -25,32 +25,36 @@ async function play() {
   requestAnimationFrame(gameUI.start.bind(gameUI));
 }
 
-document.querySelector("#play-button")?.addEventListener("click", async (event) => {
-  event.preventDefault();
-  
-  play();
-});
+document
+  .querySelector("#play-button")
+  ?.addEventListener("click", async (event) => {
+    event.preventDefault();
 
-document.querySelector("#delete-button")?.addEventListener("click", async (event) => {
-  event.preventDefault();
-  
-  const confirmationModal = new Modal(
-    "Delete Game",
-    "Are you sure you want to delete this game?",
-    Modal.PromptType.YESNO
-  );
-  if (!(await confirmationModal.show())) {
-    return;
-  }
-
-  const response = await fetch(location.href, {
-    method: "DELETE",
+    play();
   });
 
-  if (response.ok) {
-    location.href = location.href.replace(/game\/[^/]+\/?$/, "");
-  } else {
-    const alert = new MyAlert("danger", "Failed to delete game");
-    document.querySelector("#flash-div").appendChild(alert);
-  }
-});
+document
+  .querySelector("#delete-button")
+  ?.addEventListener("click", async (event) => {
+    event.preventDefault();
+
+    const confirmationModal = new Modal(
+      "Delete Game",
+      "Are you sure you want to delete this game?",
+      Modal.PromptType.YESNO,
+    );
+    if (!(await confirmationModal.show())) {
+      return;
+    }
+
+    const response = await fetch(location.href, {
+      method: "DELETE",
+    });
+
+    if (response.ok) {
+      location.href = location.href.replace(/game\/[^/]+\/?$/, "");
+    } else {
+      const alert = new MyAlert("danger", "Failed to delete game");
+      document.querySelector("#flash-div").appendChild(alert);
+    }
+  });

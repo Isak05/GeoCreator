@@ -1,5 +1,4 @@
 import "express";
-import { File } from "node:buffer";
 
 declare module "express-serve-static-core" {
   interface Request {

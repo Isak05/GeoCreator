@@ -5,8 +5,8 @@
  * @version 1.0.0
  */
 
-const template = document.createElement('template')
-export default template
+const template = document.createElement("template");
+export default template;
 
 template.innerHTML = /* html */ `
 <div class="modal fade" tabindex="-1" aria-hidden="true">
@@ -24,4 +24,4 @@ template.innerHTML = /* html */ `
     </div>
   </div>
 </div>
-`
+`;

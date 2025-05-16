@@ -10,7 +10,7 @@ import { Request, Response } from "express";
  * Controller for accessing the home page
  */
 export default class {
-  async get(req: Request, res: Response, next: Function) {
+  async get(req: Request, res: Response) {
     res.render("upload");
   }
 }

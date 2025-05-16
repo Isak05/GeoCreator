@@ -11,7 +11,7 @@ import GameModel from "../models/GameModel.js";
  * Controller for accessing the home page
  */
 export default class HomeController {
-  async get(req: Request, res: Response, next: Function) {
+  async get(req: Request, res: Response) {
     const games = await GameModel.find({}).populate("creator").exec();
     res.render("home/index", { games });
   }

@@ -11,7 +11,7 @@ import type { IncomingMessage, ServerResponse } from "node:http";
 export default function (): (
   req: IncomingMessage,
   res: ServerResponse,
-  next: (err?: unknown) => void
+  next: (err?: unknown) => void,
 ) => void {
   return helmet({
     contentSecurityPolicy: {

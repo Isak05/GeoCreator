@@ -58,7 +58,7 @@ export default class GeocreatorTimer extends HTMLElement {
     // Attach a shadow DOM tree to this element and
     // append the template to the shadow root.
     this.attachShadow({ mode: "open" }).appendChild(
-      template.content.cloneNode(true)
+      template.content.cloneNode(true),
     );
 
     // Retreive elements

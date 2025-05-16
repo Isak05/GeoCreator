@@ -14,7 +14,7 @@ type Screenshot = {
 
 type User = {
   username: string;
-}
+};
 
 export type Highscore = {
   user: User;
@@ -172,7 +172,7 @@ export default class Game {
     // ⌊1000*min(e^(-10x)*1.1,1)+0.5⌋
     const distance = Math.sqrt(
       (position.x - correctPosition.x) ** 2 +
-        (position.y - correctPosition.y) ** 2
+        (position.y - correctPosition.y) ** 2,
     );
     const scoreFactor = Math.min(Math.exp(-10 * distance) * 1.1, 1);
     const score = Math.round(this.#maximumRoundScore * scoreFactor);
@@ -208,7 +208,7 @@ export default class Game {
    */
   #getRemainingScreenshots(): Set<Screenshot> {
     return new Set(this.#gameData.screenshots).difference(
-      this.#playedScreenshots
+      this.#playedScreenshots,
     );
   }
 

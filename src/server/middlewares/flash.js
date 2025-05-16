@@ -1,6 +1,6 @@
 /**
  * Flash message middleware.
- * 
+ *
  * @module middlewares/flash
  * @author Isak Johansson Weckstén <ij222pv@student.lnu.se>
  */
@@ -18,10 +18,10 @@
 export default function () {
   return (req, res, next) => {
     if (req.session?.flash) {
-      res.locals.flash = req.session.flash
-      delete req.session.flash
+      res.locals.flash = req.session.flash;
+      delete req.session.flash;
     }
 
-    next()
-  }
+    next();
+  };
 }
