@@ -8,6 +8,7 @@
 import express from "express";
 import GameController from "../controllers/GameController.js";
 import GameModel from "../models/GameModel.js";
+import screenshotRouter from "./screenshotRouter.js";
 import multer from "multer";
 
 const router = express.Router();
@@ -35,25 +36,7 @@ router.delete("/:gameId", GameModel.checkIfAllowedToEdit, controller.delete);
 
 router.get("/:gameId/data", controller.getData);
 
-router.post(
-  "/:gameId/screenshot",
-  GameModel.checkIfAllowedToEdit,
-  upload.single("image"),
-  controller.postScreenshot,
-);
-
-router.get("/:gameId/screenshot/:screenshotId", controller.getScreenshot);
-router.put(
-  "/:gameId/screenshot/:screenshotId",
-  GameModel.checkIfAllowedToEdit,
-  upload.single("screenshot"),
-  controller.putScreenshot,
-);
-router.delete(
-  "/:gameId/screenshot/:screenshotId",
-  GameModel.checkIfAllowedToEdit,
-  controller.deleteScreenshot,
-);
+router.use("/:gameId/screenshot", screenshotRouter);
 
 router.get("/:gameId/edit", GameModel.checkIfAllowedToEdit, controller.getEdit);
 

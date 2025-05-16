@@ -5,6 +5,7 @@
  */
 
 import htmlTemplate from "./my-alert.html.js";
+import * as bootstrap from "bootstrap";
 
 const alertTypes = Object.freeze([
   "alert-primary",
@@ -58,7 +59,6 @@ export default class MyAlert extends HTMLElement {
     this.#alert.addEventListener(
       "click",
       () => {
-        // eslint-disable-next-line no-undef
         const alert = new bootstrap.Alert(this.#alert);
         alert.close();
       },
