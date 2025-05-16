@@ -4,11 +4,13 @@
  * @author Isak Johansson Weckstén <ij222pv@student.lnu.se>
  */
 
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { logger } from "../config/winston.js";
 import createHttpError from "http-errors";
 import GameModel from "../models/GameModel.js";
 import ImageModel from "../models/ImageModel.js";
+import { Screenshot } from "../models/ScreenshotSchema.js";
+import { Highscore } from "../models/HighscoreSchema.js";
 
 /**
  * Controller for accessing the home page
@@ -27,8 +29,8 @@ export default class {
   async loadGame(
     req: Request,
     res: Response,
-    next: Function,
-    id: string
+    next: NextFunction,
+    id: string,
   ): Promise<void> {
     try {
       req.doc = await GameModel.findById(id)
@@ -41,7 +43,7 @@ export default class {
 
       logger.silly(`Game with id ${id} found`);
       next();
-    } catch (error) {
+    } catch {
       res.status(404).json({
         message: "Game not found",
       });
@@ -52,18 +54,18 @@ export default class {
   async loadScreenshot(
     req: Request,
     res: Response,
-    next: Function,
-    id: string
+    next: NextFunction,
+    id: string,
   ): Promise<void> {
     try {
-      req.screenshot = req.doc.screenshots.find((screenshot: any) => {
+      req.screenshot = req.doc.screenshots.find((screenshot: Screenshot) => {
         return screenshot.id === id;
       });
 
       if (!req.screenshot) {
         throw new Error();
       }
-    } catch (error) {
+    } catch {
       res.status(404).json({
         message: "Screenshot not found",
       });
@@ -81,7 +83,7 @@ export default class {
    * @param next - The next middleware function in the stack.
    * @returns A rendered view of the "game/index" page.
    */
-  async get(req: Request, res: Response, next: Function) {
+  async get(req: Request, res: Response) {
     res.render("game/index", {
       layout: "layouts/game",
       game: req.doc,
@@ -106,7 +108,7 @@ export default class {
    *
    * @returns A Promise that resolves when the response is sent.
    */
-  async post(req: Request, res: Response, next: Function) {
+  async post(req: Request, res: Response) {
     try {
       const game = await GameModel.create({
         title: req.body.title ?? "",
@@ -117,7 +119,7 @@ export default class {
       });
 
       res.redirect(`./game/${game._id.toString()}/edit`);
-    } catch (error) {
+    } catch {
       res.status(500).json({
         message: "Internal server error",
       });
@@ -133,11 +135,11 @@ export default class {
    * @returns A JSON response containing an array of relative paths to the game entries.
    * @throws Returns a 500 HTTP error if an error occurs during database retrieval.
    */
-  async getAll(req: Request, res: Response, next: Function) {
+  async getAll(req: Request, res: Response, next: NextFunction) {
     try {
       const games = await GameModel.find().exec();
       res.json(games.map((game) => "./" + game._id.toString()));
-    } catch (error) {
+    } catch {
       return next(createHttpError(500));
     }
   }
@@ -154,7 +156,7 @@ export default class {
    * @returns A JSON response with a status code of 200 on success, or 500 with an error message
    *          if an internal server error occurs.
    */
-  async put(req: Request, res: Response, next: Function) {
+  async put(req: Request, res: Response) {
     try {
       const game = req.doc;
       game.title = req.body.title ?? "";
@@ -167,14 +169,14 @@ export default class {
 
       await game.save();
       res.status(200).json({});
-    } catch (error) {
+    } catch {
       res.status(500).json({
         message: "Internal server error",
       });
     }
   }
 
-  async delete(req: Request, res: Response, next: Function) {
+  async delete(req: Request, res: Response) {
     try {
       const game = req.doc;
       await GameModel.findByIdAndDelete(game._id.toString()).exec();
@@ -186,7 +188,7 @@ export default class {
       res.json({
         message: "Game deleted",
       });
-    } catch (error) {
+    } catch {
       res.status(500).json({
         message: "Internal server error",
       });
@@ -201,21 +203,21 @@ export default class {
    * @param next - The next middleware function in the Express.js request-response cycle.
    * @throws {HttpError} Returns a 500 Internal Server Error if an exception occurs.
    */
-  async getData(req: Request, res: Response, next: Function) {
+  async getData(req: Request, res: Response, next: NextFunction) {
     try {
       res.json(req.doc.toObject());
-    } catch (error) {
+    } catch {
       return next(createHttpError(500));
     }
   }
 
-  async getEdit(req: Request, res: Response, next: Function) {
+  async getEdit(req: Request, res: Response) {
     res.render("game/edit", {
       game: req.doc,
     });
   }
 
-  async getEditLocation(req: Request, res: Response, next: Function) {
+  async getEditLocation(req: Request, res: Response) {
     res.render("game/editLocation", {
       game: req.doc,
     });
@@ -229,7 +231,7 @@ export default class {
    * @param res - The HTTP response object.
    * @param next - The next middleware function in the stack.
    */
-  async uploadGet(req: Request, res: Response, next: Function) {
+  async uploadGet(req: Request, res: Response) {
     res.render("game/upload");
   }
 
@@ -240,7 +242,7 @@ export default class {
    * @param res - The HTTP response object used to send the response.
    * @param next - The next middleware function in the stack.
    */
-  async postScreenshot(req: Request, res: Response, next: Function) {
+  async postScreenshot(req: Request, res: Response) {
     try {
       const game = req.doc;
       if (req.file === undefined && req.body.image === undefined) {
@@ -266,7 +268,7 @@ export default class {
       const screenshotId = newScreenshot._id.toString();
       const location = `./game/${game._id.toString()}/screenshot/${screenshotId}`;
       res.status(201).location(location).json(newScreenshot);
-    } catch (error) {
+    } catch {
       res.status(500).json({
         message: "Internal server error",
       });
@@ -280,10 +282,10 @@ export default class {
    * @param res - The HTTP response object used to send the JSON response.
    * @param next - The next middleware function in the request-response cycle.
    */
-  async getScreenshot(req: Request, res: Response, next: Function) {
+  async getScreenshot(req: Request, res: Response) {
     try {
       res.json(req.screenshot);
-    } catch (error) {
+    } catch {
       res.status(500).json({
         message: "Internal server error",
       });
@@ -301,7 +303,7 @@ export default class {
    * @param res - The HTTP response object used to send the response back to the client.
    * @param next - The next middleware function in the request-response cycle.
    */
-  async putScreenshot(req: Request, res: Response, next: Function) {
+  async putScreenshot(req: Request, res: Response) {
     try {
       const game = req.doc;
       const screenshot = req.screenshot;
@@ -320,7 +322,7 @@ export default class {
 
       await game.save();
       res.status(200).json({});
-    } catch (error) {
+    } catch {
       res.status(500).json({
         message: "Internal server error",
       });
@@ -334,18 +336,18 @@ export default class {
    * @param res - The HTTP response object used to send the response back to the client.
    * @param next - The next middleware function in the request-response cycle.
    */
-  async deleteScreenshot(req: Request, res: Response, next: Function) {
+  async deleteScreenshot(req: Request, res: Response) {
     try {
       const game = req.doc;
       const screenshot = req.screenshot;
 
-      game.screenshots = game.screenshots.filter((s: any) => {
+      game.screenshots = game.screenshots.filter((s: Screenshot) => {
         return s.id !== screenshot.id;
       });
 
       await game.save();
       res.status(200).json({});
-    } catch (error) {
+    } catch {
       res.status(500).json({
         message: "Internal server error",
       });
@@ -365,7 +367,7 @@ export default class {
    * @param next - The next middleware function in the Express.js request-response cycle.
    * @returns A JSON response with a status code and a message indicating the result.
    */
-  async postHighscore(req: Request, res: Response, next: Function) {
+  async postHighscore(req: Request, res: Response) {
     try {
       if (!req.session.loggedInUser) {
         res.status(401).json({
@@ -377,9 +379,11 @@ export default class {
       const game = req.doc;
       game.highscoreList ??= [];
 
-      const existingHighscore = game.highscoreList.find((highscore: any) => {
-        return highscore.user.id === req.session.loggedInUser?.id;
-      });
+      const existingHighscore = game.highscoreList.find(
+        (highscore: Highscore) => {
+          return highscore.user.id === req.session.loggedInUser?.id;
+        },
+      );
 
       if (existingHighscore) {
         if (
@@ -404,7 +408,7 @@ export default class {
 
         res.status(201).json(game.highscoreList);
       }
-    } catch (error) {
+    } catch {
       res.status(500).json({
         message: "Internal server error",
       });
@@ -418,7 +422,7 @@ export default class {
    * @param res - The HTTP response object used to send the highscore list as a JSON response.
    * @param next - The next middleware function in the request-response cycle.
    */
-  async getHighscore(req: Request, res: Response, next: Function) {
+  async getHighscore(req: Request, res: Response) {
     res.json(req.doc?.highscoreList.toObject());
   }
 }

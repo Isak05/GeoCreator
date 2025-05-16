@@ -187,7 +187,7 @@ export default class GameUI {
       try {
         await this.#game.postHighscore(
           this.#game.totalScore,
-          this.#totalTimePassed / 1000
+          this.#totalTimePassed / 1000,
         );
       } catch {
         console.error("Couldn't post highscore");
@@ -197,7 +197,9 @@ export default class GameUI {
     }
 
     this.#screenshotImage.src = this.#game.nextRound();
-    (this.#submitForm.querySelector("input[type=submit]") as HTMLInputElement).value = SUBMIT_BUTTON_TEXT;
+    (
+      this.#submitForm.querySelector("input[type=submit]") as HTMLInputElement
+    ).value = SUBMIT_BUTTON_TEXT;
     this.#mapElement.src = this.#game.mapSrc;
     this.#mapElement.classList.remove("expanded");
     this.#mapElement.allowplacingmarker = true;
@@ -219,20 +221,22 @@ export default class GameUI {
     const score = this.#game.submitGuess();
     this.#scoreSpan.innerText = `${totalScore.toString()} (+${score.toString()})`;
     this.#roundOverDiv.hidden = false;
-    
+
     // Stop the timer
     this.#timerElement.stopped = true;
 
     // Turn the submit button into a next round button
-    (this.#submitForm.querySelector("input[type=submit]") as HTMLInputElement).value = NEXT_ROUND_BUTTON_TEXT;
-    
+    (
+      this.#submitForm.querySelector("input[type=submit]") as HTMLInputElement
+    ).value = NEXT_ROUND_BUTTON_TEXT;
+
     // Show the correct answer on the map
     this.#mapElement.allowplacingmarker = false;
     this.#mapElement.classList.add("expanded");
     this.#mapElement.placeMarkerLink(
       this.#game.correctAnswer.x,
       this.#game.correctAnswer.y,
-      { iconUrl: "./img/marker-icon-red.png" }
+      { iconUrl: "./img/marker-icon-red.png" },
     );
 
     // Draw a line between the guess and the correct answer.
@@ -250,7 +254,7 @@ export default class GameUI {
         color: "white",
         weight: 6,
         dashArray: "5, 10",
-      }
+      },
     );
     this.#mapElement.drawLine(
       this.#game.correctAnswer.x,
@@ -260,7 +264,7 @@ export default class GameUI {
       {
         color: "#cc3040",
         dashArray: "5, 10",
-      }
+      },
     );
   }
 
@@ -275,13 +279,13 @@ export default class GameUI {
           return a.time - b.time;
         }
         return b.score - a.score;
-      }
+      },
     );
 
     // Create a new row for each highscore and append it to the table body.
     for (const [index, highscore] of sortedHighscores.entries()) {
       const row = highscoreTableRowTemplate.content.cloneNode(
-        true
+        true,
       ) as HTMLTableRowElement;
 
       row.querySelector(".rank").textContent = `${index + 1}.`;
@@ -311,7 +315,7 @@ export default class GameUI {
     this.#submitForm.addEventListener("submit", async (event: Event) => {
       event.preventDefault();
 
-      switch(this.#game.state) {
+      switch (this.#game.state) {
         case GameState.WAITING_FOR_GUESS:
           this.#submit();
           break;

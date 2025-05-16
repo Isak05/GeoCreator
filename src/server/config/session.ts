@@ -13,7 +13,7 @@ import type { IncomingMessage, ServerResponse } from "node:http";
 export default function (): (
   req: IncomingMessage,
   res: ServerResponse,
-  next: (err?: unknown) => void
+  next: (err?: unknown) => void,
 ) => void {
   if (!process.env.SESSION_NAME || !process.env.SESSION_SECRET) {
     throw new Error("SESSION_NAME and SESSION_SECRET be set in .env");
@@ -26,7 +26,7 @@ export default function (): (
     saveUninitialized: false,
     store: MongoStore.create({
       clientPromise: new Promise((resolve) =>
-        resolve(mongoose.connection.getClient())
+        resolve(mongoose.connection.getClient()),
       ),
     }),
     cookie: {

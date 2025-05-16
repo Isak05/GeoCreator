@@ -8,8 +8,7 @@
 import htmlTemplate from "./geocreator-map.html.js";
 import cssTemplate from "./geocreator-map.css.js";
 import Vec2 from "../../vec2.js";
-
-declare const L: any;
+import L from "leaflet";
 
 /**
  * Represents a map element.
@@ -57,7 +56,7 @@ export default class GeocreatorMap extends HTMLElement {
     // Attach a shadow DOM tree to this element and
     // append the template to the shadow root.
     this.attachShadow({ mode: "open" }).appendChild(
-      htmlTemplate.content.cloneNode(true)
+      htmlTemplate.content.cloneNode(true),
     );
     this.shadowRoot.appendChild(cssTemplate.content.cloneNode(true));
 
@@ -125,7 +124,7 @@ export default class GeocreatorMap extends HTMLElement {
     x: number,
     y: number,
     options?: L.IconOptions,
-    callback?: Function
+    callback?: () => void,
   ) {
     const markerIcon = L.icon({
       iconAnchor: options?.iconAnchor ?? [12, 41],
@@ -140,7 +139,7 @@ export default class GeocreatorMap extends HTMLElement {
 
     L.marker([y, x], { icon: markerIcon })
       .addTo(this.#mapLayerGroup)
-      .on("click", (event: L.LeafletMouseEvent) => {
+      .on("click", () => {
         if (!callback) {
           return;
         }
@@ -163,14 +162,14 @@ export default class GeocreatorMap extends HTMLElement {
     y1: number,
     x2: number,
     y2: number,
-    options?: L.PolylineOptions
+    options?: L.PolylineOptions,
   ) {
     L.polyline(
       [
         [y1, x1],
         [y2, x2],
       ],
-      options
+      options,
     ).addTo(this.#mapLayerGroup);
   }
 
@@ -220,7 +219,7 @@ export default class GeocreatorMap extends HTMLElement {
       ],
       {
         interactive: true,
-      }
+      },
     ).addTo(this.#leafletMap);
 
     // Handle click events on the overlay to place a marker.
@@ -239,7 +238,7 @@ export default class GeocreatorMap extends HTMLElement {
     this.#leafletMap.invalidateSize(false);
 
     this.#lastAnimationFrameId = requestAnimationFrame(
-      this.#invalidateSizeLoop.bind(this)
+      this.#invalidateSizeLoop.bind(this),
     );
   }
 
@@ -267,7 +266,7 @@ export default class GeocreatorMap extends HTMLElement {
           y: event.latlng.lat,
           x: event.latlng.lng,
         },
-      })
+      }),
     );
   }
 
@@ -278,7 +277,7 @@ export default class GeocreatorMap extends HTMLElement {
    * @returns A promise that resolves to an object containing the width and height of the image.
    */
   async #getImageResolutionFromUrl(
-    url: string
+    url: string,
   ): Promise<{ width: number; height: number }> {
     const image = document.createElement("img");
     image.src = url;
@@ -350,7 +349,10 @@ export default class GeocreatorMap extends HTMLElement {
     return new Vec2(
       this.#mapMarker.getLatLng().lng,
       this.#mapMarker.getLatLng().lat,
-  );
+    );
   }
 }
-customElements.define("geocreator-map", GeocreatorMap);
+
+if (!customElements.get("geocreator-map")) {
+  customElements.define("geocreator-map", GeocreatorMap);
+}

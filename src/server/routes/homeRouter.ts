@@ -11,6 +11,6 @@ import HomeController from "../controllers/HomeController.js";
 const router = express.Router();
 export default router;
 
-const controller = new HomeController()
+const controller = new HomeController();
 
 router.get("/", controller.get);

@@ -5,7 +5,7 @@
  * @author Isak Johansson Weckstén <ij222pv@student.lnu.se>
  */
 
-import mongoose, { Document } from "mongoose";
+import mongoose from "mongoose";
 
 const convertObject = Object.freeze({
   getters: true,
@@ -30,7 +30,7 @@ const baseSchema = new mongoose.Schema(
     toObject: convertObject,
     toJSON: convertObject,
     optimisticConcurrency: true,
-  }
+  },
 );
 
 const BASE_SCHEMA = Object.freeze(baseSchema);

@@ -7,7 +7,7 @@
 import { logger } from "../config/winston.js";
 import createHttpError from "http-errors";
 import ImageModel from "../models/ImageModel.js";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 
 /**
  * Controller for modifying resources via the api.
@@ -19,8 +19,8 @@ export default class ImageController {
   async loadImage(
     req: Request,
     res: Response,
-    next: Function,
-    id: string
+    next: NextFunction,
+    id: string,
   ): Promise<void> {
     try {
       req.doc = await ImageModel.findById(id).exec();
@@ -31,12 +31,12 @@ export default class ImageController {
 
       logger.silly(`Image with id ${id} found`);
       next();
-    } catch (error) {
+    } catch {
       return next(createHttpError(404));
     }
   }
 
-  async getImage(req, res, next) {
+  async getImage(req: Request, res: Response): Promise<void> {
     res.setHeader("Content-Type", "image/jpeg");
     res.send(req.doc.getRaw());
   }

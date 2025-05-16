@@ -58,7 +58,7 @@ export default class GeocreatorTimer extends HTMLElement {
     // Attach a shadow DOM tree to this element and
     // append the template to the shadow root.
     this.attachShadow({ mode: "open" }).appendChild(
-      template.content.cloneNode(true)
+      template.content.cloneNode(true),
     );
 
     // Retreive elements
@@ -82,7 +82,7 @@ export default class GeocreatorTimer extends HTMLElement {
   /**
    * Called by the browser engine when an attribute changes.
    */
-  attributeChangedCallback(name: string, oldValue: any, newValue: any) {
+  attributeChangedCallback(name: string, oldValue: string, newValue: string) {
     if (oldValue === newValue) {
       return;
     }
@@ -171,4 +171,6 @@ export default class GeocreatorTimer extends HTMLElement {
   }
 }
 
-customElements.define("geocreator-timer", GeocreatorTimer);
+if (!customElements.get("geocreator-timer")) {
+  customElements.define("geocreator-timer", GeocreatorTimer);
+}

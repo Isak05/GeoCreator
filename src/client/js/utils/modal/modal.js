@@ -6,6 +6,7 @@
  */
 
 import modalTemplate from "./modal.html.js";
+import * as bootstrap from "bootstrap";
 
 /**
  * A class representing a modal dialog.
@@ -96,7 +97,7 @@ export default class Modal {
     const primary = this.#modalElement.querySelector(".btn-primary");
     const secondary = this.#modalElement.querySelector(".btn-secondary");
 
-    switch(type) {
+    switch (type) {
       case Modal.PromptType.YESNO:
         primary.textContent = "Yes";
         secondary.textContent = "No";
@@ -120,7 +121,7 @@ export default class Modal {
    * or `false` if the modal is hidden without confirmation.
    */
   show() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       this.#modal.show();
 
       // Modal has been hidden without the user confirming the delete.
@@ -132,7 +133,7 @@ export default class Modal {
 
           resolve(false);
         },
-        { signal: this.#abortController.signal }
+        { signal: this.#abortController.signal },
       );
 
       // User has confirmed the delete.
@@ -143,7 +144,7 @@ export default class Modal {
 
           resolve(true);
         },
-        { signal: this.#abortController.signal }
+        { signal: this.#abortController.signal },
       );
     });
   }

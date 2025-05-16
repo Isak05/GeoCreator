@@ -5,7 +5,6 @@
  */
 
 import { Request, Response } from "express";
-import { logger } from "../config/winston.js";
 import createHttpError from "http-errors";
 import UserModel from "../models/UserModel.js";
 
@@ -20,7 +19,7 @@ export default class {
    * @param res - The HTTP response object.
    * @param next - The next middleware function in the stack.
    */
-  async loginGet(req: Request, res: Response, next: Function) {
+  async loginGet(req: Request, res: Response) {
     res.render("auth/login");
   }
 
@@ -36,7 +35,7 @@ export default class {
    * @param next - The next middleware function in the Express.js request-response cycle.
    * @throws {HttpError} If the username or password is invalid, a 401 Unauthorized error is thrown.
    */
-  async loginPost(req: Request, res: Response, next: Function) {
+  async loginPost(req: Request, res: Response) {
     const { username, password } = req.body;
 
     try {
@@ -52,7 +51,7 @@ export default class {
       };
       req.session.loggedInUser = user;
       res.redirect("..");
-    } catch (error) {
+    } catch {
       req.session.flash = {
         type: "danger",
         message: "Invalid username or password",
@@ -68,7 +67,7 @@ export default class {
    * @param res - The HTTP response object.
    * @param next - The next middleware function in the request-response cycle.
    */
-  async createGet(req: Request, res: Response, next: Function) {
+  async createGet(req: Request, res: Response) {
     res.render("auth/signup");
   }
 
@@ -80,7 +79,7 @@ export default class {
    * @param res - The HTTP response object used to redirect or send responses.
    * @param next - The next middleware function in the Express.js request-response cycle.
    */
-  async createPost(req: Request, res: Response, next: Function) {
+  async createPost(req: Request, res: Response) {
     const { username, password } = req.body;
 
     try {
@@ -104,7 +103,7 @@ export default class {
         message: "Successfully signed up",
       };
       res.redirect("..");
-    } catch (error) {
+    } catch {
       req.session.flash = {
         type: "danger",
         message: "An error occured. Please try again.",
@@ -121,7 +120,7 @@ export default class {
    * @param res - The HTTP response object, used to redirect the user.
    * @param next - The next middleware function in the stack.
    */
-  async logoutGet(req: Request, res: Response, next: Function) {
+  async logoutGet(req: Request, res: Response) {
     req.session.flash = {
       type: "success",
       message: "Logged out",

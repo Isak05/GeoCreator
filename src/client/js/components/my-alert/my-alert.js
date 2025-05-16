@@ -4,9 +4,18 @@
  * @version 1.0.0
  */
 
-import htmlTemplate from './my-alert.html.js'
+import htmlTemplate from "./my-alert.html.js";
 
-const alertTypes = Object.freeze(['alert-primary', 'alert-secondary', 'alert-success', 'alert-danger', 'alert-warning', 'alert-info', 'alert-light', 'alert-dark'])
+const alertTypes = Object.freeze([
+  "alert-primary",
+  "alert-secondary",
+  "alert-success",
+  "alert-danger",
+  "alert-warning",
+  "alert-info",
+  "alert-light",
+  "alert-dark",
+]);
 
 /**
  * Represents a alert.
@@ -17,12 +26,12 @@ export default class MyAlert extends HTMLElement {
    *
    * @type {AbortController}
    */
-  #abortController = new AbortController()
+  #abortController = new AbortController();
 
   /**
    * The alert element.
    */
-  #alert = null
+  #alert = null;
 
   /**
    * Creates an instance of the my-alert component.
@@ -30,34 +39,38 @@ export default class MyAlert extends HTMLElement {
    * @param {string} type - The type of the alert.
    * @param {string} message - The message of the alert.
    */
-  constructor (type = 'info', message = '') {
-    super()
+  constructor(type = "info", message = "") {
+    super();
 
-    this.attachShadow({ mode: 'open' })
-    this.shadowRoot.appendChild(htmlTemplate.content.cloneNode(true))
+    this.attachShadow({ mode: "open" });
+    this.shadowRoot.appendChild(htmlTemplate.content.cloneNode(true));
 
-    this.#alert = this.shadowRoot.querySelector('#alert')
-    this.shadowRoot.querySelector('slot').textContent = message
+    this.#alert = this.shadowRoot.querySelector("#alert");
+    this.shadowRoot.querySelector("slot").textContent = message;
 
-    this.setAttribute('type', type)
+    this.setAttribute("type", type);
   }
 
   /**
    * Called after the element is inserted into the DOM.
    */
-  connectedCallback () {
-    this.#alert.addEventListener('click', () => {
-      // eslint-disable-next-line no-undef
-      const alert = new bootstrap.Alert(this.#alert)
-      alert.close()
-    }, { signal: this.#abortController.signal })
+  connectedCallback() {
+    this.#alert.addEventListener(
+      "click",
+      () => {
+        // eslint-disable-next-line no-undef
+        const alert = new bootstrap.Alert(this.#alert);
+        alert.close();
+      },
+      { signal: this.#abortController.signal },
+    );
   }
 
   /**
    * Called after the element has been removed from the DOM.
    */
-  disconnectedCallback () {
-    this.#abortController.abort()
+  disconnectedCallback() {
+    this.#abortController.abort();
   }
 
   /**
@@ -67,21 +80,21 @@ export default class MyAlert extends HTMLElement {
    * @param {string} oldValue - The old value of the attribute.
    * @param {string} newValue - The new value of the attribute.
    */
-  attributeChangedCallback (name, oldValue, newValue) {
+  attributeChangedCallback(name, oldValue, newValue) {
     if (oldValue === newValue) {
-      return
+      return;
     }
 
     switch (name) {
-      case 'type': {
-        const newAlertType = `alert-${newValue}`
+      case "type": {
+        const newAlertType = `alert-${newValue}`;
         if (!alertTypes.includes(newAlertType)) {
-          return
+          return;
         }
 
-        this.#alert.classList.remove(...alertTypes)
-        this.#alert.classList.add(newAlertType)
-        break
+        this.#alert.classList.remove(...alertTypes);
+        this.#alert.classList.add(newAlertType);
+        break;
       }
     }
   }
@@ -91,9 +104,11 @@ export default class MyAlert extends HTMLElement {
    *
    * @returns {string[]} - An array of attribute names.
    */
-  static get observedAttributes () {
-    return ['type']
+  static get observedAttributes() {
+    return ["type"];
   }
 }
 
-customElements.define('my-alert', MyAlert)
+if (!customElements.get("my-alert")) {
+  customElements.define("my-alert", MyAlert);
+}
