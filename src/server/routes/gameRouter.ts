@@ -1,6 +1,5 @@
 /**
  * The game router.
- *
  * @module routes/gameRouter
  * @author Isak Johansson Weckstén <ij222pv@student.lnu.se>
  */

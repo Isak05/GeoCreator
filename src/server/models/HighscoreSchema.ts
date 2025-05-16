@@ -1,6 +1,5 @@
 /**
  * The mongoose model for highscores.
- *
  * @module models/HighscoreModel
  * @author Isak Johansson Weckstén <ij222pv@student.lnu.se>
  */

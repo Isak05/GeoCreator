@@ -2,7 +2,6 @@
  * Defines the Winston logger.
  *
  * Original module by Mats Loock. Modified by Isak Johansson Weckstén.
- *
  * @module config/winston
  * @author Mats Loock
  * @author Isak Johansson Weckstén <ij222pv@student.lnu.se>

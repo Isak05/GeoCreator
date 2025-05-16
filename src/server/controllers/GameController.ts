@@ -17,12 +17,10 @@ import { Screenshot } from "../models/ScreenshotSchema.js";
 export default class {
   /**
    * Middleware to load a game document by its ID and attach it to the request object.
-   *
    * @param req - The Express request object.
    * @param res - The Express response object.
    * @param next - The next middleware function in the stack.
    * @param id - The ID of the game to load.
-   *
    * @throws Will call the next middleware with a 404 HTTP error if the game is not found.
    */
   async loadGame(
@@ -50,6 +48,13 @@ export default class {
     }
   }
 
+  /**
+   * Loads a screenshot by its ID and attaches it to the request object.
+   * @param req - The HTTP request object.
+   * @param res - The HTTP response object.
+   * @param next - The next middleware function in the stack.
+   * @param id - The ID of the screenshot to load.
+   */
   async loadScreenshot(
     req: Request,
     res: Response,
@@ -76,10 +81,8 @@ export default class {
 
   /**
    * Handles the GET request to render the game index page.
-   *
    * @param req - The HTTP request object.
    * @param res - The HTTP response object.
-   * @param next - The next middleware function in the stack.
    * @returns A rendered view of the "game/index" page.
    */
   async get(req: Request, res: Response) {
@@ -100,11 +103,8 @@ export default class {
    * and redirects the client to the newly created game's page. If an error
    * occurs during the creation process, it responds with a 500 status code
    * and an error message.
-   *
    * @param req - The HTTP request object.
    * @param res - The HTTP response object.
-   * @param next - The next middleware function in the stack.
-   *
    * @returns A Promise that resolves when the response is sent.
    */
   async post(req: Request, res: Response) {
@@ -127,7 +127,6 @@ export default class {
 
   /**
    * Retrieves all game entries from the database and returns their IDs as relative paths.
-   *
    * @param req - The HTTP request object.
    * @param res - The HTTP response object.
    * @param next - The next middleware function in the request-response cycle.
@@ -148,10 +147,8 @@ export default class {
    *
    * This method updates the properties of an existing game document
    * with the data provided in the request body.
-   *
    * @param req - The HTTP request object.
    * @param res - The HTTP response object.
-   * @param next - The next middleware function.
    * @returns A JSON response with a status code of 200 on success, or 500 with an error message
    *          if an internal server error occurs.
    */
@@ -175,6 +172,11 @@ export default class {
     }
   }
 
+  /**
+   * Handles the HTTP DELETE request to remove a game document.
+   * @param req - The HTTP request object, expected to contain a `doc` property.
+   * @param res - The HTTP response object used to send the JSON response.
+   */
   async delete(req: Request, res: Response) {
     try {
       const game = req.doc;
@@ -196,7 +198,6 @@ export default class {
 
   /**
    * Handles the retrieval of data and sends it as a JSON response.
-   *
    * @param req - The HTTP request object, expected to contain a `doc` property.
    * @param res - The HTTP response object used to send the JSON response.
    * @param next - The next middleware function in the Express.js request-response cycle.
@@ -206,16 +207,26 @@ export default class {
     try {
       res.json(req.doc.toObject());
     } catch {
-      return next(createHttpError(500));
+      next(createHttpError(500));
     }
   }
 
+  /**
+   * Handles the GET request for the edit page.
+   * @param req - The HTTP request object.
+   * @param res - The HTTP response object.
+   */
   async getEdit(req: Request, res: Response) {
     res.render("game/edit", {
       game: req.doc,
     });
   }
 
+  /**
+   * Handles the GET request for the edit location page.
+   * @param req - The HTTP request object.
+   * @param res - The HTTP response object.
+   */
   async getEditLocation(req: Request, res: Response) {
     res.render("game/editLocation", {
       game: req.doc,
@@ -225,10 +236,8 @@ export default class {
   /**
    * Handles the GET request for the upload page.
    * Renders the "game/upload" view to display the upload interface.
-   *
    * @param req - The HTTP request object.
    * @param res - The HTTP response object.
-   * @param next - The next middleware function in the stack.
    */
   async uploadGet(req: Request, res: Response) {
     res.render("game/upload");

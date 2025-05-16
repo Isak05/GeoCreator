@@ -1,6 +1,5 @@
 /**
  * The geocreator-timer web component module.
- *
  * @module geocreator-timer
  * @author Isak Johansson Weckstén <ij222pv@student.lnu.se>
  * @version 1.1.2
@@ -20,7 +19,6 @@ template.innerHTML = /* html */ `
 
 /**
  * Represents a geocreator-timer element.
- *
  * @event geocreator-timer#timeout
  */
 export default class GeocreatorTimer extends HTMLElement {
@@ -81,6 +79,9 @@ export default class GeocreatorTimer extends HTMLElement {
 
   /**
    * Called by the browser engine when an attribute changes.
+   * @param name The name of the attribute that changed
+   * @param oldValue The old value of the attribute
+   * @param newValue The new value of the attribute
    */
   attributeChangedCallback(name: string, oldValue: string, newValue: string) {
     if (oldValue === newValue) {
@@ -92,6 +93,7 @@ export default class GeocreatorTimer extends HTMLElement {
 
   /**
    * Watches attributes for changes on the element.
+   * @returns The list of attributes to watch for changes.
    */
   static get observedAttributes(): string[] {
     return ["totaltime", "stopped"];
@@ -111,6 +113,7 @@ export default class GeocreatorTimer extends HTMLElement {
 
   /**
    * Gets the stopped state of the countdown timer.
+   * @returns True if the timer is stopped, false otherwise.
    */
   get stopped(): boolean {
     return this.#stopped;
@@ -133,6 +136,7 @@ export default class GeocreatorTimer extends HTMLElement {
 
   /**
    * Gets how long the timer should run for in total, measured in milliseconds.
+   * @returns The total time the timer should run for.
    */
   get totaltime(): number {
     return this.#totaltime;
@@ -140,6 +144,7 @@ export default class GeocreatorTimer extends HTMLElement {
 
   /**
    * Gets how much time is left on the timer, measured in milliseconds.
+   * @returns The time left on the timer.
    */
   get timeleft(): number {
     return this.#totaltime - this.#timePassed;
@@ -148,7 +153,6 @@ export default class GeocreatorTimer extends HTMLElement {
   /**
    * Run once to continuously update the countdown timer display until `this.stopped` is set to true.
    * Dispatches a `timeout` event when the time is up.
-   *
    * @fires geocreator-timer#timeout
    */
   #update() {

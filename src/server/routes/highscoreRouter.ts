@@ -1,6 +1,5 @@
 /**
  * The highscore router.
- *
  * @module routes/highscoreRouter
  * @author Isak Johansson Weckstén <ij222pv@student.lnu.se>
  */

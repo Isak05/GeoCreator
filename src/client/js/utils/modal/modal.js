@@ -20,45 +20,34 @@ export default class Modal {
 
   /**
    * The modal element.
-   *
-   * @type {HTMLElement}
    */
   #modalElement = null;
 
   /**
    * The modal title element.
-   *
-   * @type {HTMLElement}
    */
   #modalTitleElement = null;
 
   /**
    * The modal body element.
-   *
-   * @type {HTMLElement}
    */
   #modalBodyElement = null;
 
   /**
    * The Bootstrap modal instance.
-   *
-   * @type {object}
    */
   #modal = null;
 
   /**
    * The AbortController instance to manage event listeners.
-   *
-   * @type {AbortController}
    */
   #abortController = new AbortController();
 
   /**
    * Creates an instance of a modal with the specified title and body content.
-   *
-   * @param {string | HTMLElement} title - The title of the modal.
-   * @param {string | HTMLElement} body - The body content of the modal.
-   * @param {Modal.PromptType = Modal.PromptType.YESNO} promptType - The type of prompt (OK or Yes/No).
+   * @param title - The title of the modal.
+   * @param body - The body content of the modal.
+   * @param promptType - The type of prompt (OK or Yes/No).
    */
   constructor(title, body, promptType = Modal.PromptType.YESNO) {
     this.#modalElement =
@@ -90,8 +79,7 @@ export default class Modal {
   /**
    * Adjusts the text and visibility of the modal's primary and secondary buttons
    * based on the specified prompt type.
-
-   * @param {Modal.PromptType} type - The type of prompt to display.
+   * @param type - The type of prompt to display.
    */
   #adjustPromptButtons(type) {
     const primary = this.#modalElement.querySelector(".btn-primary");
@@ -116,8 +104,7 @@ export default class Modal {
 
   /**
    * Displays the delete confirmation modal and returns a promise that resolves based on user action.
-   *
-   * @returns {Promise<boolean>} A promise that resolves to `true` if the user confirms the delete,
+   * @returns A promise that resolves to `true` if the user confirms the delete,
    * or `false` if the modal is hidden without confirmation.
    */
   show() {

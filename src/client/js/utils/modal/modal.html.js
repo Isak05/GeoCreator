@@ -1,6 +1,5 @@
 /**
  * Exports a template containing a basic bootstrap modal with the options "Yes" and "No".
- *
  * @author Isak Johansson Weckstén <ij222pv@student.lnu.se>
  * @version 1.0.0
  */

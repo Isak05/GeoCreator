@@ -15,6 +15,11 @@ import { NextFunction, Request, Response } from "express";
 export default class ImageController {
   /**
    * Middleware to load an image by ID and attach it to the request object.
+   * @param req - The Express request object.
+   * @param res - The Express response object.
+   * @param next - The next middleware function in the stack.
+   * @param id - The ID of the image to load.
+   * @returns A promise that resolves when the image is loaded.
    */
   async loadImage(
     req: Request,
@@ -36,6 +41,11 @@ export default class ImageController {
     }
   }
 
+  /**
+   * Handles the GET request to retrieve an image by its ID.
+   * @param req - The HTTP request object.
+   * @param res - The HTTP response object.
+   */
   async getImage(req: Request, res: Response): Promise<void> {
     res.setHeader("Content-Type", "image/jpeg");
     res.send(req.doc.getRaw());
