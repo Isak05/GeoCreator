@@ -15,7 +15,7 @@ const convertObject = Object.freeze({
    * @param ret - The plain object representation which has been converted
    * @returns - The transformed object
    */
-  transform: (doc, ret) => {
+  transform: (doc: mongoose.Document, ret: mongoose.Document) => {
     delete ret._id;
     return ret;
   },

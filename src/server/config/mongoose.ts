@@ -16,7 +16,7 @@ import process from "node:process";
  * @param connectionString - The connection URI for the MongoDB database.
  * @returns - A promise that resolves when the connection is successfully established.
  */
-export async function connectToDatabase(connectionString) {
+export async function connectToDatabase(connectionString: string) {
   mongoose.set("strict", "throw");
   mongoose.set("strictQuery", true);
 
