@@ -11,7 +11,7 @@
     "dev": "nodemon",
     "build": "node ./esbuild.config.js",
     "test": "npx jest",
-    "lint": "eslint src; tsc --noemit",
+    "lint": "eslint src && tsc --noemit",
     "lint:fix": "eslint src --fix"
   },
   "devDependencies": {
