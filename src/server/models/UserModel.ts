@@ -9,6 +9,13 @@ import * as argon2 from "argon2";
 import BASE_SCHEMA from "./baseSchema.js";
 import { NextFunction } from "express";
 
+export interface User {
+  username: string;
+  password: string;
+  _id: string;
+  id: string;
+}
+
 const convertObject = Object.freeze({
   getters: true,
   versionKey: false,
@@ -29,7 +36,7 @@ const convertObject = Object.freeze({
   },
 });
 
-const schema = new mongoose.Schema(
+const schema = new mongoose.Schema<User>(
   {
     username: {
       type: String,
@@ -84,5 +91,5 @@ schema.pre("save", async function (next: NextFunction) {
   next();
 });
 
-const UserModel = mongoose.model("User", schema);
+const UserModel = mongoose.model<User>("User", schema);
 export default UserModel;

@@ -1,7 +1,7 @@
 import "express";
 import GameModel from "../src/server/models/GameModel";
 import type { Screenshot } from "../src/server/models/ScreenshotSchema";
-import UserModel from "../src/server/models/UserModel";
+import type { User } from "../src/server/models/UserModel";
 import type { HydratedDocument } from "mongoose";
 import ImageModel from "../src/server/models/ImageModel.js";
 
@@ -16,7 +16,7 @@ declare module "express-serve-static-core" {
         message: string;
         type: string;
       };
-      loggedInUser: HydratedDocument<typeof UserModel>;
+      loggedInUser: User;
     };
     file: {
       fieldname: string;

@@ -44,6 +44,10 @@ try {
     res.locals.baseURL = process.env.BASE_URL ?? "/";
     res.locals.loggedInUser = req.session.loggedInUser;
 
+    logger.http(
+      `${req.method} ${req.url} ${req.session?.loggedInUser ? req.session.loggedInUser.username : "-"}`,
+    );
+
     next();
   });
 
