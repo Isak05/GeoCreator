@@ -20,7 +20,6 @@ const upload = multer({
 const controller = new GameController();
 
 router.param("gameId", controller.loadGame);
-router.param("screenshotId", controller.loadScreenshot);
 
 // Get all games
 router.get("/", controller.getAll);
