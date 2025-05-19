@@ -1,18 +1,16 @@
 /**
- * Defines the Winston logger.
- *
- * Original module by Mats Loock. Modified by Isak Johansson Weckstén.
+ * @file Defines the Winston logger.
  * @module config/winston
  * @author Mats Loock
  * @author Isak Johansson Weckstén <ij222pv@student.lnu.se>
+ * @version 1.0.0
  */
 
 // import '@lnu/json-js-cycle'
 import { addColors, createLogger, format, transports } from "winston";
-import process from "node:process";
 
 // Destructuring assignment for convenience.
-const { colorize, combine, json, printf, timestamp } = format;
+const { colorize, combine, printf, timestamp } = format;
 
 // The colorizer.
 const colorizer = colorize();
@@ -36,11 +34,14 @@ const decolorizeRegex = /\x1b\[[0-9]{1,3}m/gi;
  * Removes ANSI color sequences from the message.
  */
 const decolorize = format((info) => {
-  if (!info?.message) {
+  if (!info[Symbol.for("message")]) {
     return info;
   }
 
-  info.message = info.message.replace(decolorizeRegex, "");
+  info[Symbol.for("message")] = info[Symbol.for("message")].replace(
+    decolorizeRegex,
+    "",
+  );
   return info;
 });
 
@@ -89,7 +90,7 @@ if (process.env.LOGGER_COMBINED_LOG_FILE) {
     new transports.File({
       filename: process.env.LOGGER_COMBINED_LOG_FILE,
       decolorize: true,
-      format: combine(baseFormat, decolorize(), json()),
+      format: combine(baseFormat, decolorize()),
     }),
   );
 }
@@ -101,40 +102,7 @@ if (process.env.LOGGER_ERROR_LOG_FILE) {
       filename: process.env.LOGGER_ERROR_LOG_FILE,
       level: "error",
       decolorize: true,
-      format: combine(baseFormat, decolorize(), json()),
-    }),
-  );
-}
-
-// Add file transport if a path to the uncaught exception log file is provided.
-if (
-  process.env.NODE_ENV !== "development" &&
-  process.env.LOGGER_UNCAUGHT_EXCEPTION_LOG_FILE
-) {
-  logger.exceptions.handle(
-    new transports.File({
-      filename: process.env.LOGGER_UNCAUGHT_EXCEPTION_LOG_FILE,
-    }),
-  );
-}
-
-// Add MongoDB transport if a connection string is provided.
-if (process.env.LOGGER_DB_CONNECTION_STRING) {
-  await import("winston-mongodb");
-
-  logger.add(
-    new transports.MongoDB({
-      level: "warn",
-      db: process.env.LOGGER_DB_CONNECTION_STRING,
-      options: {
-        poolSize: 2,
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      },
-      collection: process.env.LOGGER_DB_COLLECTION_NAME || "logs",
-      capped: true,
-      decolorize: true,
-      format: combine(baseFormat),
+      format: combine(baseFormat, decolorize()),
     }),
   );
 }
