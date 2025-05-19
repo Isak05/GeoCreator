@@ -4,6 +4,8 @@
  * @author Isak Johansson Weckstén <ij222pv@student.lnu.se>
  */
 
+import { NextFunction, Request, Response } from "express";
+
 /**
  * Middleware to handle flash messages.
  *
@@ -12,7 +14,7 @@
  * @returns The middleware function.
  */
 export default function () {
-  return (req, res, next) => {
+  return (req: Request, res: Response, next: NextFunction) => {
     if (req.session?.flash) {
       res.locals.flash = req.session.flash;
       delete req.session.flash;
