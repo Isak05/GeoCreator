@@ -1,6 +1,5 @@
 /**
  * Tests for Game class.
- *
  * @author Isak Johansson Weckstén <ij222pv@student.lnu.se>
  */
 
@@ -24,9 +23,14 @@ jest.spyOn(global, "fetch").mockImplementation(
   jest.fn(() =>
     Promise.resolve({
       ok: true,
-      json: () => Promise.resolve(JSON.parse(JSON.stringify(gameData))),
-    })
-  ) as jest.Mock
+      /**
+       * Mocking the response of the fetch call to return game data.
+       * @returns A promise that resolves to a Response object.
+       */
+      json: (): Promise<Response> =>
+        Promise.resolve(JSON.parse(JSON.stringify(gameData))),
+    }),
+  ) as jest.Mock,
 );
 
 Object.defineProperty(global, "window", {
@@ -41,6 +45,8 @@ describe("Game", () => {
   describe("constructor", () => {
     it("should create a Game object with a URL", async () => {
       const game = new Game("https://example.com/game");
+
+      expect(game).toBeInstanceOf(Game);
     });
 
     it("should throw an error if the URL is invalid", () => {
@@ -48,8 +54,6 @@ describe("Game", () => {
       expect(() => new Game({} as unknown as string)).toThrow(TypeError);
       expect(() => new Game(null as unknown as string)).toThrow(TypeError);
       expect(() => new Game(undefined as unknown as string)).toThrow(TypeError);
-      // @ts-expect-error
-      expect(() => new Game()).toThrow(TypeError);
     });
   });
 
@@ -68,12 +72,12 @@ describe("Game", () => {
       await game.fetchGameData();
       let nextRound = game.nextRound();
       expect(
-        gameData.screenshots.map((screenshot) => screenshot.url)
+        gameData.screenshots.map((screenshot) => screenshot.url),
       ).toContain(nextRound);
 
       nextRound = game.nextRound();
       expect(
-        gameData.screenshots.map((screenshot) => screenshot.url)
+        gameData.screenshots.map((screenshot) => screenshot.url),
       ).toContain(nextRound);
     });
 
