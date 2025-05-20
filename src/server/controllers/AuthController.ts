@@ -7,7 +7,6 @@
 import { Request, Response } from "express";
 import createHttpError from "http-errors";
 import UserModel from "../models/UserModel.js";
-import mongoose from "mongoose";
 
 /**
  * Controller for accessing the home page
@@ -46,9 +45,7 @@ export default class {
         type: "success",
         message: "Logged in as " + user.username,
       };
-      req.session.loggedInUser = user as unknown as mongoose.HydratedDocument<
-        typeof UserModel
-      >;
+      req.session.loggedInUser = user;
       res.redirect("..");
     } catch {
       req.session.flash = {
@@ -92,9 +89,7 @@ export default class {
       const user = new UserModel({ username, password });
       await user.save();
 
-      req.session.loggedInUser = user as unknown as mongoose.HydratedDocument<
-        typeof UserModel
-      >;
+      req.session.loggedInUser = user;
       req.session.flash = {
         type: "success",
         message: "Successfully signed up",

@@ -1,15 +1,14 @@
 import "express";
-import GameModel from "../src/server/models/GameModel";
 import type { Screenshot } from "../src/server/models/ScreenshotSchema";
 import type { User } from "../src/server/models/UserModel";
 import type { HydratedDocument } from "mongoose";
-import ImageModel from "../src/server/models/ImageModel.js";
+import { Image, ImageMethods } from "../src/server/models/ImageModel.js";
+import { Game } from "../src/server/models/GameModel.js";
 
 declare module "express-serve-static-core" {
   interface Request {
-    doc:
-      | HydratedDocument<typeof GameModel>
-      | HydratedDocument<typeof ImageModel>;
+    game: HydratedDocument<Game>;
+    image: HydratedDocument<Image, ImageMethods>;
     screenshot: Screenshot;
     session: {
       flash: {

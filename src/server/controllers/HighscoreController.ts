@@ -33,8 +33,8 @@ export default class HighscoreController {
         return;
       }
 
-      const game = req.doc;
-      game.highscoreList ??= [] as mongoose.HydratedDocument<Highscore[]>;
+      const game = req.game;
+      game.highscoreList ??= [] as mongoose.Types.DocumentArray<Highscore>;
 
       // Find any existing highscore for the logged-in user
       const existingHighscore = game.highscoreList.find(
@@ -62,7 +62,7 @@ export default class HighscoreController {
       } else {
         // If no highscore exists, create a new one
         game.highscoreList.push({
-          user: req.session.loggedInUser?.id,
+          user: req.session.loggedInUser,
           score: req.body?.score,
           time: req.body?.time,
         });
@@ -85,6 +85,6 @@ export default class HighscoreController {
    * @param res - The HTTP response object used to send the highscore list as a JSON response.
    */
   async get(req: Request, res: Response) {
-    res.json(req.doc?.highscoreList.toObject());
+    res.json(req.game?.highscoreList.toObject());
   }
 }

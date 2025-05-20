@@ -6,8 +6,9 @@
 
 import { logger } from "../config/winston.js";
 import createHttpError from "http-errors";
-import ImageModel from "../models/ImageModel.js";
+import ImageModel, { Image, ImageMethods } from "../models/ImageModel.js";
 import { NextFunction, Request, Response } from "express";
+import mongoose from "mongoose";
 
 /**
  * Controller for modifying resources via the api.
@@ -28,9 +29,11 @@ export default class ImageController {
     id: string,
   ): Promise<void> {
     try {
-      req.doc = await ImageModel.findById(id).exec();
+      req.image = (await ImageModel.findById(
+        id,
+      ).exec()) as mongoose.HydratedDocument<Image, ImageMethods>;
 
-      if (!req.doc) {
+      if (!req.image) {
         throw new Error();
       }
 
@@ -48,6 +51,6 @@ export default class ImageController {
    */
   async getImage(req: Request, res: Response): Promise<void> {
     res.setHeader("Content-Type", "image/jpeg");
-    res.send(req.doc.getRaw());
+    res.send(req.image.getRaw());
   }
 }
