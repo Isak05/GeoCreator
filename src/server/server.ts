@@ -19,11 +19,10 @@ const PORT = process.env.PORT ?? 80;
 const BASE_DIRECTORY = path.dirname(fileURLToPath(import.meta.url));
 const DEVELOPMENT_MODE = process.env.NODE_ENV === "development";
 const BASE_URL = process.env.BASE_URL ?? "/";
+const app = express();
 
 try {
   await connectToDatabase(process.env.MONGODB_URI);
-
-  const app = express();
 
   app.use(helmet());
   app.use(session());
@@ -68,3 +67,5 @@ try {
   logger.error(error);
   process.exitCode = 1;
 }
+
+export default app;
