@@ -7,6 +7,7 @@
 import { Request, Response } from "express";
 import { Highscore } from "../models/HighscoreSchema.js";
 import mongoose from "mongoose";
+import { logger } from "../config/winston.js";
 
 /**
  *
@@ -39,7 +40,10 @@ export default class HighscoreController {
       // Find any existing highscore for the logged-in user
       const existingHighscore = game.highscoreList.find(
         (highscore: Highscore) => {
-          return highscore.user.id === req.session.loggedInUser?.id;
+          return (
+            highscore.user &&
+            highscore.user?.id === req.session.loggedInUser?.id
+          );
         },
       );
 
@@ -62,7 +66,7 @@ export default class HighscoreController {
       } else {
         // If no highscore exists, create a new one
         game.highscoreList.push({
-          user: req.session.loggedInUser,
+          user: req.session.loggedInUser?.id,
           score: req.body?.score,
           time: req.body?.time,
         });
@@ -72,7 +76,8 @@ export default class HighscoreController {
 
       // Respond with 201 Created and the highscore list
       res.status(201).json(game.highscoreList);
-    } catch {
+    } catch (error) {
+      logger.error(error);
       res.status(500).json({
         message: "Internal server error",
       });
