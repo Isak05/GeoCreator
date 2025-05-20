@@ -9,14 +9,12 @@ import { connectToDatabase } from "./config/mongoose.js";
 import router from "./routes/router.js";
 import errorHandler from "./middlewares/errorHandler.js";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
 import helmet from "./config/helmet.js";
 import flash from "./middlewares/flash.js";
 import expressLayouts from "express-ejs-layouts";
 import session from "./config/session.js";
 
 const PORT = process.env.PORT ?? 80;
-const BASE_DIRECTORY = path.dirname(fileURLToPath(import.meta.url));
 const DEVELOPMENT_MODE = process.env.NODE_ENV === "development";
 const BASE_URL = process.env.BASE_URL ?? "/";
 const app = express();
@@ -28,12 +26,12 @@ try {
   app.use(session());
   app.use(flash());
 
-  app.use(BASE_URL, express.static(path.join(BASE_DIRECTORY, "../client")));
+  app.use(BASE_URL, express.static(path.resolve("./dist/client")));
 
   app.set("view engine", "ejs");
-  app.set("views", path.join(BASE_DIRECTORY, "views"));
+  app.set("views", path.resolve("./dist/server/views"));
   app.use(expressLayouts);
-  app.set("layout", path.join(BASE_DIRECTORY, "views", "layouts", "default"));
+  app.set("layout", path.resolve("./dist/server/views/layouts/default"));
   app.set("layout extractScripts", true);
   app.set("layout extractStyles", true);
   app.set("layout extractMetas", true);
