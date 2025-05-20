@@ -281,7 +281,7 @@ export default class GeocreatorMap extends HTMLElement {
 
     return new Promise((resolve) => {
       /**
-       *
+       * The image is loaded, and the width and height are returned in the promise.
        */
       image.onload = () => {
         resolve({ width: image.width, height: image.height });

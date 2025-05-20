@@ -10,7 +10,8 @@ import mongoose from "mongoose";
 import { logger } from "../config/winston.js";
 
 /**
- *
+ * Controller for managing high scores in a game.
+ * This controller handles the submission and retrieval of high scores for a game.
  */
 export default class HighscoreController {
   /**

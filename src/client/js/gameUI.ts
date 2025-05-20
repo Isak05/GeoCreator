@@ -14,7 +14,8 @@ const NEXT_ROUND_BUTTON_TEXT = "Next round";
 const SUBMIT_BUTTON_TEXT = "Submit guess";
 
 /**
- *
+ * Class representing the game UI.
+ * This class manages the game map, timer, and user interactions.
  */
 export default class GameUI {
   #mapElement: GeocreatorMap = null;
@@ -259,7 +260,8 @@ export default class GameUI {
   }
 
   /**
-   *
+   * Renders the highscore table by sorting the highscores and creating rows for each entry.
+   * The table is sorted first by score and then by time.
    */
   #renderHighscoreTable() {
     // Clear the table body before rendering

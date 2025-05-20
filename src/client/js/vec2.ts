@@ -5,7 +5,7 @@
  */
 
 /**
- *
+ * Represents a two-dimensional vector.
  */
 export default class Vec2 {
   #x = 0;
