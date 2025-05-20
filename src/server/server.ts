@@ -19,7 +19,10 @@ const DEVELOPMENT_MODE = process.env.NODE_ENV === "development";
 const BASE_URL = process.env.BASE_URL ?? "/";
 const app = express();
 
-try {
+/**
+ * Main function to start the server.
+ */
+async function main(): Promise<void> {
   await connectToDatabase(process.env.MONGODB_URI);
 
   app.use(helmet());
@@ -61,6 +64,10 @@ try {
   app.listen(PORT, () => {
     logger.info(`Server is listening on port ${PORT}`);
   });
+}
+
+try {
+  main();
 } catch (error) {
   logger.error(error);
   process.exitCode = 1;
