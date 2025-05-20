@@ -18,6 +18,7 @@ const PORT = process.env.PORT ?? 80;
 const DEVELOPMENT_MODE = process.env.NODE_ENV === "development";
 const BASE_URL = process.env.BASE_URL ?? "/";
 const app = express();
+export default app;
 
 /**
  * Main function to start the server.
@@ -72,5 +73,3 @@ try {
   logger.error(error);
   process.exitCode = 1;
 }
-
-export default app;

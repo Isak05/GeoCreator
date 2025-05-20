@@ -10,6 +10,7 @@ import createHttpError from "http-errors";
 import GameModel from "../models/GameModel.js";
 import ImageModel from "../models/ImageModel.js";
 import { Screenshot } from "../models/ScreenshotSchema.js";
+import getUrl from "../utils/getUrl.js";
 
 /**
  * Controller for accessing the home page
@@ -117,7 +118,9 @@ export default class {
         creator: req.session.loggedInUser.id,
       });
 
-      res.redirect(`./game/${game._id.toString()}/edit`);
+      res.redirect(
+        new URL(`./game/${game._id.toString()}/edit`, getUrl(req)).href,
+      );
     } catch {
       res.status(500).json({
         message: "Internal server error",
