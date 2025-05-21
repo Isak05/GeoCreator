@@ -78,6 +78,18 @@ describe("Game", () => {
     });
   });
 
+  describe("mapUrl", () => {
+    it("should return the map URL", async () => {
+      const game = new Game("https://example.com/data");
+      await game.fetchGameData();
+      expect(game.mapSrc).toBe(gameData.mapUrl);
+    });
+    it("should return undefined if not set", () => {
+      const game = new Game("https://example.com/data");
+      expect(game.mapSrc).toBeUndefined();
+    });
+  });
+
   describe("fetchGameData", () => {
     it("should fetch game data from the server", async () => {
       const game = new Game("https://example.com/data");
@@ -182,6 +194,22 @@ describe("Game", () => {
 
       await game.postHighscore(100, 14.433);
       expect(game.highscores).toEqual(highscoreData);
+    });
+  });
+
+  describe("gameOver", () => {
+    it("should return true if the game is over", async () => {
+      const game = new Game("https://example.com/data");
+      await game.fetchGameData();
+      expect(game.gameOver).toBe(false);
+
+      for (let i = 0; i < gameData.screenshots.length; i++) {
+        game.nextRound();
+        game.selectLocation(0.5, 0.5);
+        game.submitGuess();
+      }
+
+      expect(game.gameOver).toBe(true);
     });
   });
 });
