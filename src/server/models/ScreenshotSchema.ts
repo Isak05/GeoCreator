@@ -12,8 +12,8 @@ interface Vec2 {
 }
 
 export interface Screenshot {
-  id: string;
   _id: mongoose.Types.ObjectId;
+  id: string;
   url: string;
   correctAnswer: Vec2;
 }
@@ -29,7 +29,7 @@ const Vec2Schema = new mongoose.Schema<Vec2>({
   },
 });
 
-const ScreenshotSchema = new mongoose.Schema<Screenshot>({
+const screenshotSchema = new mongoose.Schema<Screenshot>({
   url: {
     type: String,
     required: true,
@@ -40,4 +40,4 @@ const ScreenshotSchema = new mongoose.Schema<Screenshot>({
   },
 });
 
-export default ScreenshotSchema;
+export default screenshotSchema;

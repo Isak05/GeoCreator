@@ -5,18 +5,18 @@
  */
 
 import mongoose from "mongoose";
-import UserModel from "./UserModel.js";
+import { User } from "./UserModel.js";
 
 export interface Highscore {
-  user: mongoose.Types.ObjectId;
+  user: User;
   score: number;
   time: number;
 }
 
 const HighscoreSchema = new mongoose.Schema<Highscore>({
   user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: UserModel,
+    type: mongoose.Types.ObjectId,
+    ref: "User",
     required: true,
   },
   score: {

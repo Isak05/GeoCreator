@@ -10,6 +10,21 @@ import crypto from "node:crypto";
 import { Buffer } from "node:buffer";
 import type multer from "multer";
 
+export interface Image {
+  content: string;
+  sha256: string;
+}
+
+interface ImageModel extends mongoose.Model<Image> {
+  upload(
+    file: string | { buffer: Buffer } | multer.File,
+  ): Promise<mongoose.Document>;
+}
+
+export interface ImageMethods {
+  getRaw(): Buffer;
+}
+
 /**
  * Generates a SHA-256 hash from a binarylike argument.
  * @param buffer - The binarylike argument to hash.
@@ -21,7 +36,7 @@ function getSha256Sum(buffer: string | Buffer): string {
   return hash.digest("hex");
 }
 
-const schema = new mongoose.Schema(
+const schema = new mongoose.Schema<Image, ImageModel, ImageMethods>(
   {
     content: {
       type: String,
@@ -89,5 +104,5 @@ const schema = new mongoose.Schema(
 
 schema.add(BASE_SCHEMA);
 
-const ImageModel = mongoose.model("Image", schema);
+const ImageModel = mongoose.model<Image, ImageModel>("Image", schema);
 export default ImageModel;

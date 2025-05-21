@@ -7,9 +7,11 @@
 import { Request, Response } from "express";
 import { Highscore } from "../models/HighscoreSchema.js";
 import mongoose from "mongoose";
+import { logger } from "../config/winston.js";
 
 /**
- *
+ * Controller for managing high scores in a game.
+ * This controller handles the submission and retrieval of high scores for a game.
  */
 export default class HighscoreController {
   /**
@@ -33,13 +35,16 @@ export default class HighscoreController {
         return;
       }
 
-      const game = req.doc;
-      game.highscoreList ??= [] as mongoose.HydratedDocument<Highscore[]>;
+      const game = req.game;
+      game.highscoreList ??= [] as mongoose.Types.DocumentArray<Highscore>;
 
       // Find any existing highscore for the logged-in user
       const existingHighscore = game.highscoreList.find(
         (highscore: Highscore) => {
-          return highscore.user.id === req.session.loggedInUser?.id;
+          return (
+            highscore.user &&
+            highscore.user?.id === req.session.loggedInUser?.id
+          );
         },
       );
 
@@ -72,7 +77,8 @@ export default class HighscoreController {
 
       // Respond with 201 Created and the highscore list
       res.status(201).json(game.highscoreList);
-    } catch {
+    } catch (error) {
+      logger.error(error);
       res.status(500).json({
         message: "Internal server error",
       });
@@ -85,6 +91,6 @@ export default class HighscoreController {
    * @param res - The HTTP response object used to send the highscore list as a JSON response.
    */
   async get(req: Request, res: Response) {
-    res.json(req.doc?.highscoreList.toObject());
+    res.json(req.game?.highscoreList.toObject());
   }
 }

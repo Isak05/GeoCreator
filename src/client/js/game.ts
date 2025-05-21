@@ -35,7 +35,7 @@ export enum GameState {
 }
 
 /**
- *
+ * The game class responsible for handling the game logic, game state and fetching game data.
  */
 export default class Game {
   #maximumRoundScore = 1000;

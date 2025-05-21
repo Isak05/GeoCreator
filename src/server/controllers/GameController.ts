@@ -10,6 +10,7 @@ import createHttpError from "http-errors";
 import GameModel from "../models/GameModel.js";
 import ImageModel from "../models/ImageModel.js";
 import { Screenshot } from "../models/ScreenshotSchema.js";
+import getUrl from "../utils/getUrl.js";
 
 /**
  * Controller for accessing the home page
@@ -30,11 +31,11 @@ export default class {
     id: string,
   ): Promise<void> {
     try {
-      req.doc = await GameModel.findById(id)
+      req.game = await GameModel.findById(id)
         .populate(["creator", "highscoreList.user"])
         .exec();
 
-      if (!req.doc) {
+      if (!req.game) {
         throw new Error();
       }
 
@@ -62,7 +63,7 @@ export default class {
     id: string,
   ): Promise<void> {
     try {
-      req.screenshot = req.doc.screenshots.find((screenshot: Screenshot) => {
+      req.screenshot = req.game.screenshots.find((screenshot: Screenshot) => {
         return screenshot.id === id;
       });
 
@@ -88,11 +89,11 @@ export default class {
   async get(req: Request, res: Response) {
     res.render("game/index", {
       layout: "layouts/game",
-      game: req.doc,
-      playable: req.doc.screenshots.length > 0 && req.doc.mapUrl,
+      game: req.game,
+      playable: req.game.screenshots.length > 0 && req.game.mapUrl,
       editable:
         req.session.loggedInUser &&
-        req.doc.creator?._id?.toString() === req.session.loggedInUser?.id,
+        req.game.creator?._id?.toString() === req.session.loggedInUser?.id,
     });
   }
 
@@ -117,7 +118,9 @@ export default class {
         creator: req.session.loggedInUser.id,
       });
 
-      res.redirect(`./game/${game._id.toString()}/edit`);
+      res.redirect(
+        new URL(`./game/${game._id.toString()}/edit`, getUrl(req)).href,
+      );
     } catch {
       res.status(500).json({
         message: "Internal server error",
@@ -154,7 +157,7 @@ export default class {
    */
   async put(req: Request, res: Response) {
     try {
-      const game = req.doc;
+      const game = req.game;
       game.title = req.body.title ?? "";
       game.description = req.body.description ?? "";
 
@@ -179,7 +182,7 @@ export default class {
    */
   async delete(req: Request, res: Response) {
     try {
-      const game = req.doc;
+      const game = req.game;
       await GameModel.findByIdAndDelete(game._id.toString()).exec();
 
       req.session.flash = {
@@ -205,7 +208,7 @@ export default class {
    */
   async getData(req: Request, res: Response, next: NextFunction) {
     try {
-      res.json(req.doc.toObject());
+      res.json(req.game.toObject());
     } catch {
       next(createHttpError(500));
     }
@@ -218,7 +221,7 @@ export default class {
    */
   async getEdit(req: Request, res: Response) {
     res.render("game/edit", {
-      game: req.doc,
+      game: req.game,
     });
   }
 
@@ -229,7 +232,7 @@ export default class {
    */
   async getEditLocation(req: Request, res: Response) {
     res.render("game/editLocation", {
-      game: req.doc,
+      game: req.game,
     });
   }
 

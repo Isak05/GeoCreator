@@ -7,6 +7,7 @@
 import { NextFunction, Request, Response } from "express";
 import ImageModel from "../models/ImageModel.js";
 import { Screenshot } from "../models/ScreenshotSchema.js";
+import { logger } from "../config/winston.js";
 
 /**
  * Controller for accessing the home page
@@ -26,7 +27,7 @@ export default class ScreenshotController {
     id: string,
   ): Promise<void> {
     try {
-      req.screenshot = req.doc.screenshots.find((screenshot: Screenshot) => {
+      req.screenshot = req.game.screenshots.find((screenshot: Screenshot) => {
         return screenshot.id === id;
       });
 
@@ -50,7 +51,7 @@ export default class ScreenshotController {
    */
   async post(req: Request, res: Response) {
     try {
-      const game = req.doc;
+      const game = req.game;
       if (req.file === undefined && req.body.image === undefined) {
         res.status(400).json({
           message: "No image provided",
@@ -74,7 +75,8 @@ export default class ScreenshotController {
       const screenshotId = newScreenshot._id.toString();
       const location = `./game/${game._id.toString()}/screenshot/${screenshotId}`;
       res.status(201).location(location).json(newScreenshot);
-    } catch {
+    } catch (error) {
+      logger.error(error);
       res.status(500).json({
         message: "Internal server error",
       });
@@ -107,7 +109,7 @@ export default class ScreenshotController {
    */
   async put(req: Request, res: Response) {
     try {
-      const game = req.doc;
+      const game = req.game;
       const screenshot = req.screenshot;
 
       if (req.file ?? req.body.image) {
@@ -138,12 +140,10 @@ export default class ScreenshotController {
    */
   async delete(req: Request, res: Response) {
     try {
-      const game = req.doc;
+      const game = req.game;
       const screenshot = req.screenshot;
 
-      game.screenshots = game.screenshots.filter((s: Screenshot) => {
-        return s.id !== screenshot.id;
-      });
+      game.screenshots.pull({ _id: screenshot.id });
 
       await game.save();
       res.status(200).json({});

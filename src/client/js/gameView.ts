@@ -20,7 +20,7 @@ if (getView() === "game") {
   );
 
   /**
-   *
+   * Function to start the game.
    */
   async function play() {
     document.querySelector("#pre-start-div").setAttribute("hidden", "");

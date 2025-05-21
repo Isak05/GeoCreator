@@ -7,7 +7,7 @@
 import { Request, Response } from "express";
 import createHttpError from "http-errors";
 import UserModel from "../models/UserModel.js";
-import mongoose from "mongoose";
+import getUrl from "../utils/getUrl.js";
 
 /**
  * Controller for accessing the home page
@@ -46,16 +46,14 @@ export default class {
         type: "success",
         message: "Logged in as " + user.username,
       };
-      req.session.loggedInUser = user as unknown as mongoose.HydratedDocument<
-        typeof UserModel
-      >;
-      res.redirect("..");
+      req.session.loggedInUser = user;
+      res.redirect(new URL("..", getUrl(req)).href);
     } catch {
       req.session.flash = {
         type: "danger",
         message: "Invalid username or password",
       };
-      res.redirect("./login");
+      res.redirect(getUrl(req));
     }
   }
 
@@ -84,7 +82,7 @@ export default class {
           type: "danger",
           message: "Username already taken",
         };
-        res.redirect("./signup");
+        res.redirect(new URL("./signup", getUrl(req)).href);
         return;
       }
 
@@ -92,20 +90,18 @@ export default class {
       const user = new UserModel({ username, password });
       await user.save();
 
-      req.session.loggedInUser = user as unknown as mongoose.HydratedDocument<
-        typeof UserModel
-      >;
+      req.session.loggedInUser = user;
       req.session.flash = {
         type: "success",
         message: "Successfully signed up",
       };
-      res.redirect("..");
+      res.redirect(new URL("..", getUrl(req)).href);
     } catch {
       req.session.flash = {
         type: "danger",
         message: "An error occured. Please try again.",
       };
-      res.redirect("./signup");
+      res.redirect(new URL("./signup", getUrl(req)).href);
     }
   }
 
@@ -121,6 +117,6 @@ export default class {
       message: "Logged out",
     };
     req.session.loggedInUser = null;
-    res.redirect("..");
+    res.redirect(new URL("..", getUrl(req)).href);
   }
 }

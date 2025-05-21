@@ -4,14 +4,27 @@
  * @author Isak Johansson Weckstén <ij222pv@student.lnu.se>
  */
 
-import mongoose, { Schema } from "mongoose";
+import mongoose from "mongoose";
 import BASE_SCHEMA from "./baseSchema.js";
-import UserModel from "./UserModel.js";
-import ScreenshotSchema from "./ScreenshotSchema.js";
-import HighscoreSchema from "./HighscoreSchema.js";
+import { User } from "./UserModel.js";
+import ScreenshotSchema, { Screenshot } from "./ScreenshotSchema.js";
+import HighscoreSchema, { Highscore } from "./HighscoreSchema.js";
 import { NextFunction, Request, Response } from "express";
 
-const schema = new mongoose.Schema(
+export interface Game {
+  title: string;
+  description?: string;
+  mapUrl?: string;
+  screenshots?: mongoose.Types.DocumentArray<Screenshot>;
+  creator: User;
+  highscoreList?: mongoose.Types.DocumentArray<Highscore>;
+}
+
+interface GameModel extends mongoose.Model<Game> {
+  checkIfAllowedToEdit(req: Request, res: Response, next: NextFunction): void;
+}
+
+const schema = new mongoose.Schema<Game, GameModel>(
   {
     title: {
       type: String,
@@ -30,8 +43,8 @@ const schema = new mongoose.Schema(
       required: true,
     },
     creator: {
-      type: Schema.Types.ObjectId,
-      ref: UserModel,
+      type: mongoose.Types.ObjectId,
+      ref: "User",
       required: true,
     },
     highscoreList: {
@@ -51,9 +64,9 @@ const schema = new mongoose.Schema(
        */
       checkIfAllowedToEdit(req: Request, res: Response, next: NextFunction) {
         if (
-          req.doc.creator?.id === undefined ||
+          req.game.creator?.id === undefined ||
           req.session.loggedInUser?.id === undefined ||
-          req.doc.creator?.id !== req.session.loggedInUser.id
+          req.game.creator?.id !== req.session.loggedInUser.id
         ) {
           res.status(403).json({
             message: "Forbidden",
@@ -68,5 +81,6 @@ const schema = new mongoose.Schema(
 
 schema.add(BASE_SCHEMA);
 
-const GameModel = mongoose.model("Game", schema);
+const GameModel = mongoose.model<Game, GameModel>("Game", schema);
+
 export default GameModel;

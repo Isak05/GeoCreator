@@ -16,6 +16,11 @@ export interface User {
   id: string;
 }
 
+interface UserModel extends mongoose.Model<User> {
+  authenticate(username: string, password: string): Promise<User | null>;
+  isUsernameTaken(username: string): Promise<boolean>;
+}
+
 const convertObject = Object.freeze({
   getters: true,
   versionKey: false,
@@ -36,7 +41,7 @@ const convertObject = Object.freeze({
   },
 });
 
-const schema = new mongoose.Schema<User>(
+export const UserSchema = new mongoose.Schema<User, UserModel>(
   {
     username: {
       type: String,
@@ -56,7 +61,10 @@ const schema = new mongoose.Schema<User>(
        * @param password - The password of the user.
        * @returns Returns a promise that resolves to the user document if the credentials are correct, otherwise null.
        */
-      async authenticate(username: string, password: string) {
+      async authenticate(
+        username: string,
+        password: string,
+      ): Promise<User | null> {
         const user = await this.findOne({ username });
 
         if (!user || !(await argon2.verify(user.password, password))) {
@@ -80,9 +88,9 @@ const schema = new mongoose.Schema<User>(
   },
 );
 
-schema.add(BASE_SCHEMA);
+UserSchema.add(BASE_SCHEMA);
 
-schema.pre("save", async function (next: NextFunction) {
+UserSchema.pre("save", async function (next: NextFunction) {
   if (!this.isModified("password")) {
     return next();
   }
@@ -91,5 +99,5 @@ schema.pre("save", async function (next: NextFunction) {
   next();
 });
 
-const UserModel = mongoose.model<User>("User", schema);
+const UserModel = mongoose.model<User, UserModel>("User", UserSchema);
 export default UserModel;
