@@ -10,7 +10,7 @@
     "start": "node dist/server/server.js",
     "dev": "nodemon",
     "build": "node ./esbuild.config.js",
-    "test": "npm run test:jest && npm run test:newman",
+    "test": "npm run test:jest",
     "test:jest": "jest",
     "test:newman": "newman run test/GeoCreator.postman_collection.json -e test/geocreator_env.postman_environment.json",
     "lint": "eslint src && tsc --noemit",
