@@ -1,7 +1,6 @@
 /**
  * This file contains the game UI logic for the client-side.
  * It handles the game map, timer, and user interactions.
- *
  * @module gameUI
  * @author Isak Johansson Weckstén <ij222pv@student.lnu.se>
  */
@@ -14,6 +13,10 @@ import highscoreTableRowTemplate from "./highscoreTableRow.html.js";
 const NEXT_ROUND_BUTTON_TEXT = "Next round";
 const SUBMIT_BUTTON_TEXT = "Submit guess";
 
+/**
+ * Class representing the game UI.
+ * This class manages the game map, timer, and user interactions.
+ */
 export default class GameUI {
   #mapElement: GeocreatorMap = null;
   #gameOverDiv: HTMLDivElement = null;
@@ -30,7 +33,6 @@ export default class GameUI {
 
   /**
    * Constructs a new instance of the class.
-   *
    * @param url - The URL from where to fetch the game data.
    * @throws {TypeError} Throws an error if the provided `url` is neither a string nor an instance of `URL`.
    */
@@ -44,7 +46,6 @@ export default class GameUI {
 
   /**
    * Sets the map element.
-   *
    * @param map The map element to be used.
    * @throws {TypeError} If the argument is not an instance of GeocreatorMap.
    */
@@ -58,7 +59,6 @@ export default class GameUI {
 
   /**
    * Sets the game over div element.
-   *
    * @param div The game over div element to be used.
    * @throws {TypeError} If the argument is not an HTMLDivElement.
    */
@@ -73,7 +73,6 @@ export default class GameUI {
 
   /**
    * Sets the round over div element.
-   *
    * @param div The round over div element to be used.
    * @throws {TypeError} If the argument is not an HTMLDivElement.
    */
@@ -87,7 +86,6 @@ export default class GameUI {
 
   /**
    * Sets the score span element.
-   *
    * @param span The score span element to be used.
    * @throws {TypeError} If the argument is not an HTMLSpanElement.
    */
@@ -101,7 +99,6 @@ export default class GameUI {
 
   /**
    * Sets the total score span element.
-   *
    * @param span The total score span element to be used.
    * @throws {TypeError} If the argument is not an HTMLSpanElement.
    */
@@ -115,7 +112,6 @@ export default class GameUI {
 
   /**
    * Sets the timer element.
-   *
    * @param timer The timer element to be used.
    * @throws {TypeError} If the argument is not an instance of GeocreatorTimer.
    */
@@ -129,7 +125,6 @@ export default class GameUI {
 
   /**
    * Sets the screenshot image element.
-   *
    * @param image The screenshot image element to be used.
    * @throws {TypeError} If the argument is not an HTMLImageElement.
    */
@@ -143,7 +138,6 @@ export default class GameUI {
 
   /**
    * Sets the form used for submitting the answer.
-   *
    * @param form The form element to be used for submitting the answer.
    * @throws {TypeError} If the argument is not an HTMLFormElement.
    */
@@ -157,7 +151,6 @@ export default class GameUI {
 
   /**
    * Sets the highscore table body element.
-   *
    * @param tableBody - The HTMLTableSectionElement to be used as the highscore table.
    * @throws {TypeError} If the provided table is not an instance of HTMLTableSectionElement.
    */
@@ -187,7 +180,7 @@ export default class GameUI {
       try {
         await this.#game.postHighscore(
           this.#game.totalScore,
-          this.#totalTimePassed / 1000
+          this.#totalTimePassed / 1000,
         );
       } catch {
         console.error("Couldn't post highscore");
@@ -197,7 +190,9 @@ export default class GameUI {
     }
 
     this.#screenshotImage.src = this.#game.nextRound();
-    (this.#submitForm.querySelector("input[type=submit]") as HTMLInputElement).value = SUBMIT_BUTTON_TEXT;
+    (
+      this.#submitForm.querySelector("input[type=submit]") as HTMLInputElement
+    ).value = SUBMIT_BUTTON_TEXT;
     this.#mapElement.src = this.#game.mapSrc;
     this.#mapElement.classList.remove("expanded");
     this.#mapElement.allowplacingmarker = true;
@@ -210,8 +205,6 @@ export default class GameUI {
    * Submits the user's guess and calculates the score.
    * This method prevents the default form submission behavior,
    * calculates the score based on the user's guess, and updates the UI accordingly.
-   *
-   * @param event The event object representing the form submission.
    */
   #submit() {
     // Display the score
@@ -219,20 +212,22 @@ export default class GameUI {
     const score = this.#game.submitGuess();
     this.#scoreSpan.innerText = `${totalScore.toString()} (+${score.toString()})`;
     this.#roundOverDiv.hidden = false;
-    
+
     // Stop the timer
     this.#timerElement.stopped = true;
 
     // Turn the submit button into a next round button
-    (this.#submitForm.querySelector("input[type=submit]") as HTMLInputElement).value = NEXT_ROUND_BUTTON_TEXT;
-    
+    (
+      this.#submitForm.querySelector("input[type=submit]") as HTMLInputElement
+    ).value = NEXT_ROUND_BUTTON_TEXT;
+
     // Show the correct answer on the map
     this.#mapElement.allowplacingmarker = false;
     this.#mapElement.classList.add("expanded");
     this.#mapElement.placeMarkerLink(
       this.#game.correctAnswer.x,
       this.#game.correctAnswer.y,
-      { iconUrl: "./img/marker-icon-red.png" }
+      { iconUrl: "./img/marker-icon-red.png" },
     );
 
     // Draw a line between the guess and the correct answer.
@@ -250,7 +245,7 @@ export default class GameUI {
         color: "white",
         weight: 6,
         dashArray: "5, 10",
-      }
+      },
     );
     this.#mapElement.drawLine(
       this.#game.correctAnswer.x,
@@ -260,10 +255,14 @@ export default class GameUI {
       {
         color: "#cc3040",
         dashArray: "5, 10",
-      }
+      },
     );
   }
 
+  /**
+   * Renders the highscore table by sorting the highscores and creating rows for each entry.
+   * The table is sorted first by score and then by time.
+   */
   #renderHighscoreTable() {
     // Clear the table body before rendering
     this.#highscoreTableBody.innerHTML = "";
@@ -275,13 +274,13 @@ export default class GameUI {
           return a.time - b.time;
         }
         return b.score - a.score;
-      }
+      },
     );
 
     // Create a new row for each highscore and append it to the table body.
     for (const [index, highscore] of sortedHighscores.entries()) {
       const row = highscoreTableRowTemplate.content.cloneNode(
-        true
+        true,
       ) as HTMLTableRowElement;
 
       row.querySelector(".rank").textContent = `${index + 1}.`;
@@ -295,7 +294,6 @@ export default class GameUI {
 
   /**
    * Starts the game by fetching game data and setting up event listeners.
-   *
    * @returns A promise that resolves when the game is started.
    */
   async start() {
@@ -311,7 +309,7 @@ export default class GameUI {
     this.#submitForm.addEventListener("submit", async (event: Event) => {
       event.preventDefault();
 
-      switch(this.#game.state) {
+      switch (this.#game.state) {
         case GameState.WAITING_FOR_GUESS:
           this.#submit();
           break;

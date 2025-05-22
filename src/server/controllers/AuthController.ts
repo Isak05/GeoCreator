@@ -5,9 +5,9 @@
  */
 
 import { Request, Response } from "express";
-import { logger } from "../config/winston.js";
 import createHttpError from "http-errors";
 import UserModel from "../models/UserModel.js";
+import getUrl from "../utils/getUrl.js";
 
 /**
  * Controller for accessing the home page
@@ -15,12 +15,10 @@ import UserModel from "../models/UserModel.js";
 export default class {
   /**
    * Handles the GET request for the login page.
-   *
    * @param req - The HTTP request object.
    * @param res - The HTTP response object.
-   * @param next - The next middleware function in the stack.
    */
-  async loginGet(req: Request, res: Response, next: Function) {
+  async loginGet(req: Request, res: Response) {
     res.render("auth/login");
   }
 
@@ -30,13 +28,11 @@ export default class {
    * If authentication is successful, the user's session is updated with a success message
    * and the user object, and the user is redirected to the base URL. If authentication fails
    * or an error occurs, the error is logged and passed to the next middleware.
-   *
    * @param req - The HTTP request object, containing the username and password in the body.
    * @param res - The HTTP response object used to redirect the user or send an error response.
-   * @param next - The next middleware function in the Express.js request-response cycle.
    * @throws {HttpError} If the username or password is invalid, a 401 Unauthorized error is thrown.
    */
-  async loginPost(req: Request, res: Response, next: Function) {
+  async loginPost(req: Request, res: Response) {
     const { username, password } = req.body;
 
     try {
@@ -51,36 +47,32 @@ export default class {
         message: "Logged in as " + user.username,
       };
       req.session.loggedInUser = user;
-      res.redirect("..");
-    } catch (error) {
+      res.redirect(new URL("..", getUrl(req)).href);
+    } catch {
       req.session.flash = {
         type: "danger",
         message: "Invalid username or password",
       };
-      res.redirect("./login");
+      res.redirect(getUrl(req));
     }
   }
 
   /**
    * Handles the GET request for rendering the "create" login page.
-   *
    * @param req - The HTTP request object.
    * @param res - The HTTP response object.
-   * @param next - The next middleware function in the request-response cycle.
    */
-  async createGet(req: Request, res: Response, next: Function) {
+  async createGet(req: Request, res: Response) {
     res.render("auth/signup");
   }
 
   /**
    * Handles the creation of a new user post by processing the request body,
    * saving the user to the database, and managing session data.
-   *
    * @param req - The HTTP request object containing the user data in the body.
    * @param res - The HTTP response object used to redirect or send responses.
-   * @param next - The next middleware function in the Express.js request-response cycle.
    */
-  async createPost(req: Request, res: Response, next: Function) {
+  async createPost(req: Request, res: Response) {
     const { username, password } = req.body;
 
     try {
@@ -90,7 +82,7 @@ export default class {
           type: "danger",
           message: "Username already taken",
         };
-        res.redirect("./signup");
+        res.redirect(new URL("./signup", getUrl(req)).href);
         return;
       }
 
@@ -103,30 +95,28 @@ export default class {
         type: "success",
         message: "Successfully signed up",
       };
-      res.redirect("..");
-    } catch (error) {
+      res.redirect(new URL("..", getUrl(req)).href);
+    } catch {
       req.session.flash = {
         type: "danger",
         message: "An error occured. Please try again.",
       };
-      res.redirect("./signup");
+      res.redirect(new URL("./signup", getUrl(req)).href);
     }
   }
 
   /**
    * Handles the logout process for a user by clearing the session data
    * and redirecting to the parent directory.
-   *
    * @param req - The HTTP request object, containing session information.
    * @param res - The HTTP response object, used to redirect the user.
-   * @param next - The next middleware function in the stack.
    */
-  async logoutGet(req: Request, res: Response, next: Function) {
+  async logoutGet(req: Request, res: Response) {
     req.session.flash = {
       type: "success",
       message: "Logged out",
     };
     req.session.loggedInUser = null;
-    res.redirect("..");
+    res.redirect(new URL("..", getUrl(req)).href);
   }
 }

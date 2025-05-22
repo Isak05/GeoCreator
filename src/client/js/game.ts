@@ -1,6 +1,5 @@
 /**
  * The geocreator game module.
- *
  * @module game
  * @author Isak Johansson Weckstén <ij222pv@student.lnu.se>
  */
@@ -14,7 +13,7 @@ type Screenshot = {
 
 type User = {
   username: string;
-}
+};
 
 export type Highscore = {
   user: User;
@@ -35,6 +34,9 @@ export enum GameState {
   GAME_OVER,
 }
 
+/**
+ * The game class responsible for handling the game logic, game state and fetching game data.
+ */
 export default class Game {
   #maximumRoundScore = 1000;
   #url: URL = null;
@@ -47,7 +49,6 @@ export default class Game {
 
   /**
    * Creates a new game instance.
-   *
    * @param url The URL of the game
    */
   constructor(url: URL | string) {
@@ -60,7 +61,6 @@ export default class Game {
 
   /**
    * Fetches the game data from the server.
-   *
    * @returns The game data
    */
   async fetchGameData(): Promise<GameData> {
@@ -89,8 +89,8 @@ export default class Game {
 
   /**
    * Selects a location for guessing, but doesn't submit the guess.
-   *
-   * @param position The position to guess
+   * @param x The x coordinate of the position
+   * @param y The y coordinate of the position
    */
   selectLocation(x: number, y: number): void {
     if (this.#state !== GameState.WAITING_FOR_GUESS) {
@@ -106,6 +106,7 @@ export default class Game {
 
   /**
    * Goes to the next round.
+   * @returns The URL of the next screenshot
    */
   nextRound(): string {
     if (this.#state === GameState.WAITING_FOR_GUESS) {
@@ -141,9 +142,6 @@ export default class Game {
 
   /**
    * Calculates the score based on the distance between the picked position and the correct position.
-   *
-   * @param position The picked position
-   * @param correctPosition The correct position
    * @returns The score
    */
   calculateScore(): number {
@@ -172,7 +170,7 @@ export default class Game {
     // ⌊1000*min(e^(-10x)*1.1,1)+0.5⌋
     const distance = Math.sqrt(
       (position.x - correctPosition.x) ** 2 +
-        (position.y - correctPosition.y) ** 2
+        (position.y - correctPosition.y) ** 2,
     );
     const scoreFactor = Math.min(Math.exp(-10 * distance) * 1.1, 1);
     const score = Math.round(this.#maximumRoundScore * scoreFactor);
@@ -183,7 +181,6 @@ export default class Game {
   /**
    * Submits the guess and calculates the score.
    * This method updates the total score and returns the score for the current round.
-   *
    * @returns The score for the current round
    */
   submitGuess(): number {
@@ -208,13 +205,12 @@ export default class Game {
    */
   #getRemainingScreenshots(): Set<Screenshot> {
     return new Set(this.#gameData.screenshots).difference(
-      this.#playedScreenshots
+      this.#playedScreenshots,
     );
   }
 
   /**
    * Sends a highscore to the server and updates the local highscore list.
-   *
    * @param score - The player's score to be posted.
    * @param time - The time associated with the score.
    * @returns A promise that resolves when the highscore is successfully posted.
@@ -257,22 +253,37 @@ export default class Game {
     return this.#totalScore;
   }
 
+  /**
+   * @returns True if the game is over, false otherwise.
+   */
   get gameOver(): boolean {
     return this.#state === GameState.GAME_OVER;
   }
 
+  /**
+   * @returns The list of highscores.
+   */
   get highscores(): Highscore[] {
     return this.#gameData?.highscoreList;
   }
 
+  /**
+   * @returns The correct answer for the current screenshot.
+   */
   get correctAnswer(): Vec2 {
     return this.#currentScreenshot?.correctAnswer;
   }
 
+  /**
+   * @returns The currently selected position for guessing.
+   */
   get guessPosition(): Vec2 {
     return this.#guessPosition;
   }
 
+  /**
+   * @returns The current game state.
+   */
   get state(): GameState {
     return this.#state;
   }

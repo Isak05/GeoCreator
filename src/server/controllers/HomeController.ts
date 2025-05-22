@@ -11,8 +11,17 @@ import GameModel from "../models/GameModel.js";
  * Controller for accessing the home page
  */
 export default class HomeController {
-  async get(req: Request, res: Response, next: Function) {
-    const games = await GameModel.find({}).populate("creator").exec();
+  /**
+   * Renders the home page.
+   * @param req - The HTTP request object.
+   * @param res - The HTTP response object.
+   */
+  async get(req: Request, res: Response) {
+    const games = (await GameModel.find({}).populate("creator").exec()).sort(
+      (game1, game2) => {
+        return game2.averageRating - game1.averageRating;
+      },
+    );
     res.render("home/index", { games });
   }
 }

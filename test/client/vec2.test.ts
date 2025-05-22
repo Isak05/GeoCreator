@@ -1,6 +1,5 @@
 /**
  * Tests for Vec2 class.
- *
  * @author Isak Johansson Weckstén <ij222pv@student.lnu.se>
  */
 
@@ -21,7 +20,7 @@ describe("Vec2", () => {
     });
 
     it("should create a Vec2 object with default values when passed invalid values", () => {
-      let vec = new Vec2(NaN, NaN);
+      const vec = new Vec2(NaN, NaN);
       expect(vec.x).toBe(0);
       expect(vec.y).toBe(0);
     });

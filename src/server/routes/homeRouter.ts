@@ -1,6 +1,5 @@
 /**
  * The home router.
- *
  * @module routes/homeRouter
  * @author Isak Johansson Weckstén <ij222pv@student.lnu.se>
  */
@@ -11,6 +10,6 @@ import HomeController from "../controllers/HomeController.js";
 const router = express.Router();
 export default router;
 
-const controller = new HomeController()
+const controller = new HomeController();
 
 router.get("/", controller.get);

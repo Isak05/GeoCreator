@@ -1,6 +1,5 @@
 /**
  * Configures Helmet for security headers.
- *
  * @module config/helmet
  * @author Isak Johansson Weckstén <ij222pv.student.lnu.se>
  */
@@ -8,10 +7,14 @@
 import helmet from "helmet";
 import type { IncomingMessage, ServerResponse } from "node:http";
 
+/**
+ * Configures Helmet for security headers.
+ * @returns A middleware function that sets security headers.
+ */
 export default function (): (
   req: IncomingMessage,
   res: ServerResponse,
-  next: (err?: unknown) => void
+  next: (err?: unknown) => void,
 ) => void {
   return helmet({
     contentSecurityPolicy: {

@@ -50,6 +50,14 @@ unit-test-job:
     - echo "Running unit tests..."
     - npm test
 
+lint-job:
+  stage: test
+  script:
+    - echo "Installing dependencies..."
+    - npm ci
+    - echo "Running linter..."
+    - npm run lint
+
 # Modified version of job taken from https://docs.gitlab.com/user/project/releases/release_cicd_examples/
 release-job:
   image: registry.gitlab.com/gitlab-org/release-cli:latest

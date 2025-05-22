@@ -1,17 +1,18 @@
 /**
  * Two dimensional vector class.
- *
  * @module Vec2
  * @author Isak Johansson Weckstén <ij222pv@student.lnu.se>
  */
 
+/**
+ * Represents a two-dimensional vector.
+ */
 export default class Vec2 {
   #x = 0;
   #y = 0;
 
   /**
    * Creates a new Vec2 object.
-   *
    * @param x - The x coordinate.
    * @param y - The y coordinate.
    */
@@ -22,7 +23,6 @@ export default class Vec2 {
 
   /**
    * Returns the x coordinate.
-   *
    * @returns The x coordinate.
    */
   get x(): number {
@@ -31,7 +31,6 @@ export default class Vec2 {
 
   /**
    * Returns the y coordinate.
-   *
    * @returns The y coordinate.
    */
   get y(): number {
@@ -40,7 +39,6 @@ export default class Vec2 {
 
   /**
    * Sets the x coordinate.
-   *
    * @param x The new x coordinate.
    */
   set x(x: number) {
@@ -49,7 +47,6 @@ export default class Vec2 {
 
   /**
    * Sets the y coordinate.
-   *
    * @param y The new y coordinate.
    */
   set y(y: number) {

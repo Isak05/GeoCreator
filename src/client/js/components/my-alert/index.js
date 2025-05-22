@@ -1,1 +1,1 @@
-import './my-alert.js'
+import "./my-alert.js";

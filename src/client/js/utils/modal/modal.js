@@ -6,6 +6,7 @@
  */
 
 import modalTemplate from "./modal.html.js";
+import * as bootstrap from "bootstrap";
 
 /**
  * A class representing a modal dialog.
@@ -19,45 +20,34 @@ export default class Modal {
 
   /**
    * The modal element.
-   *
-   * @type {HTMLElement}
    */
   #modalElement = null;
 
   /**
    * The modal title element.
-   *
-   * @type {HTMLElement}
    */
   #modalTitleElement = null;
 
   /**
    * The modal body element.
-   *
-   * @type {HTMLElement}
    */
   #modalBodyElement = null;
 
   /**
    * The Bootstrap modal instance.
-   *
-   * @type {object}
    */
   #modal = null;
 
   /**
    * The AbortController instance to manage event listeners.
-   *
-   * @type {AbortController}
    */
   #abortController = new AbortController();
 
   /**
    * Creates an instance of a modal with the specified title and body content.
-   *
-   * @param {string | HTMLElement} title - The title of the modal.
-   * @param {string | HTMLElement} body - The body content of the modal.
-   * @param {Modal.PromptType = Modal.PromptType.YESNO} promptType - The type of prompt (OK or Yes/No).
+   * @param title - The title of the modal.
+   * @param body - The body content of the modal.
+   * @param promptType - The type of prompt (OK or Yes/No).
    */
   constructor(title, body, promptType = Modal.PromptType.YESNO) {
     this.#modalElement =
@@ -89,14 +79,13 @@ export default class Modal {
   /**
    * Adjusts the text and visibility of the modal's primary and secondary buttons
    * based on the specified prompt type.
-
-   * @param {Modal.PromptType} type - The type of prompt to display.
+   * @param type - The type of prompt to display.
    */
   #adjustPromptButtons(type) {
     const primary = this.#modalElement.querySelector(".btn-primary");
     const secondary = this.#modalElement.querySelector(".btn-secondary");
 
-    switch(type) {
+    switch (type) {
       case Modal.PromptType.YESNO:
         primary.textContent = "Yes";
         secondary.textContent = "No";
@@ -115,12 +104,11 @@ export default class Modal {
 
   /**
    * Displays the delete confirmation modal and returns a promise that resolves based on user action.
-   *
-   * @returns {Promise<boolean>} A promise that resolves to `true` if the user confirms the delete,
+   * @returns A promise that resolves to `true` if the user confirms the delete,
    * or `false` if the modal is hidden without confirmation.
    */
   show() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       this.#modal.show();
 
       // Modal has been hidden without the user confirming the delete.
@@ -132,7 +120,7 @@ export default class Modal {
 
           resolve(false);
         },
-        { signal: this.#abortController.signal }
+        { signal: this.#abortController.signal },
       );
 
       // User has confirmed the delete.
@@ -143,7 +131,7 @@ export default class Modal {
 
           resolve(true);
         },
-        { signal: this.#abortController.signal }
+        { signal: this.#abortController.signal },
       );
     });
   }
