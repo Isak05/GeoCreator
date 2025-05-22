@@ -71,7 +71,12 @@ if (getView() === "game") {
   document
     .querySelector("geocreator-rating")
     ?.addEventListener("change", async (event) => {
-      const rating = (event.target as GeocreatorRating).rating;
+      const ratingElement = event.target as GeocreatorRating;
+
+      // The rating as a number 1-5
+      const rating = ratingElement.rating;
+
+      // Send a request to the server to save the rating
       const response = await fetch(
         location.href.replace(/\/+$/, "") + "/rating",
         {
@@ -83,11 +88,22 @@ if (getView() === "game") {
         },
       );
 
-      if (!response.ok) {
-        const alert = new MyAlert("danger", "Failed to submit rating");
+      // Check if the request was successful
+      if (response.status === 403) {
+        ratingElement.rating = null;
+
+        const alert = new MyAlert(
+          "danger",
+          "You must be logged in to rate a game.",
+        );
         document.querySelector("#flash-div").appendChild(alert);
-      } else {
-        const alert = new MyAlert("success", "Rating submitted successfully");
+      } else if (!response.ok) {
+        ratingElement.rating = null;
+
+        const alert = new MyAlert(
+          "danger",
+          "Failed to save rating. Please try again later.",
+        );
         document.querySelector("#flash-div").appendChild(alert);
       }
     });

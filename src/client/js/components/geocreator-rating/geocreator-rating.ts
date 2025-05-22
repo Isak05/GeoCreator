@@ -92,15 +92,23 @@ export default class GeocreatorRating extends HTMLElement {
    * @throws {TypeError} If the rating is not a number.
    */
   set rating(value: number) {
-    const newRating = Number.parseInt(value.toString());
+    const newRating = Number.parseInt(value?.toString());
 
     if (newRating < 1 || newRating > 5) {
       throw new RangeError("Rating must be between 1 and 5");
     }
-    if (!Number.isFinite(newRating)) {
-      throw new TypeError("Rating must be a number");
-    }
     if (newRating === this.#rating) {
+      return;
+    }
+
+    if (!Number.isFinite(newRating)) {
+      // Uncheck all stars and unset rating
+      this.shadowRoot
+        .querySelectorAll("input[type='radio']")
+        .forEach((element: HTMLInputElement) => {
+          element.checked = false;
+        });
+      this.#rating = null;
       return;
     }
 
