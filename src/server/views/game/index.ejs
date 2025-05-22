@@ -16,7 +16,7 @@
 </div>
 
 <div id="game-div" class="position-relative h-100 w-100" hidden>
-  <div id="game-overlay" class="position-absolute z-3">
+  <div id="game-overlay" class="position-absolute z-2">
     <geocreator-timer id="timer" stopped></geocreator-timer>
     <p class="h4">Score : <span id="score">0</span></p>
   </div>
@@ -30,11 +30,9 @@
     </form>
   </div>
   
-  <div id="round-over" class="pt-5" hidden>
-    
-  </div>
+  <div id="round-over" class="pt-5 z-1" hidden></div>
   
-  <div id="game-over" class="pt-5" hidden>
+  <div id="game-over" class="pt-5 z-3" hidden>
     <h1 class="h4">Game over!</h1>
     <p class="h5">Your score: <span id="total-score"></span></p>
     <div class="mx-auto mt-3">
