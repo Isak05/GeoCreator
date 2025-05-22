@@ -24,11 +24,15 @@ export default class {
       return;
     }
 
-    const games = await GameModel.find({
-      creator: req.session.loggedInUser?.id,
-    })
-      .populate("creator")
-      .exec();
+    const games = (
+      await GameModel.find({
+        creator: req.session.loggedInUser?.id,
+      })
+        .populate("creator")
+        .exec()
+    ).sort((game1, game2) => {
+      return game2.averageRating - game1.averageRating;
+    });
     res.render("my-games", {
       games,
     });
