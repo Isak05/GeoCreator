@@ -9,6 +9,7 @@ import GameController from "../controllers/GameController.js";
 import GameModel from "../models/GameModel.js";
 import screenshotRouter from "./screenshotRouter.js";
 import highscoreRouter from "./highscoreRouter.js";
+import ratingRouter from "./ratingRouter.js";
 import multer from "multer";
 
 const router = express.Router();
@@ -51,3 +52,6 @@ router.get(
 
 // Highscores
 router.use("/:gameId/highscore", highscoreRouter);
+
+// Rating
+router.use("/:gameId/rating", ratingRouter);

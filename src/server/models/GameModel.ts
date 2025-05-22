@@ -9,6 +9,7 @@ import BASE_SCHEMA from "./baseSchema.js";
 import { User } from "./UserModel.js";
 import ScreenshotSchema, { Screenshot } from "./ScreenshotSchema.js";
 import HighscoreSchema, { Highscore } from "./HighscoreSchema.js";
+import RatingSchema, { Rating } from "./RatingSchema.js";
 import { NextFunction, Request, Response } from "express";
 
 export interface Game {
@@ -18,6 +19,8 @@ export interface Game {
   screenshots?: mongoose.Types.DocumentArray<Screenshot>;
   creator: User;
   highscoreList?: mongoose.Types.DocumentArray<Highscore>;
+  ratings?: mongoose.Types.DocumentArray<Rating>;
+  averageRating: number;
 }
 
 interface GameModel extends mongoose.Model<Game> {
@@ -50,6 +53,15 @@ const schema = new mongoose.Schema<Game, GameModel>(
     highscoreList: {
       type: [HighscoreSchema],
       required: false,
+    },
+    ratings: {
+      type: [RatingSchema],
+      required: false,
+    },
+    averageRating: {
+      type: Number,
+      default: 0,
+      required: true,
     },
   },
   {
