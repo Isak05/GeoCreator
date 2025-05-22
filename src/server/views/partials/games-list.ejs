@@ -11,7 +11,7 @@
               <h2 class="h6 fst-italic m-0">by <%= game.creator?.username %></h2>
             </div>
             <span class="d-flex flex-row justify-content-center align-items-center me-1">
-              <p class="m-0 me-2"><%= game.averageRating ? game.averageRating : "–" %></p>
+              <p class="m-0 me-2"><%= game.averageRating ? game.averageRating.toFixed(1) : "–" %></p>
               <img src="./js/components/geocreator-rating/img/filled-star.svg" style="height: 1.5rem;" alt="Star" />
             </span>
           </div>
