@@ -35,7 +35,8 @@
   </div>
   
   <div id="game-over" class="pt-5" hidden>
-    <p class="h4">Game over! Your score: <span id="total-score"></span></p>
+    <h1 class="h4">Game over!</h1>
+    <p class="h5">Your score: <span id="total-score"></span></p>
     <div class="mx-auto mt-3">
       <table id="highscore-table" class="table table-striped table-bordered">
         <thead class="thead-dark">
@@ -50,6 +51,12 @@
         </tbody>
       </table>
     </div>
+    <p class="h5">Rate this game:</p>
+    <% if (userHasRated) { %>
+      <geocreator-rating rating="<%= userRating %>"></geocreator-rating>
+    <% } else { %>
+      <geocreator-rating></geocreator-rating>
+    <% } %>
     <a href="./game/<%= game._id %>" class="btn btn-primary mt-3">Play again</a>
   </div>
 </div>

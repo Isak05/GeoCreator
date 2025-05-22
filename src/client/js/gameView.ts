@@ -2,8 +2,9 @@ import GameUI from "./gameUI.js";
 import Modal from "./utils/modal/modal.js";
 import MyAlert from "./components/my-alert/my-alert.js";
 import getView from "./utils/getView.js";
+import GeocreatorRating from "./components/geocreator-rating/geocreator-rating.js";
 
-// Only run this script if the user is in the editLocation view.
+// Only run this script if the user is in the game view.
 if (getView() === "game") {
   const url = new URL("./data", document.location.href + "/");
   const gameUI = new GameUI(url);
@@ -30,6 +31,7 @@ if (getView() === "game") {
     requestAnimationFrame(gameUI.start.bind(gameUI));
   }
 
+  // Handle play button click
   document
     .querySelector("#play-button")
     ?.addEventListener("click", async (event) => {
@@ -38,6 +40,7 @@ if (getView() === "game") {
       play();
     });
 
+  // Handle delete button click
   document
     .querySelector("#delete-button")
     ?.addEventListener("click", async (event) => {
@@ -60,6 +63,31 @@ if (getView() === "game") {
         location.href = location.href.replace(/game\/[^/]+\/?$/, "");
       } else {
         const alert = new MyAlert("danger", "Failed to delete game");
+        document.querySelector("#flash-div").appendChild(alert);
+      }
+    });
+
+  // Handle rating
+  document
+    .querySelector("geocreator-rating")
+    ?.addEventListener("change", async (event) => {
+      const rating = (event.target as GeocreatorRating).rating;
+      const response = await fetch(
+        location.href.replace(/\/+$/, "") + "/rating",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ rating }),
+        },
+      );
+
+      if (!response.ok) {
+        const alert = new MyAlert("danger", "Failed to submit rating");
+        document.querySelector("#flash-div").appendChild(alert);
+      } else {
+        const alert = new MyAlert("success", "Rating submitted successfully");
         document.querySelector("#flash-div").appendChild(alert);
       }
     });

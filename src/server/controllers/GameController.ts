@@ -87,13 +87,23 @@ export default class {
    * @returns A rendered view of the "game/index" page.
    */
   async get(req: Request, res: Response) {
+    const game = req.game;
+    const playable = req.game.screenshots.length > 0 && req.game.mapUrl;
+    const editable =
+      req.session.loggedInUser &&
+      req.game.creator?._id?.toString() === req.session.loggedInUser?.id;
+    const userRating = req.game.ratings?.find(
+      (rating) => rating.user.toString() === req.session.loggedInUser?.id,
+    )?.rating;
+    const userHasRated = userRating !== undefined;
+
     res.render("game/index", {
       layout: "layouts/game",
-      game: req.game,
-      playable: req.game.screenshots.length > 0 && req.game.mapUrl,
-      editable:
-        req.session.loggedInUser &&
-        req.game.creator?._id?.toString() === req.session.loggedInUser?.id,
+      game,
+      playable,
+      editable,
+      userRating,
+      userHasRated,
     });
   }
 
