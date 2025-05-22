@@ -60,7 +60,7 @@ const schema = new mongoose.Schema<Game, GameModel>(
     },
     averageRating: {
       type: Number,
-      default: 3,
+      default: 0,
       required: true,
     },
   },
