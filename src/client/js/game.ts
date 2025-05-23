@@ -34,6 +34,8 @@ export enum GameState {
   GAME_OVER,
 }
 
+const NUMBER_OF_ROUNDS_PER_GAME = 5;
+
 /**
  * The game class responsible for handling the game logic, game state and fetching game data.
  */
@@ -46,6 +48,7 @@ export default class Game {
   #currentScreenshot: Screenshot = null;
   #totalScore = 0;
   #state: GameState = GameState.NOT_STARTED;
+  #roundsPlayed = 0;
 
   /**
    * Creates a new game instance.
@@ -190,8 +193,12 @@ export default class Game {
 
     const score = this.calculateScore();
     this.#totalScore += score;
+    this.#roundsPlayed++;
 
-    if (this.#getRemainingScreenshots().size === 0) {
+    if (
+      this.#getRemainingScreenshots().size === 0 ||
+      this.#roundsPlayed >= NUMBER_OF_ROUNDS_PER_GAME
+    ) {
       this.#state = GameState.GAME_OVER;
     } else {
       this.#state = GameState.WAITING_FOR_NEXT_ROUND;
