@@ -1,13 +1,12 @@
 /**
- * @file The home controller.
- * @module controllers/GameController
- * @author Isak Johansson Weckstén <ij222pv@student.lnu.se>
+ * The upload controller.
+ * @module controllers/UploadController
  */
 
 import { Request, Response } from "express";
 
 /**
- * Controller for accessing the home page
+ * Controller for accessing the upload page
  */
 export default class {
   /**
