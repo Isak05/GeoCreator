@@ -1,42 +1,20 @@
 # Geocreator
 
-## Wiki
-[https://gitlab.lnu.se/1dv613/student/ij222pv/project/-/wikis/home](https://gitlab.lnu.se/1dv613/student/ij222pv/project/-/wikis/home)
+[![Version](https://img.shields.io/github/package-json/v/Isak05/GeoCreator)](https://github.com/Isak05/GeoCreator/releases)
+[![License GPLv3](https://img.shields.io/github/license/Isak05/GeoCreator)](COPYING)
 
-## Running
-### Environment variables
-`PORT` - Port to run the server on. Default is 80
+[GitLab wiki](https://gitlab.lnu.se/1dv613/student/ij222pv/project/-/wikis/home) | [GitHub wiki](https://github.com/Isak05/GeoCreator/wiki)
 
-`MONGODB_URI` - MongoDB connection string
+A map based guessing game and creation platform.
 
-`NODE_ENV` - Environment to run the server in. Default is production
+## About
 
-`BASE_URL` - Base URL for the server
+This project was originally made as part of course 1DV613 at Linnaeus University.
 
-`SESSION_NAME` - Name of the session cookie
+## Contributing
 
-`SESSION_SECRET` - Secret for the session cookie
+We welcome contributions from the community to help improve the project. Please see the [contributing guide](CONTRIBUTING.md) for more information on how to contribute.
 
-### Docker
-Development:
-```bash
-docker compose -f docker-compose.dev.yml up --build -d
-```
-Production:
-```bash
-docker compose -f docker-compose.prod.yml up --build -d
-```
+## License
 
-### Local
-Development:
-```bash
-npm install
-npm run dev
-```
-
-Production:
-```bash
-npm install
-npm run build
-npm run start
-```
+This project is licensed under the GNU General Public License v3.0 (GPLv3). See the [license](COPYING) for details.

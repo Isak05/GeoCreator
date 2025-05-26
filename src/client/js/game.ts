@@ -1,7 +1,25 @@
+/*
+ * GeoCreator game and creation platform.
+ * Copyright (C) 2025 Isak Johansson Weckstén
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see
+ * <https://www.gnu.org/licenses/>.
+ */
+
 /**
- * The geocreator game module.
+ * The geocreator game module for handling game logic and state.
  * @module game
- * @author Isak Johansson Weckstén <ij222pv@student.lnu.se>
  */
 
 import Vec2 from "./vec2.js";
@@ -34,6 +52,8 @@ export enum GameState {
   GAME_OVER,
 }
 
+const NUMBER_OF_ROUNDS_PER_GAME = 5;
+
 /**
  * The game class responsible for handling the game logic, game state and fetching game data.
  */
@@ -46,6 +66,7 @@ export default class Game {
   #currentScreenshot: Screenshot = null;
   #totalScore = 0;
   #state: GameState = GameState.NOT_STARTED;
+  #roundsPlayed = 0;
 
   /**
    * Creates a new game instance.
@@ -190,8 +211,12 @@ export default class Game {
 
     const score = this.calculateScore();
     this.#totalScore += score;
+    this.#roundsPlayed++;
 
-    if (this.#getRemainingScreenshots().size === 0) {
+    if (
+      this.#getRemainingScreenshots().size === 0 ||
+      this.#roundsPlayed >= NUMBER_OF_ROUNDS_PER_GAME
+    ) {
       this.#state = GameState.GAME_OVER;
     } else {
       this.#state = GameState.WAITING_FOR_NEXT_ROUND;
