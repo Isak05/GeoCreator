@@ -24,5 +24,3 @@ jobs:
           release_name: ${{ env.VERSION }}
           body: |
             Release ${{ env.VERSION }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
