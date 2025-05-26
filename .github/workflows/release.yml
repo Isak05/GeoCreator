@@ -7,6 +7,8 @@ on:
 
 jobs:
   tag:
+    name: Tag the release
+    permissions: write-all
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
