@@ -9,10 +9,8 @@ jobs:
   tag:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
       - name: Get version from package.json
-        uses: ubuntu-latest
         run: |
           sudo apt-get install -y jq
           VERSION=$(jq -r .version package.json)
