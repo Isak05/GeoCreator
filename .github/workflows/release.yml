@@ -39,9 +39,8 @@ jobs:
           oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
           tags: tag:ci
-      - name: Configure SSH
-        # ssh setup script taken from https://gitlab.lnu.se/2dv013/content/examples/example-dockerized-web-application/-/blob/main/.gitlab-ci.yml
       - name: Deploy to production server
+        # ssh setup script taken from https://gitlab.lnu.se/2dv013/content/examples/example-dockerized-web-application/-/blob/main/.gitlab-ci.yml
         run: |
           command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )
           eval $(ssh-agent -s)
