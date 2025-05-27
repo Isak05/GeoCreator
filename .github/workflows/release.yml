@@ -63,5 +63,5 @@ jobs:
           - ssh-keyscan -H $REMOTE_HOST >> ~/.ssh/known_hosts
           - chmod 644 ~/.ssh/known_hosts
       - name: Deploy to production server
-        runs: |
+        run: |
           DOCKER_HOST=ssh://ci@debian docker compose -f docker-compose.prod.yml up -d --build --remove-orphans
