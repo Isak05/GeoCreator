@@ -2,6 +2,8 @@
 
 [![Version](https://img.shields.io/github/package-json/v/Isak05/GeoCreator)](https://github.com/Isak05/GeoCreator/releases)
 [![License GPLv3](https://img.shields.io/github/license/Isak05/GeoCreator)](COPYING)
+[![Test status](https://img.shields.io/github/actions/workflow/status/Isak05/GeoCreator/release.yml?label=tests)](https://github.com/Isak05/GeoCreator/actions/workflows/ci.yml)
+[![Release status](https://img.shields.io/github/actions/workflow/status/Isak05/GeoCreator/release.yml?label=release)](https://github.com/Isak05/GeoCreator/actions/workflows/release.yml)
 
 [GitLab wiki](https://gitlab.lnu.se/1dv613/student/ij222pv/project/-/wikis/home) | [GitHub wiki](https://github.com/Isak05/GeoCreator/wiki)
 
