@@ -40,7 +40,7 @@ jobs:
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
           tags: tag:ci
       - name: Configure SSH
-        runs: |
+        run: |
           # ssh setup script taken from https://gitlab.lnu.se/2dv013/content/examples/example-dockerized-web-application/-/blob/main/.gitlab-ci.yml
           # Ensure ssh-agent is installed and started, essential for managing SSH keys.
           # (Change apt-get to yum if using an RPM-based image)
