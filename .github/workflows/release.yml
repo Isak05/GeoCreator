@@ -41,6 +41,7 @@ jobs:
           tags: tag:ci
       - name: Configure SSH
         # ssh setup script taken from https://gitlab.lnu.se/2dv013/content/examples/example-dockerized-web-application/-/blob/main/.gitlab-ci.yml
+      - name: Deploy to production server
         run: |
           command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )
           eval $(ssh-agent -s)
@@ -49,8 +50,7 @@ jobs:
           chmod 700 ~/.ssh
           ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
-      - name: Deploy to production server
-        run: |
+
           export BASE_URL=${{ secrets.BASE_URL }}
           export SESSION_NAME=${{ secrets.SESSION_NAME }}
           export SESSION_SECRET=${{ secrets.SESSION_SECRET }}
