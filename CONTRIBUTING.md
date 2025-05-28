@@ -6,7 +6,7 @@ We welcome contributions from the community to help improve the project. Here ar
 
 - All contributions, including code, documentation, and discussions, must be in English to ensure clear communication and collaboration.
 
-- Before submitting a pull request, please ensure that your code adheres to the project's [coding standards](https://github.com/Isak05/GeoCreator/wiki/Coding_standards.md) and passes all tests.
+- Before submitting a pull request, please ensure that your code adheres to the project's [coding standards](https://github.com/Isak05/GeoCreator/wiki/Coding-Standards) and passes all tests.
 
 ## How to contribute
 
